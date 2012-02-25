@@ -80,7 +80,6 @@
     if (authToken == nil) {
         shouldLoad = YES;
         OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
-        //        UINavigationController * nav=[[UINavigationController alloc] initWithRootViewController:webV];
         [self presentModalViewController:webV animated:NO];
         [webV release];
     }

@@ -2,7 +2,7 @@
 //  HHNetDataCacheManager.h
 //  HHuan
 //
-//  Created by Banny on 12/7/11.
+//  Created by jianting zhu on on 12/7/11.
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
