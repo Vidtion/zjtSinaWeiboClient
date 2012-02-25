@@ -7,19 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "StatusCell.h"
 
 @class WeiBoMessageManager;
 
-@interface FirstViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>{
+@interface FirstViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,StatusCellDelegate>{
     BOOL shouldLoad;
     BOOL shouldLoadAvatar;
     WeiBoMessageManager *manager;
+    NSNotificationCenter *defaultNotifCenter;
 }
 @property (retain, nonatomic)   IBOutlet UITableView *table;
 @property (nonatomic, copy)     NSString *userID;
 @property (nonatomic, retain)   UINib *statusCellNib;
 @property (nonatomic, retain)   NSMutableArray *statuesArr;
 @property (nonatomic, retain)   NSMutableDictionary *headDictionary;
-@property (nonatomic, retain)   NSMutableArray *httpRequestList;
+@property (nonatomic, retain)   NSMutableDictionary *imageDictionary;
 
 @end

@@ -60,7 +60,6 @@ static HHNetDataCacheManager * instance;
         else{//unmatch
             ASIHTTPRequest * request=[ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
             [request setDelegate:self];
-            NSLog(@"unmatch url = %@",url);
             
             if (index >= 0) {
                 NSNumber *indexNumber = [NSNumber numberWithInt:index];
@@ -75,6 +74,7 @@ static HHNetDataCacheManager * instance;
     }
 }
 
+//无index参数时，返回 -1
 -(void) getDataWithURL:(NSString *) url{
     [self getDataWithURL:url withIndex:-1];
 }
@@ -94,8 +94,6 @@ static HHNetDataCacheManager * instance;
     [self sendNotificationWithKey:url Data:data index:indexNumber];
     //add to cache
     @synchronized(self) {
-        NSLog(@"request.userInfo = %@",request.userInfo);
-        NSLog(@"HH url = %@",url);
         [cacheArray insertObject:url atIndex:0];
         [cacheDic setValue:data forKey:url];
         if ([cacheArray count]>MaxCacheBufferSize) {
