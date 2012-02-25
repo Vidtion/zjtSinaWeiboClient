@@ -1,0 +1,125 @@
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/lianputuao_1.x/!svn/ver/6232/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest
+END
+ASIHTTPRequest.m
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/lianputuao_1.x/!svn/ver/6232/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIHTTPRequest.m
+END
+ASICacheDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASICacheDelegate.h
+END
+ASINetworkQueue.h
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASINetworkQueue.h
+END
+ASIDataDecompressor.h
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIDataDecompressor.h
+END
+ASIAuthenticationDialog.h
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIAuthenticationDialog.h
+END
+ASIProgressDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/lianputuao_1.x/!svn/ver/3796/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIProgressDelegate.h
+END
+ASIDownloadCache.m
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIDownloadCache.m
+END
+ASINetworkQueue.m
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/lianputuao_1.x/!svn/ver/3796/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASINetworkQueue.m
+END
+ASIDataDecompressor.m
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIDataDecompressor.m
+END
+ASIAuthenticationDialog.m
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIAuthenticationDialog.m
+END
+ASIFormDataRequest.h
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIFormDataRequest.h
+END
+ASIInputStream.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIInputStream.h
+END
+ASIFormDataRequest.m
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIFormDataRequest.m
+END
+ASIHTTPRequestConfig.h
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIHTTPRequestConfig.h
+END
+ASIInputStream.m
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIInputStream.m
+END
+ASIHTTPRequestDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIHTTPRequestDelegate.h
+END
+ASIDataCompressor.h
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIDataCompressor.h
+END
+ASIHTTPRequest.h
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/lianputuao_1.x/!svn/ver/3796/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIHTTPRequest.h
+END
+ASIDownloadCache.h
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIDownloadCache.h
+END
+ASIDataCompressor.m
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/lianputuao_1.x/!svn/ver/3657/client/iphone/trunk/HHuan/HHuan/Class/Network/Http/ASIHttpRequest/ASIDataCompressor.m
+END
