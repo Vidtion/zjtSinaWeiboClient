@@ -9,12 +9,17 @@
 #import "StatusCell.h"
 
 @implementation StatusCell
+@synthesize retwitterBgImage;
+@synthesize retwitterContentTF;
+@synthesize retwitterContentImage;
 @synthesize avatarImage;
 @synthesize contentTF;
 @synthesize commentButton;
 @synthesize userNameLB;
 @synthesize forwardButton;
 @synthesize bgImage;
+@synthesize contentImage;
+@synthesize retwitterMainV;
 
 -(CGFloat)getTFHeight
 {
@@ -36,6 +41,11 @@
     [contentTF release];
     [userNameLB release];
     [bgImage release];
+    [contentImage release];
+    [retwitterMainV release];
+    [retwitterBgImage release];
+    [retwitterContentTF release];
+    [retwitterContentImage release];
     [super dealloc];
 }
 @end

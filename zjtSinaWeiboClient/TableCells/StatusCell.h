@@ -18,7 +18,14 @@
 @property (retain, nonatomic) IBOutlet UILabel *userNameLB;
 @property (retain, nonatomic) IBOutlet UIButton *forwardButton;
 @property (retain, nonatomic) IBOutlet UIImageView *bgImage;
+@property (retain, nonatomic) IBOutlet UIImageView *contentImage;
+
+@property (retain, nonatomic) IBOutlet UIView *retwitterMainV;
+
 
 -(CGFloat)getTFHeight;
+@property (retain, nonatomic) IBOutlet UIImageView *retwitterBgImage;
+@property (retain, nonatomic) IBOutlet UITextView *retwitterContentTF;
+@property (retain, nonatomic) IBOutlet UIImageView *retwitterContentImage;
 
 @end

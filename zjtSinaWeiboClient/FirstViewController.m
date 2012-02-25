@@ -186,6 +186,17 @@
     NSData *data = [headDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
     cell.avatarImage.image = [UIImage imageWithData:data];
     
+    //retwitter
+    Status  *retwitterStatus    = status.retweetedStatus;
+//    User    *retwitterUser      = status.user;
+    if (retwitterStatus) {
+        cell.retwitterMainV.hidden = NO;
+        cell.retwitterContentTF.text = retwitterStatus.text;
+    }
+    else
+    {
+        cell.retwitterMainV.hidden = YES;
+    }
     return cell;
 }
 
