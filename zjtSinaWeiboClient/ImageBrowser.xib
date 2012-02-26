@@ -48,15 +48,16 @@
 							<object class="IBUIImageView" id="821669551">
 								<reference key="NSNextResponder" ref="54731030"/>
 								<int key="NSvFlags">274</int>
-								<string key="NSFrame">{{0, 90}, {320, 370}}</string>
+								<string key="NSFrameSize">{320, 415}</string>
 								<reference key="NSSuperview" ref="54731030"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<int key="IBUIContentMode">1</int>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 							</object>
 						</object>
-						<string key="NSFrame">{{0, -93}, {320, 460}}</string>
+						<string key="NSFrameSize">{320, 415}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="821669551"/>
@@ -67,7 +68,7 @@
 						<bool key="IBUIShowsVerticalScrollIndicator">NO</bool>
 					</object>
 				</object>
-				<string key="NSFrame">{{0, 64}, {320, 367}}</string>
+				<string key="NSFrame">{{0, 64}, {320, 416}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="54731030"/>
@@ -82,7 +83,6 @@
 				<object class="IBUISimulatedNavigationBarMetrics" key="IBUISimulatedTopBarMetrics">
 					<bool key="IBUIPrompted">NO</bool>
 				</object>
-				<object class="IBUISimulatedTabBarMetrics" key="IBUISimulatedBottomBarMetrics"/>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 		</object>

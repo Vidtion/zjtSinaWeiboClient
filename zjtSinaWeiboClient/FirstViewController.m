@@ -314,7 +314,7 @@
     ImageBrowser *browser = [[ImageBrowser alloc]initWithNibName:@"ImageBrowser" bundle:nil];
     browser.image = image;
     browser.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
-    
+    browser.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:browser animated:YES];
     [browser release];
 }
