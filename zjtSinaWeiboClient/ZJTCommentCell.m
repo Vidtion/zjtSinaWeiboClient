@@ -9,14 +9,28 @@
 #import "ZJTCommentCell.h"
 
 @implementation ZJTCommentCell
+
 @synthesize nameLB;
 @synthesize timeLB;
 @synthesize contentLB;
 @synthesize replyBtn;
 
+@synthesize delegate;
+
+@synthesize cellIndexPath;
+
+-(IBAction)replyBtnClicked:(id)sender
+{
+    if (delegate && [delegate respondsToSelector:@selector(commentCellDidSelect:indexPath:)]) 
+    {
+        [delegate commentCellDidSelect:self indexPath:self.cellIndexPath];
+    }
+}
 
 - (void)dealloc
 {
+    self.cellIndexPath = nil;
+    
     [nameLB release];
     [timeLB release];
     [contentLB release];
