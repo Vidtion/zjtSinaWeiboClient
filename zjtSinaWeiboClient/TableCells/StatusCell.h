@@ -19,6 +19,19 @@
 @interface StatusCell : LPBaseCell
 {
     id<StatusCellDelegate> delegate;
+    
+    UIImageView *avatarImage;
+    UITextView *contentTF;
+    UIButton *commentButton;
+    UILabel *userNameLB;
+    UIButton *forwardButton;
+    UIImageView *bgImage;
+    UIImageView *contentImage;
+    UIView *retwitterMainV;
+    UIImageView *retwitterBgImage;
+    UITextView *retwitterContentTF;
+    UIImageView *retwitterContentImage;
+    NSIndexPath *cellIndexPath;
 }
 @property (retain, nonatomic) IBOutlet UIImageView *avatarImage;
 @property (retain, nonatomic) IBOutlet UITextView *contentTF;

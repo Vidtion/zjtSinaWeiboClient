@@ -16,6 +16,13 @@
     BOOL shouldLoadAvatar;
     WeiBoMessageManager *manager;
     NSNotificationCenter *defaultNotifCenter;
+    
+    UITableView *table;
+    NSString *userID;
+    UINib *statusCellNib;
+    NSMutableArray *statuesArr;
+    NSMutableDictionary *headDictionary;
+    NSMutableDictionary *imageDictionary;
 }
 @property (retain, nonatomic)   IBOutlet UITableView *table;
 @property (nonatomic, copy)     NSString *userID;
