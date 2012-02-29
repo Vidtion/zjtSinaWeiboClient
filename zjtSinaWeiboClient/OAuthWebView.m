@@ -50,8 +50,11 @@
     [[NSUserDefaults standardUserDefaults] setObject:token forKey:USER_STORE_ACCESS_TOKEN];
     NSString *refreshToken = [self getStringFromUrl:q needle:@"refresh_token="];
     NSString *expTime = [self getStringFromUrl:q needle:@"expires_in="];
+    NSString *uid = [self getStringFromUrl:q needle:@"uid="];
+    NSString *remindIn = [self getStringFromUrl:q needle:@"remind_in="];
+    
     NSDate *expirationDate =nil;
-    NSLog(@"jtone \n\ntoken=%@\nrefreshToken=%@\nexpTime=%@\n\n",token,refreshToken,expTime);
+    NSLog(@"jtone \n\ntoken=%@\nrefreshToken=%@\nexpTime=%@\nuid=%@\nremindIn=%@\n\n",token,refreshToken,expTime,uid,remindIn);
     if (expTime != nil) {
         int expVal = [expTime intValue];
         if (expVal == 0) {
