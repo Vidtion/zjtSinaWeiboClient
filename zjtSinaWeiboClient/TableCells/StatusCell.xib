@@ -316,6 +316,7 @@
 				<string key="NSReuseIdentifierKey">_NS:384</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 				<reference key="IBUIContentView" ref="154365241"/>
+				<string key="IBUIReuseIdentifier">StatusCell</string>
 				<real value="326" key="IBUIRowHeight"/>
 			</object>
 			<object class="IBUITapGestureRecognizer" id="951658615"/>

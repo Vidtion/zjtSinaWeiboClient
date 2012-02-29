@@ -245,6 +245,7 @@
     {
         cell.retwitterMainV.hidden = NO;
         cell.retwitterContentTF.text = retwitterStatus.text;
+        cell.contentImage.hidden = YES;
         
         NSData *data = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
         if (![data isEqual:[NSNull null]]) 
@@ -253,6 +254,7 @@
         }
         
         NSString *url = status.retweetedStatus.thumbnailPic;
+        cell.retwitterContentImage.hidden = url != nil && [url length] != 0 ? NO : YES;
         [cell setTFHeightWithImage:NO 
                 haveRetwitterImage:url != nil && [url length] != 0 ? YES : NO];//计算cell的高度，以及背景图的处理
     }
@@ -267,6 +269,7 @@
         }
         
         NSString *url = status.thumbnailPic;
+        cell.contentImage.hidden = url != nil && [url length] != 0 ? NO : YES;
         [cell setTFHeightWithImage:url != nil && [url length] != 0 ? YES : NO 
                 haveRetwitterImage:NO];//计算cell的高度，以及背景图的处理
     }

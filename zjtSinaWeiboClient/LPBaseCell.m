@@ -53,6 +53,7 @@
     NSString *cellID = [self cellIdentifier];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
+        NSLog(@"cell new");
         NSArray *nibObjects = [nib instantiateWithOwner:nil options:nil];
         cell = [nibObjects objectAtIndex:0];
     }
