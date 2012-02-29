@@ -44,8 +44,8 @@
     //转发的主View
     frame = retwitterMainV.frame;
     
-    if (haveRetwitterImage) frame.size.height = retwitterContentTF.frame.size.height + IMAGE_VIEW_HEIGHT;
-    else frame.size.height = retwitterContentTF.frame.size.height;
+    if (haveRetwitterImage) frame.size.height = retwitterContentTF.frame.size.height + IMAGE_VIEW_HEIGHT + 15;
+    else frame.size.height = retwitterContentTF.frame.size.height + 15;
     
     if(hasImage) frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y + IMAGE_VIEW_HEIGHT;
     else frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y;
@@ -65,7 +65,7 @@
     
     //背景设置
     bgImage.image = [[UIImage imageNamed:@"table_header_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
-    
+    retwitterBgImage.image = [[UIImage imageNamed:@"timeline_rt_border_t.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:7];
     
     return contentTF.contentSize.height;
 }

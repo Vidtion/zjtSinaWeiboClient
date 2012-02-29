@@ -304,7 +304,7 @@
     {
         height = height + 80;
     }
-    return height;
+    return height + 10;
 }
 
 #pragma mark - StatusCellDelegate
