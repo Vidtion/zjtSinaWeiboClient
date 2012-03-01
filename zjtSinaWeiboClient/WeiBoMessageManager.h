@@ -65,6 +65,9 @@
 
 +(WeiBoMessageManager*)getInstance;
 
+//查看Token是否过期
+- (BOOL)isNeedToRefreshTheToken;
+
 //留给webview用
 -(NSURL*)getOauthCodeUrl;
 

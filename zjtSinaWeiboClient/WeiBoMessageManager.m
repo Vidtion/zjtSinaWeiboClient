@@ -36,6 +36,17 @@ static WeiBoMessageManager * instance=nil;
     return instance;
 }
 
+- (BOOL)isNeedToRefreshTheToken
+{
+    NSDate *expirationDate = [[NSUserDefaults standardUserDefaults]objectForKey:USER_STORE_EXPIRATION_DATE];
+    if (expirationDate == nil)  return YES;
+    
+    BOOL boolValue1 = !(NSOrderedDescending == [expirationDate compare:[NSDate date]]);
+    BOOL boolValue2 = (expirationDate != nil);
+    
+    return (boolValue1 && boolValue2);
+}
+
 #pragma mark - Http Methods
 //留给webview用
 -(NSURL*)getOauthCodeUrl

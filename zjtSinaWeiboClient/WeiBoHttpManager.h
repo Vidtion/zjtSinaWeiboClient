@@ -20,6 +20,7 @@
 #define USER_INFO_KEY_TYPE          @"requestType"
 
 #define USER_STORE_ACCESS_TOKEN     @"SinaAccessToken"
+#define USER_STORE_EXPIRATION_DATE  @"SinaExpirationDate"
 #define USER_STORE_USER_ID          @"SinaUserID"
 
 typedef enum {

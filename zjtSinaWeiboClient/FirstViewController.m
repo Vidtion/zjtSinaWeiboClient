@@ -71,7 +71,7 @@
     
     //如果未授权，则调入授权页面。
     NSString *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
-    if (authToken == nil) 
+    if (authToken == nil || [manager isNeedToRefreshTheToken]) 
     {
         shouldLoad = YES;
         OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
