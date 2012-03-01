@@ -18,6 +18,10 @@
 #define kTextViewPadding            16.0
 #define kLineBreakMode              UILineBreakModeWordWrap
 
+@interface FirstViewController() 
+-(void)getImages;
+@end
+
 @implementation FirstViewController
 @synthesize table;
 @synthesize userID;
@@ -25,6 +29,7 @@
 @synthesize statuesArr;
 @synthesize headDictionary;
 @synthesize imageDictionary;
+@synthesize browserView;
 
 -(void)dealloc
 {
@@ -33,6 +38,8 @@
     self.statusCellNib = nil;
     self.statuesArr = nil;
     self.userID = nil;
+    self.browserView = nil;
+    
     [table release];
     [super dealloc];
 }
@@ -71,6 +78,7 @@
     
     //如果未授权，则调入授权页面。
     NSString *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSLog([manager isNeedToRefreshTheToken] == YES ? @"need to login":@"will login");
     if (authToken == nil || [manager isNeedToRefreshTheToken]) 
     {
         shouldLoad = YES;
@@ -87,7 +95,7 @@
 
 - (void)viewWillAppear:(BOOL)animated 
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     if (shouldLoad) 
     {
         shouldLoad = NO;
@@ -107,6 +115,12 @@
     [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self getImages];
+}
+
 - (void)viewDidUnload 
 {
     [self setTable:nil];
@@ -114,6 +128,40 @@
 }
 
 #pragma mark - Methods
+
+//异步加载图片
+-(void)getImages
+{
+    //得到文字数据后，开始加载图片
+    for(int i=0;i<[statuesArr count];i++)
+    {
+        Status * member=[statuesArr objectAtIndex:i];
+        NSNumber *indexNumber = [NSNumber numberWithInt:i];
+        
+        //下载头像图片
+        [[HHNetDataCacheManager getInstance] getDataWithURL:member.user.profileImageUrl withIndex:i];
+        
+        //下载博文图片
+        if (member.thumbnailPic && [member.thumbnailPic length] != 0)
+        {
+            [[HHNetDataCacheManager getInstance] getDataWithURL:member.thumbnailPic withIndex:i];
+        }
+        else
+        {
+            [imageDictionary setObject:[NSNull null] forKey:indexNumber];
+        }
+        
+        //下载转发的图片
+        if (member.retweetedStatus.thumbnailPic && [member.retweetedStatus.thumbnailPic length] != 0) 
+        {
+            [[HHNetDataCacheManager getInstance] getDataWithURL:member.retweetedStatus.thumbnailPic withIndex:i];
+        }
+        else
+        {
+            [imageDictionary setObject:[NSNull null] forKey:indexNumber];
+        }
+    }
+}
 
 //得到图片
 -(void)getAvatar:(NSNotification*)sender
@@ -173,34 +221,7 @@
     self.statuesArr = sender.object;
     [table reloadData];
     
-    //得到文字数据后，开始加载图片
-    for(int i=0;i<[statuesArr count];i++){
-        Status * member=[statuesArr objectAtIndex:i];
-        NSNumber *indexNumber = [NSNumber numberWithInt:i];
-        
-        //下载头像图片
-        [[HHNetDataCacheManager getInstance] getDataWithURL:member.user.profileImageUrl withIndex:i];
-        
-        //下载博文图片
-        if (member.thumbnailPic && [member.thumbnailPic length] != 0)
-        {
-            [[HHNetDataCacheManager getInstance] getDataWithURL:member.thumbnailPic withIndex:i];
-        }
-        else
-        {
-            [imageDictionary setObject:[NSNull null] forKey:indexNumber];
-        }
-        
-        //下载转发的图片
-        if (member.retweetedStatus.thumbnailPic && [member.retweetedStatus.thumbnailPic length] != 0) 
-        {
-            [[HHNetDataCacheManager getInstance] getDataWithURL:member.retweetedStatus.thumbnailPic withIndex:i];
-        }
-        else
-        {
-            [imageDictionary setObject:[NSNull null] forKey:indexNumber];
-        }
-    }
+    [self getImages];
 }
 
 //计算text field 的高度。
@@ -244,7 +265,7 @@
     if (retwitterStatus && ![retwitterStatus isEqual:[NSNull null]]) 
     {
         cell.retwitterMainV.hidden = NO;
-        cell.retwitterContentTF.text = retwitterStatus.text;
+        cell.retwitterContentTF.text = [NSString stringWithFormat:@"%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text];
         cell.contentImage.hidden = YES;
         
         NSData *data = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
@@ -309,17 +330,42 @@
 
 #pragma mark - StatusCellDelegate
 
+-(void)getOriginImage:(NSNotification*) hhack
+{
+    NSDictionary * dic=hhack.object;
+    NSString * url=[dic objectForKey:HHNetDataCacheURLKey];
+    if ([url isEqualToString:browserView.bigImageURL]) 
+    {
+        UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
+        [browserView.imageView setImage:img];
+    }
+}
+
 -(void)cellImageDidTaped:(StatusCell *)theCell image:(UIImage *)image
 {
     Status *sts = [statuesArr objectAtIndex:[theCell.cellIndexPath row]];
     BOOL isRetwitter = sts.retweetedStatus && sts.retweetedStatus.originalPic != nil;
+    CGRect frame = CGRectMake(0, 0, 320, 450);
+    if (browserView == nil) {
+        self.browserView = [[ImageBrowser alloc]initWithFrame:frame];
+        [browserView release];
+    }
     
-    ImageBrowser *browser = [[ImageBrowser alloc]initWithNibName:@"ImageBrowser" bundle:nil];
-    browser.image = image;
-    browser.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
-    browser.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:browser animated:YES];
-    [browser release];
+    browserView.image = image;
+    browserView.delegate = self;
+    browserView.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
+    [browserView setUp];
+    
+    //animation
+    browserView.frame = CGRectMake(0, 0, 10, 10);
+    [self.view addSubview:browserView];
+//    self.tabBarController.tabBar.hidden = YES;
+    [UIView beginAnimations:nil context:nil];		
+    [UIView setAnimationDuration:1.5];
+    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+    browserView.frame = frame;
+    [UIView commitAnimations]; 
+    
 }
 
 @end

@@ -16,9 +16,7 @@
 @synthesize retwitterContentImage;
 @synthesize avatarImage;
 @synthesize contentTF;
-@synthesize commentButton;
 @synthesize userNameLB;
-@synthesize forwardButton;
 @synthesize bgImage;
 @synthesize contentImage;
 @synthesize retwitterMainV;
@@ -91,8 +89,6 @@
 }
 
 - (void)dealloc {
-    [forwardButton release];
-    [commentButton release];
     [avatarImage release];
     [contentTF release];
     [userNameLB release];

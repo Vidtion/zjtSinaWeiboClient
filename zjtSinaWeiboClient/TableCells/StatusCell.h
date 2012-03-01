@@ -22,9 +22,7 @@
     
     UIImageView *avatarImage;
     UITextView *contentTF;
-    UIButton *commentButton;
     UILabel *userNameLB;
-    UIButton *forwardButton;
     UIImageView *bgImage;
     UIImageView *contentImage;
     UIView *retwitterMainV;
@@ -35,9 +33,7 @@
 }
 @property (retain, nonatomic) IBOutlet UIImageView *avatarImage;
 @property (retain, nonatomic) IBOutlet UITextView *contentTF;
-@property (retain, nonatomic) IBOutlet UIButton *commentButton;
 @property (retain, nonatomic) IBOutlet UILabel *userNameLB;
-@property (retain, nonatomic) IBOutlet UIButton *forwardButton;
 @property (retain, nonatomic) IBOutlet UIImageView *bgImage;
 @property (retain, nonatomic) IBOutlet UIImageView *contentImage;
 @property (retain, nonatomic) IBOutlet UIView *retwitterMainV;

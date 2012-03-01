@@ -8,7 +8,6 @@
 
 #import "ImageBrowser.h"
 #import "HHNetDataCacheManager.h"
-#import "ImageProcess.h"
 
 @implementation ImageBrowser
 @synthesize image;
@@ -16,15 +15,7 @@
 @synthesize aScrollView;
 @synthesize bigImageURL;
 @synthesize viewTitle;
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@synthesize delegate;
 
 - (void)dealloc
 {
@@ -35,17 +26,35 @@
     [super dealloc];
 }
 
-- (void)didReceiveMemoryWarning
+-(id)initWithFrame:(CGRect)frame
 {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
+    self = [super initWithFrame:frame];
+    if (self) 
+    {
+        aScrollView = [[CustomScrollView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        aScrollView.userInteractionEnabled = YES;
+        
+        [self           addSubview:aScrollView];
+        [aScrollView    addSubview:imageView];
+    }
+    return self;
+}
+
+-(void)dismiss
+{
+    [UIView beginAnimations:nil context:nil];		
+    [UIView setAnimationDuration:0.3];
+    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [self removeFromSuperview];
+    [UIView commitAnimations]; 
 }
 
 -(void)saveImage
 {
-    if (!imageView.image) {
+    if (!imageView.image) 
+    {
         return;
     }
     UIImageWriteToSavedPhotosAlbum(imageView.image, nil, nil, nil);
@@ -56,30 +65,21 @@
 
 
 #pragma mark - View lifecycle
-
-- (void)viewDidLoad
+-(void)setUp
 {
-    [super viewDidLoad];
     aScrollView.minimumZoomScale = 1.0; //最小到1.0倍
     aScrollView.maximumZoomScale = 50.0; //最大到50倍
     aScrollView.delegate = self;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubelClicked) name:@"doubelClicked" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubelClicked) name:@"doubelClicked"  object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismiss)       name:@"tapClicked"     object:nil];
     UIBarButtonItem *rightButton=[[UIBarButtonItem alloc] initWithTitle:@"保存到相册" style:UIBarButtonItemStylePlain target:self action:@selector(saveImage)];
-    self.navigationItem.rightBarButtonItem = rightButton;
     [rightButton release];
     
-    if (viewTitle != nil && [viewTitle length] != 0) {
-        self.title = viewTitle;
-    }
-    else    
-        self.title = @"图片";
-    
     [imageView setImage:image];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getImageAck:) name:HHNetDataCacheNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:delegate selector:@selector(getOriginImage:) name:HHNetDataCacheNotification object:nil];
     if (bigImageURL!=nil) {
         [[HHNetDataCacheManager getInstance] getDataWithURL:bigImageURL];
     }
-
 }
 
 -(void)doubelClicked{
@@ -104,6 +104,7 @@
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return imageView;
 }
+
 - (void) getImageAck:(NSNotification*) hhack
 {
     NSDictionary * dic=hhack.object;
@@ -112,19 +113,6 @@
         UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
         [imageView setImage:img];
     }
-}
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:HHNetDataCacheNotification object:nil];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end

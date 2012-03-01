@@ -10,6 +10,7 @@
 #import "StatusCell.h"
 
 @class WeiBoMessageManager;
+@class ImageBrowser;
 
 @interface FirstViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,StatusCellDelegate>{
     BOOL shouldLoad;
@@ -23,6 +24,7 @@
     NSMutableArray *statuesArr;
     NSMutableDictionary *headDictionary;
     NSMutableDictionary *imageDictionary;
+    ImageBrowser *browserView;
 }
 @property (retain, nonatomic)   IBOutlet UITableView *table;
 @property (nonatomic, copy)     NSString *userID;
@@ -30,5 +32,6 @@
 @property (nonatomic, retain)   NSMutableArray *statuesArr;
 @property (nonatomic, retain)   NSMutableDictionary *headDictionary;
 @property (nonatomic, retain)   NSMutableDictionary *imageDictionary;
+@property (nonatomic, retain)   ImageBrowser *browserView;
 
 @end

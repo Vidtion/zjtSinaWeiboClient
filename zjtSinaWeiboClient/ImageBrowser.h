@@ -9,16 +9,23 @@
 #import <UIKit/UIKit.h>
 #import "CustomScrollView.h"
 
-@interface ImageBrowser : UIViewController <UIScrollViewDelegate>{
+@interface ImageBrowser : UIView <UIScrollViewDelegate>
+{
     IBOutlet UIImageView        *imageView;
     IBOutlet CustomScrollView   *aScrollView;
     UIImage *image;
     NSString * bigImageURL;//如果填了这个地址，登录后会载入此图片
     NSString *viewTitle;
+    id delegate;
 }
 @property (nonatomic,retain) UIImage *image;
 @property (nonatomic,retain) IBOutlet UIImageView        *imageView;
 @property (nonatomic,retain) IBOutlet CustomScrollView   *aScrollView;
 @property (nonatomic,retain) NSString * bigImageURL;
 @property (nonatomic,copy) NSString *viewTitle;
+@property (nonatomic,assign)id delegate;
+
+-(void)setUp;
+-(void)dismiss;
+
 @end
