@@ -9,6 +9,7 @@
 #import "ImageBrowser.h"
 #import "HHNetDataCacheManager.h"
 #import "GifView.h"
+#import "SHKActivityIndicator.h"
 
 @implementation ImageBrowser
 @synthesize image;
@@ -51,6 +52,15 @@
 
 -(void)dismiss
 {
+    
+    for (UIView *view in self.subviews) {
+        if (view.tag == GIF_VIEW_TAG) {
+            [view removeFromSuperview];
+        }
+    }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:delegate name:HHNetDataCacheNotification object:nil];
+    
     [self performSelector:@selector(showStatusBar) withObject:self afterDelay:0.4];
     [UIView beginAnimations:nil context:nil];		
     [UIView setAnimationDuration:0.5];
@@ -117,15 +127,15 @@
     return imageView;
 }
 
-- (void) getImageAck:(NSNotification*) hhack
-{
-    NSDictionary * dic=hhack.object;
-    NSString * url=[dic objectForKey:HHNetDataCacheURLKey];
-    if ([url isEqualToString:bigImageURL]) {
-        UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
-        [imageView setImage:img];
-
-    }
-}
+//- (void) getImageAck:(NSNotification*) hhack
+//{
+//    NSDictionary * dic=hhack.object;
+//    NSString * url=[dic objectForKey:HHNetDataCacheURLKey];
+//    if ([url isEqualToString:bigImageURL]) {
+//        UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
+//        [imageView setImage:img];
+//
+//    }
+//}
 
 @end

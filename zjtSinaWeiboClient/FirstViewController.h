@@ -25,6 +25,7 @@
     NSMutableDictionary *headDictionary;
     NSMutableDictionary *imageDictionary;
     ImageBrowser *browserView;
+    BOOL shouldShowIndicator;
 }
 @property (retain, nonatomic)   IBOutlet UITableView *table;
 @property (nonatomic, copy)     NSString *userID;

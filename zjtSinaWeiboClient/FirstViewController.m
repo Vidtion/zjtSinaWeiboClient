@@ -15,6 +15,7 @@
 #import "HHNetDataCacheManager.h"
 #import "ImageBrowser.h"
 #import "GifView.h"
+#import "SHKActivityIndicator.h"
 
 #define kTextViewPadding            16.0
 #define kLineBreakMode              UILineBreakModeWordWrap
@@ -55,6 +56,7 @@
         //init data
         shouldLoad = NO;
         shouldLoadAvatar = NO;
+        shouldShowIndicator = YES;
         manager = [WeiBoMessageManager getInstance];
         defaultNotifCenter = [NSNotificationCenter defaultCenter];
         headDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
@@ -90,7 +92,7 @@
     else
     {
         [manager getUserID];
-        [manager getHomeLine:-1 maxID:-1 count:100 page:-1 baseApp:-1 feature:-1];
+        [manager getHomeLine:-1 maxID:-1 count:50 page:-1 baseApp:-1 feature:-1];
     }
 }
 
@@ -103,14 +105,15 @@
         [manager getUserID];
         [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
     }
-    [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:) name:MMSinaGotUserID object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:) name:MMSinaGotHomeLine object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(getAvatar:) name:HHNetDataCacheNotification object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    shouldLoad = YES;
     [defaultNotifCenter removeObserver:self name:MMSinaGotUserID object:nil];
     [defaultNotifCenter removeObserver:self name:MMSinaGotHomeLine object:nil];
     [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
@@ -119,6 +122,9 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+    [[SHKActivityIndicator currentIndicator] setRotationWithOritation:UIDeviceOrientationPortrait animted:NO];
+    
     [self getImages];
 }
 
@@ -218,10 +224,26 @@
 
 -(void)didGetHomeLine:(NSNotification*)sender
 {
+    if ([sender.object count] == 1) {
+        NSDictionary *dic = [sender.object objectAtIndex:0];
+        NSString *error = [dic objectForKey:@"error"];
+        if (error && ![error isEqual:[NSNull null]]) {
+            if ([error isEqualToString:@"expired_token"]) 
+            {
+                [[SHKActivityIndicator currentIndicator] hide];
+                shouldLoad = YES;
+                OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
+                [self presentModalViewController:webV animated:NO];
+                [webV release];
+            }
+            return;
+        }
+    }
+    
     shouldLoadAvatar = YES;
     self.statuesArr = sender.object;
     [table reloadData];
-    
+    [[SHKActivityIndicator currentIndicator] hide];
     [self getImages];
 }
 
@@ -249,6 +271,11 @@
 {
     NSInteger  row = indexPath.row;
     StatusCell *cell = [StatusCell cellForTableView:table fromNib:self.statusCellNib];
+    
+    if (row > [statuesArr count]) {
+        NSLog(@"cellForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
+        return cell;
+    }
     
     Status *status = [statuesArr objectAtIndex:row];
     cell.contentTF.text = status.text;
@@ -302,6 +329,12 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  
 {
     NSInteger  row = indexPath.row;
+    
+    if (row > [statuesArr count]) {
+        NSLog(@"heightForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
+        return 1;
+    }
+    
     Status *status          = [statuesArr objectAtIndex:row];
     Status *retwitterStatus = status.retweetedStatus;
     NSString *url = status.retweetedStatus.thumbnailPic;
@@ -337,6 +370,9 @@
     NSString * url=[dic objectForKey:HHNetDataCacheURLKey];
     if ([url isEqualToString:browserView.bigImageURL]) 
     {
+        [[SHKActivityIndicator currentIndicator] hide];
+        shouldShowIndicator = NO;
+        
         UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
         [browserView.imageView setImage:img];
         
@@ -345,6 +381,7 @@
         {
             GifView *gifView = [[GifView alloc]initWithFrame:browserView.frame data:[dic objectForKey:HHNetDataCacheData]];
             gifView.userInteractionEnabled = NO;
+            gifView.tag = GIF_VIEW_TAG;
             [browserView addSubview:gifView];
             [gifView release];
         }
@@ -353,6 +390,13 @@
 
 -(void)cellImageDidTaped:(StatusCell *)theCell image:(UIImage *)image
 {
+    shouldShowIndicator = YES;
+    
+    if ([theCell.cellIndexPath row] > [statuesArr count]) {
+        NSLog(@"cellImageDidTaped error ,index = %d,count = %d",[theCell.cellIndexPath row],[statuesArr count]);
+        return ;
+    }
+    
     Status *sts = [statuesArr objectAtIndex:[theCell.cellIndexPath row]];
     BOOL isRetwitter = sts.retweetedStatus && sts.retweetedStatus.originalPic != nil;
     UIApplication *app = [UIApplication sharedApplication];
@@ -379,6 +423,12 @@
     browserView.frame = frame;
     [UIView commitAnimations]; 
     
+    if (shouldShowIndicator == YES) {
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+        [[SHKActivityIndicator currentIndicator] setRotationWithOritation:UIDeviceOrientationPortrait animted:NO];
+        [[SHKActivityIndicator currentIndicator] hideAfterDelay:20];
+    }
+    else shouldShowIndicator = YES;
 }
 
 @end

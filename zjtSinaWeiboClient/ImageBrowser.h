@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "CustomScrollView.h"
 
+#define GIF_VIEW_TAG 9999
+
 @interface ImageBrowser : UIView <UIScrollViewDelegate>
 {
     IBOutlet UIImageView        *imageView;

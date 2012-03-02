@@ -51,6 +51,9 @@
 		ABA94F58147FA7F70010C283 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA94F57147FA7F70010C283 /* second@2x.png */; };
 		ABA94F5B147FA7F70010C283 /* FirstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABA94F59147FA7F70010C283 /* FirstViewController.xib */; };
 		ABA94F5E147FA7F70010C283 /* SecondViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABA94F5C147FA7F70010C283 /* SecondViewController.xib */; };
+		ABAA629E15010BD100D86E3C /* SHKActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAA629D15010BD100D86E3C /* SHKActivityIndicator.m */; };
+		ABAA62A315010CD000D86E3C /* UIDevice+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAA62A215010CD000D86E3C /* UIDevice+Orientation.m */; };
+		ABAA62A615010CDA00D86E3C /* UILabel+Size.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAA62A515010CDA00D86E3C /* UILabel+Size.m */; };
 		ABE295B914F8C99C00FDABA3 /* ProfileVC.m in Sources */ = {isa = PBXBuildFile; fileRef = ABE295B714F8C99C00FDABA3 /* ProfileVC.m */; };
 		ABE295BA14F8C99C00FDABA3 /* ProfileVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABE295B814F8C99C00FDABA3 /* ProfileVC.xib */; };
 		ABF23F5814B5970100AEEB5C /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF23F5314B5970100AEEB5C /* NSDataAdditions.m */; };
@@ -159,6 +162,13 @@
 		ABA94F57147FA7F70010C283 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
 		ABA94F5A147FA7F70010C283 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FirstViewController.xib; sourceTree = "<group>"; };
 		ABA94F5D147FA7F70010C283 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SecondViewController.xib; sourceTree = "<group>"; };
+		ABAA629C15010BD100D86E3C /* SHKActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKActivityIndicator.h; sourceTree = "<group>"; };
+		ABAA629D15010BD100D86E3C /* SHKActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKActivityIndicator.m; sourceTree = "<group>"; };
+		ABAA62A015010C5900D86E3C /* SHKDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKDefine.h; sourceTree = "<group>"; };
+		ABAA62A115010CD000D86E3C /* UIDevice+Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Orientation.h"; sourceTree = "<group>"; };
+		ABAA62A215010CD000D86E3C /* UIDevice+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Orientation.m"; sourceTree = "<group>"; };
+		ABAA62A415010CDA00D86E3C /* UILabel+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Size.h"; sourceTree = "<group>"; };
+		ABAA62A515010CDA00D86E3C /* UILabel+Size.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Size.m"; sourceTree = "<group>"; };
 		ABE295B614F8C99C00FDABA3 /* ProfileVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileVC.h; sourceTree = "<group>"; };
 		ABE295B714F8C99C00FDABA3 /* ProfileVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileVC.m; sourceTree = "<group>"; };
 		ABE295B814F8C99C00FDABA3 /* ProfileVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileVC.xib; sourceTree = "<group>"; };
@@ -270,6 +280,13 @@
 		AB37A39A14F91D2C0077774E /* ImageBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				ABAA62A415010CDA00D86E3C /* UILabel+Size.h */,
+				ABAA62A515010CDA00D86E3C /* UILabel+Size.m */,
+				ABAA62A115010CD000D86E3C /* UIDevice+Orientation.h */,
+				ABAA62A215010CD000D86E3C /* UIDevice+Orientation.m */,
+				ABAA62A015010C5900D86E3C /* SHKDefine.h */,
+				ABAA629C15010BD100D86E3C /* SHKActivityIndicator.h */,
+				ABAA629D15010BD100D86E3C /* SHKActivityIndicator.m */,
 				45C3EE9B1500D42C004A282E /* GifView.h */,
 				45C3EE9C1500D42C004A282E /* GifView.m */,
 				AB37A39B14F921D80077774E /* ImageProcess.h */,
@@ -704,6 +721,9 @@
 				4571CD0C14FD049E00CBEF46 /* ZJTDetailStatusVC.m in Sources */,
 				450CE5A114FD09D50078052E /* ZJTCommentCell.m in Sources */,
 				45C3EE9D1500D42C004A282E /* GifView.m in Sources */,
+				ABAA629E15010BD100D86E3C /* SHKActivityIndicator.m in Sources */,
+				ABAA62A315010CD000D86E3C /* UIDevice+Orientation.m in Sources */,
+				ABAA62A615010CDA00D86E3C /* UILabel+Size.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

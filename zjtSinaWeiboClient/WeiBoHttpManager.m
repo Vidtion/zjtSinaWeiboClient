@@ -721,6 +721,15 @@
         SBJsonParser    *parser     = [[SBJsonParser alloc] init];    
         NSDictionary    *info       = [parser objectWithString:responseString];
         NSArray         *arr        = [info objectForKey:@"statuses"];
+        
+        if (arr == nil || [arr isEqual:[NSNull null]]) 
+        {
+            if ([delegate respondsToSelector:@selector(didGetHomeLine:)]) {
+                [delegate didGetHomeLine:[NSArray arrayWithObject:info]];
+                return;
+            }
+        }
+        
         NSMutableArray  *statuesArr = [[NSMutableArray alloc]initWithCapacity:0];
         for (id item in arr) {
             Status* sts = [Status statusWithJsonDictionary:item];
