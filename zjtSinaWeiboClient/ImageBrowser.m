@@ -8,6 +8,7 @@
 
 #import "ImageBrowser.h"
 #import "HHNetDataCacheManager.h"
+#import "GifView.h"
 
 @implementation ImageBrowser
 @synthesize image;
@@ -17,12 +18,14 @@
 @synthesize viewTitle;
 @synthesize delegate;
 
+
 - (void)dealloc
 {
     self.imageView = nil;
     self.image = nil;
     self.aScrollView = nil;
     self.viewTitle = nil;
+    
     [super dealloc];
 }
 
@@ -41,12 +44,18 @@
     return self;
 }
 
+-(void)showStatusBar
+{
+    [UIApplication sharedApplication].statusBarHidden = NO;
+}
+
 -(void)dismiss
 {
+    [self performSelector:@selector(showStatusBar) withObject:self afterDelay:0.4];
     [UIView beginAnimations:nil context:nil];		
-    [UIView setAnimationDuration:0.3];
-    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+    [UIView setAnimationDuration:0.5];
     [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.superview cache:YES];
     [self removeFromSuperview];
     [UIView commitAnimations]; 
 }
@@ -70,6 +79,9 @@
     aScrollView.minimumZoomScale = 1.0; //最小到1.0倍
     aScrollView.maximumZoomScale = 50.0; //最大到50倍
     aScrollView.delegate = self;
+    aScrollView.backgroundColor = [UIColor blackColor];
+    [imageView setContentMode:UIViewContentModeScaleAspectFit];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubelClicked) name:@"doubelClicked"  object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismiss)       name:@"tapClicked"     object:nil];
     UIBarButtonItem *rightButton=[[UIBarButtonItem alloc] initWithTitle:@"保存到相册" style:UIBarButtonItemStylePlain target:self action:@selector(saveImage)];
@@ -112,6 +124,7 @@
     if ([url isEqualToString:bigImageURL]) {
         UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
         [imageView setImage:img];
+
     }
 }
 

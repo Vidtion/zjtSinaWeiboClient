@@ -14,6 +14,7 @@
 #import "ASIHTTPRequest.h"
 #import "HHNetDataCacheManager.h"
 #import "ImageBrowser.h"
+#import "GifView.h"
 
 #define kTextViewPadding            16.0
 #define kLineBreakMode              UILineBreakModeWordWrap
@@ -89,7 +90,7 @@
     else
     {
         [manager getUserID];
-        [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+        [manager getHomeLine:-1 maxID:-1 count:100 page:-1 baseApp:-1 feature:-1];
     }
 }
 
@@ -311,7 +312,7 @@
     //有转发的博文
     if (retwitterStatus && ![retwitterStatus isEqual:[NSNull null]])
     {
-        height = [self cellHeight:status.text with:320.0f] + [self cellHeight:retwitterStatus.text with:300.0f] - 22.0f;
+        height = [self cellHeight:status.text with:320.0f] + [self cellHeight:[NSString stringWithFormat:@"%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text] with:300.0f] - 22.0f;
     }
     
     //无转发的博文
@@ -338,6 +339,15 @@
     {
         UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
         [browserView.imageView setImage:img];
+        
+        NSLog(@"big url = %@",browserView.bigImageURL);
+        if ([browserView.bigImageURL hasSuffix:@".gif"]) 
+        {
+            GifView *gifView = [[GifView alloc]initWithFrame:browserView.frame data:[dic objectForKey:HHNetDataCacheData]];
+            gifView.userInteractionEnabled = NO;
+            [browserView addSubview:gifView];
+            [gifView release];
+        }
     }
 }
 
@@ -345,7 +355,9 @@
 {
     Status *sts = [statuesArr objectAtIndex:[theCell.cellIndexPath row]];
     BOOL isRetwitter = sts.retweetedStatus && sts.retweetedStatus.originalPic != nil;
-    CGRect frame = CGRectMake(0, 0, 320, 450);
+    UIApplication *app = [UIApplication sharedApplication];
+    
+    CGRect frame = CGRectMake(0, 0, 320, 480);
     if (browserView == nil) {
         self.browserView = [[ImageBrowser alloc]initWithFrame:frame];
         [browserView release];
@@ -358,11 +370,12 @@
     
     //animation
     browserView.frame = CGRectMake(0, 0, 10, 10);
-    [self.view addSubview:browserView];
-//    self.tabBarController.tabBar.hidden = YES;
+    app.statusBarHidden = YES;
+    [app.keyWindow addSubview:browserView];
     [UIView beginAnimations:nil context:nil];		
-    [UIView setAnimationDuration:1.5];
-    [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+    [UIView setAnimationDuration:0.5];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:app.keyWindow cache:YES];
     browserView.frame = frame;
     [UIView commitAnimations]; 
     

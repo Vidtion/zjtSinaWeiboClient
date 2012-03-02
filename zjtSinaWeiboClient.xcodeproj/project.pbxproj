@@ -11,6 +11,8 @@
 		450CE5A214FD09D50078052E /* ZJTCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450CE5A014FD09D50078052E /* ZJTCommentCell.xib */; };
 		4571CD0C14FD049E00CBEF46 /* ZJTDetailStatusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4571CD0A14FD049D00CBEF46 /* ZJTDetailStatusVC.m */; };
 		4571CD0D14FD049E00CBEF46 /* ZJTDetailStatusVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4571CD0B14FD049D00CBEF46 /* ZJTDetailStatusVC.xib */; };
+		45C3EE9D1500D42C004A282E /* GifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C3EE9C1500D42C004A282E /* GifView.m */; };
+		45C3EEA81500DD7A004A282E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45C3EEA71500DD7A004A282E /* ImageIO.framework */; };
 		AB2D5BC81483B3A700987DE7 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2D5BC71483B3A700987DE7 /* libsqlite3.dylib */; };
 		AB2D5BCA1483B3D000987DE7 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2D5BC91483B3D000987DE7 /* libicucore.dylib */; };
 		AB2D5BCC1483B3E200987DE7 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2D5BCB1483B3E200987DE7 /* libz.dylib */; };
@@ -106,6 +108,9 @@
 		4571CD0914FD049D00CBEF46 /* ZJTDetailStatusVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTDetailStatusVC.h; sourceTree = "<group>"; };
 		4571CD0A14FD049D00CBEF46 /* ZJTDetailStatusVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJTDetailStatusVC.m; sourceTree = "<group>"; };
 		4571CD0B14FD049D00CBEF46 /* ZJTDetailStatusVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZJTDetailStatusVC.xib; sourceTree = "<group>"; };
+		45C3EE9B1500D42C004A282E /* GifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GifView.h; sourceTree = "<group>"; };
+		45C3EE9C1500D42C004A282E /* GifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GifView.m; sourceTree = "<group>"; };
+		45C3EEA71500DD7A004A282E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		AB2D5BC71483B3A700987DE7 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		AB2D5BC91483B3D000987DE7 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		AB2D5BCB1483B3E200987DE7 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -243,6 +248,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45C3EEA81500DD7A004A282E /* ImageIO.framework in Frameworks */,
 				AB2D5BD81483B43100987DE7 /* QuartzCore.framework in Frameworks */,
 				AB2D5BD61483B42500987DE7 /* MessageUI.framework in Frameworks */,
 				AB2D5BD41483B41700987DE7 /* SystemConfiguration.framework in Frameworks */,
@@ -264,6 +270,8 @@
 		AB37A39A14F91D2C0077774E /* ImageBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				45C3EE9B1500D42C004A282E /* GifView.h */,
+				45C3EE9C1500D42C004A282E /* GifView.m */,
 				AB37A39B14F921D80077774E /* ImageProcess.h */,
 				AB37A39C14F921D80077774E /* ImageProcess.m */,
 				AB37A39114F91D280077774E /* CustomScrollView.h */,
@@ -291,6 +299,7 @@
 		ABA94F2A147FA7F70010C283 = {
 			isa = PBXGroup;
 			children = (
+				45C3EEA71500DD7A004A282E /* ImageIO.framework */,
 				ABA94F3F147FA7F70010C283 /* zjtSinaWeiboClient */,
 				ABA94F38147FA7F70010C283 /* Frameworks */,
 				ABA94F36147FA7F70010C283 /* Products */,
@@ -694,6 +703,7 @@
 				AB37A39D14F921D80077774E /* ImageProcess.m in Sources */,
 				4571CD0C14FD049E00CBEF46 /* ZJTDetailStatusVC.m in Sources */,
 				450CE5A114FD09D50078052E /* ZJTCommentCell.m in Sources */,
+				45C3EE9D1500D42C004A282E /* GifView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
