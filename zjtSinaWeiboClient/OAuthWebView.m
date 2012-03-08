@@ -60,8 +60,9 @@
     NSLog(@"jtone \n\ntoken=%@\nrefreshToken=%@\nexpTime=%@\nuid=%@\nremindIn=%@\n\n",token,refreshToken,expTime,uid,remindIn);
     if (expTime != nil) {
         int expVal = [expTime intValue]-3600;
-        if (expVal == 0) {
-            expirationDate = [NSDate distantFuture];
+        if (expVal == 0) 
+        {
+            
         } else {
             expirationDate = [NSDate dateWithTimeIntervalSinceNow:expVal];
             [[NSUserDefaults standardUserDefaults]setObject:expirationDate forKey:USER_STORE_EXPIRATION_DATE];

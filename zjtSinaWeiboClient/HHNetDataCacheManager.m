@@ -13,8 +13,11 @@ static HHNetDataCacheManager * instance;
 @implementation HHNetDataCacheManager
 
 -(id) init{
-    cacheDic=[[NSMutableDictionary alloc] init];
-    cacheArray=[[NSMutableArray alloc] init];
+    self = [super init];
+    if (self) {
+        cacheDic=[[NSMutableDictionary alloc] init];
+        cacheArray=[[NSMutableArray alloc] init]; 
+    }
     return self;
 }
 
@@ -31,6 +34,12 @@ static HHNetDataCacheManager * instance;
     NSDictionary * post=[[NSDictionary alloc] initWithObjectsAndKeys:url,HHNetDataCacheURLKey,data,HHNetDataCacheData, index,HHNetDataCacheIndex,nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:HHNetDataCacheNotification object:post];
     [post release];
+}
+
+-(void)dealloc
+{
+    [cacheArray release];
+    [super dealloc];
 }
 
 -(void) getDataWithURL:(NSString *) url withIndex:(NSInteger)index

@@ -37,31 +37,29 @@
 				if (end.location != NSNotFound) {
 					r.location = start.location + start.length;
 					r.length = end.location - r.location;
-					sourceUrl = [src substringWithRange:r];
+					self.sourceUrl = [src substringWithRange:r];
 				}
 				else {
-					sourceUrl = @"";
+					self.sourceUrl = @"";
 				}
 			}
 			else {
-				sourceUrl = @"";
+				self.sourceUrl = @"";
 			}			
 			start = [src rangeOfString:@"\">"];
 			end   = [src rangeOfString:@"</a>"];
 			if (start.location != NSNotFound && end.location != NSNotFound) {
 				r.location = start.location + start.length;
 				r.length = end.location - r.location;
-				source = [src substringWithRange:r];
+				self.source = [src substringWithRange:r];
 			}
 			else {
-				source = @"";
+				self.source = @"";
 			}
 		}
 		else {
-			source = src;
+			self.source = src;
 		}
-		source = [source retain];
-		sourceUrl = [sourceUrl retain];
 		
 		favorited = [dic getBoolValueForKey:@"favorited" defaultValue:NO];
 		truncated = [dic getBoolValueForKey:@"truncated" defaultValue:NO];

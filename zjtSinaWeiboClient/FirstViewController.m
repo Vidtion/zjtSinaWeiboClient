@@ -50,8 +50,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = NSLocalizedString(@"First", @"First");
-        self.tabBarItem.image = [UIImage imageNamed:@"first"];
+        self.title = @"ZJT微博";// NSLocalizedString(@"First", @"First");
+//        self.tabBarItem.image = [UIImage imageNamed:@"first"];
         
         //init data
         shouldLoad = NO;
@@ -108,6 +108,7 @@
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -117,6 +118,7 @@
     [defaultNotifCenter removeObserver:self name:MMSinaGotUserID object:nil];
     [defaultNotifCenter removeObserver:self name:MMSinaGotHomeLine object:nil];
     [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
+    [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo object:nil];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -220,6 +222,13 @@
 {
     self.userID = sender.object;
     [[NSUserDefaults standardUserDefaults] setObject:userID forKey:USER_STORE_USER_ID];
+    [manager getUserInfoWithUserID:[userID longLongValue]];
+}
+
+-(void)didGetUserInfo:(NSNotification*)sender
+{
+    User *user = sender.object;
+    self.title = user.screenName;
 }
 
 -(void)didGetHomeLine:(NSNotification*)sender
@@ -403,8 +412,7 @@
     
     CGRect frame = CGRectMake(0, 0, 320, 480);
     if (browserView == nil) {
-        self.browserView = [[ImageBrowser alloc]initWithFrame:frame];
-        [browserView release];
+        self.browserView = [[[ImageBrowser alloc]initWithFrame:frame] autorelease];
     }
     
     browserView.image = image;

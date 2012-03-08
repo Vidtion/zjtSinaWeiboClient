@@ -548,6 +548,7 @@
     //{"error":"auth faild!","error_code":21301,"request":"/2/statuses/home_timeline.json"}
     SBJsonParser    *parser     = [[SBJsonParser alloc] init];    
     id  returnObject = [parser objectWithString:responseString];
+    [parser release];
     if ([returnObject isKindOfClass:[NSDictionary class]]) {
         NSString *errorString = [returnObject  objectForKey:@"error"];
         if (errorString != nil && [errorString isEqualToString:@"auth faild!"]) {
@@ -578,12 +579,15 @@
     if (requestType == SinaGetUserID) {
         SBJsonParser *parser = [[SBJsonParser alloc] init];    
         NSDictionary *info = [parser objectWithString:responseString];
-        NSString *userID = [info objectForKey:@"uid"];
-        self.userId = userID;
+        NSNumber *userID = [info objectForKey:@"uid"];
+        if ([userID isKindOfClass:[NSNumber class]]) {
+            NSLog(@"userID is number");
+        }
+        self.userId = [NSString stringWithFormat:@"%@",userID];
         [[NSUserDefaults standardUserDefaults] setObject:userID forKey:USER_STORE_USER_ID];
         [parser release];
         if ([delegate respondsToSelector:@selector(didGetUserID:)]) {
-            [delegate didGetUserID:userID];
+            [delegate didGetUserID:userId];
         }
     }
     
@@ -619,6 +623,7 @@
         for (id item in arr) {
             User *user = [[User alloc]initWithJsonDictionary:item];
             [userArr addObject:user];
+            [user release];
         }
         [parser release];
         if ([delegate respondsToSelector:@selector(didGetBilateralUserList:)]) {
@@ -721,6 +726,7 @@
         SBJsonParser    *parser     = [[SBJsonParser alloc] init];    
         NSDictionary    *info       = [parser objectWithString:responseString];
         NSArray         *arr        = [info objectForKey:@"statuses"];
+        [parser release];
         
         if (arr == nil || [arr isEqual:[NSNull null]]) 
         {
@@ -735,7 +741,6 @@
             Status* sts = [Status statusWithJsonDictionary:item];
             [statuesArr addObject:sts];
         }
-        [parser release];
         if ([delegate respondsToSelector:@selector(didGetHomeLine:)]) {
             [delegate didGetHomeLine:statuesArr];
         }

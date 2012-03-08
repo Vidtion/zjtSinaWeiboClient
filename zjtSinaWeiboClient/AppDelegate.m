@@ -29,12 +29,12 @@
     
     UIViewController *viewController1 = [[[FirstViewController alloc] initWithNibName:@"FirstViewController" bundle:nil] autorelease];
     UINavigationController *nav1 = [[[UINavigationController alloc]initWithRootViewController:viewController1] autorelease];
-    UIViewController *viewController2 = [[[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil] autorelease];
-    UINavigationController *nav2 = [[[UINavigationController alloc] initWithRootViewController:viewController2] autorelease];
-    self.tabBarController = [[[UITabBarController alloc] init] autorelease];
+//    UIViewController *viewController2 = [[[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil] autorelease];
+//    UINavigationController *nav2 = [[[UINavigationController alloc] initWithRootViewController:viewController2] autorelease];
+//    self.tabBarController = [[[UITabBarController alloc] init] autorelease];
     
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects:nav1, nav2, nil];
-    self.window.rootViewController = self.tabBarController;
+//    self.tabBarController.viewControllers = [NSArray arrayWithObjects:nav1, nav2, nil];
+    self.window.rootViewController = nav1;//self.tabBarController;
     [self.window makeKeyAndVisible];
 
     return YES;
