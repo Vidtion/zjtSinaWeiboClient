@@ -16,6 +16,7 @@
 #import "ImageBrowser.h"
 #import "GifView.h"
 #import "SHKActivityIndicator.h"
+#import "ZJTHelpler.h"
 
 #define kTextViewPadding            16.0
 #define kLineBreakMode              UILineBreakModeWordWrap
@@ -419,17 +420,14 @@
     browserView.delegate = self;
     browserView.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
     [browserView setUp];
-    
-    //animation
-    browserView.frame = CGRectMake(0, 0, 10, 10);
+
     app.statusBarHidden = YES;
     [app.keyWindow addSubview:browserView];
-    [UIView beginAnimations:nil context:nil];		
-    [UIView setAnimationDuration:0.5];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:app.keyWindow cache:YES];
-    browserView.frame = frame;
-    [UIView commitAnimations]; 
+    browserView.frame = frame;    
+    
+    //animation
+    CAAnimation *anim = [ZJTHelpler animationWithOpacityFrom:0.0f To:1.0f Duration:0.3f BeginTime:0.0f];
+    [browserView.layer addAnimation:anim forKey:@"jtone"];
     
     if (shouldShowIndicator == YES) {
         [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];

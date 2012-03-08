@@ -580,9 +580,6 @@
         SBJsonParser *parser = [[SBJsonParser alloc] init];    
         NSDictionary *info = [parser objectWithString:responseString];
         NSNumber *userID = [info objectForKey:@"uid"];
-        if ([userID isKindOfClass:[NSNumber class]]) {
-            NSLog(@"userID is number");
-        }
         self.userId = [NSString stringWithFormat:@"%@",userID];
         [[NSUserDefaults standardUserDefaults] setObject:userID forKey:USER_STORE_USER_ID];
         [parser release];

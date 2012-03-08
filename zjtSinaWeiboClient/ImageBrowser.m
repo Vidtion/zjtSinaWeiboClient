@@ -10,6 +10,7 @@
 #import "HHNetDataCacheManager.h"
 #import "GifView.h"
 #import "SHKActivityIndicator.h"
+#import "ZJTHelpler.h"
 
 @implementation ImageBrowser
 @synthesize image;
@@ -45,6 +46,11 @@
     return self;
 }
 
+-(void)removeFromSuperview
+{
+    [super removeFromSuperview];
+}
+
 -(void)showStatusBar
 {
     [UIApplication sharedApplication].statusBarHidden = NO;
@@ -52,7 +58,6 @@
 
 -(void)dismiss
 {
-    
     for (UIView *view in self.subviews) {
         if (view.tag == GIF_VIEW_TAG) {
             [view removeFromSuperview];
@@ -61,13 +66,11 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:delegate name:HHNetDataCacheNotification object:nil];
     
-    [self performSelector:@selector(showStatusBar) withObject:self afterDelay:0.4];
-    [UIView beginAnimations:nil context:nil];		
-    [UIView setAnimationDuration:0.5];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.superview cache:YES];
-    [self removeFromSuperview];
-    [UIView commitAnimations]; 
+    CAAnimation *anim = [ZJTHelpler animationWithOpacityFrom:1.0f To:0.0f Duration:0.3f BeginTime:0.0f];
+    [self.layer addAnimation:anim forKey:@"jtone"];
+    
+    [self performSelector:@selector(showStatusBar) withObject:self afterDelay:0.0];
+    [self performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.3];
 }
 
 -(void)saveImage

@@ -39,6 +39,7 @@
 @property (nonatomic, retain) UILabel *centerMessageLabel;
 @property (nonatomic, retain) UILabel *subMessageLabel;
 @property (nonatomic, retain) UIActivityIndicatorView *spinner;
+@property (nonatomic, retain) UIView  *modalBackView;
 
 + (SHKActivityIndicator *)currentIndicator;
 

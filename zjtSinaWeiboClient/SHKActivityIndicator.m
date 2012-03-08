@@ -35,6 +35,8 @@
 
 @synthesize centerMessageLabel, subMessageLabel;
 @synthesize spinner;
+@synthesize modalBackView;
+
 
 static SHKActivityIndicator *currentIndicator = nil;
 //static UIView  *modalBackView = nil;

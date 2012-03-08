@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		450CE5A114FD09D50078052E /* ZJTCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 450CE59F14FD09D50078052E /* ZJTCommentCell.m */; };
 		450CE5A214FD09D50078052E /* ZJTCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450CE5A014FD09D50078052E /* ZJTCommentCell.xib */; };
+		4547F20B1508A8CE0082FD13 /* ZJTHelpler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4547F20A1508A8CE0082FD13 /* ZJTHelpler.m */; };
 		4571CD0C14FD049E00CBEF46 /* ZJTDetailStatusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4571CD0A14FD049D00CBEF46 /* ZJTDetailStatusVC.m */; };
 		4571CD0D14FD049E00CBEF46 /* ZJTDetailStatusVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4571CD0B14FD049D00CBEF46 /* ZJTDetailStatusVC.xib */; };
 		45C3EE9D1500D42C004A282E /* GifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C3EE9C1500D42C004A282E /* GifView.m */; };
@@ -108,6 +109,8 @@
 		450CE59E14FD09D50078052E /* ZJTCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTCommentCell.h; sourceTree = "<group>"; };
 		450CE59F14FD09D50078052E /* ZJTCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJTCommentCell.m; sourceTree = "<group>"; };
 		450CE5A014FD09D50078052E /* ZJTCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZJTCommentCell.xib; sourceTree = "<group>"; };
+		4547F2091508A8CE0082FD13 /* ZJTHelpler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTHelpler.h; sourceTree = "<group>"; };
+		4547F20A1508A8CE0082FD13 /* ZJTHelpler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJTHelpler.m; sourceTree = "<group>"; };
 		4571CD0914FD049D00CBEF46 /* ZJTDetailStatusVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTDetailStatusVC.h; sourceTree = "<group>"; };
 		4571CD0A14FD049D00CBEF46 /* ZJTDetailStatusVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJTDetailStatusVC.m; sourceTree = "<group>"; };
 		4571CD0B14FD049D00CBEF46 /* ZJTDetailStatusVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZJTDetailStatusVC.xib; sourceTree = "<group>"; };
@@ -277,6 +280,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4547F2071508A8790082FD13 /* ZJTTools */ = {
+			isa = PBXGroup;
+			children = (
+				4547F2091508A8CE0082FD13 /* ZJTHelpler.h */,
+				4547F20A1508A8CE0082FD13 /* ZJTHelpler.m */,
+			);
+			name = ZJTTools;
+			sourceTree = "<group>";
+		};
 		AB37A39A14F91D2C0077774E /* ImageBrowser */ = {
 			isa = PBXGroup;
 			children = (
@@ -353,6 +365,7 @@
 		ABA94F3F147FA7F70010C283 /* zjtSinaWeiboClient */ = {
 			isa = PBXGroup;
 			children = (
+				4547F2071508A8790082FD13 /* ZJTTools */,
 				ABFDE1FF14B5A21F00B57C9F /* Resource */,
 				ABF23F5014B596C400AEEB5C /* WeiboEngine */,
 				ABF23FA814B5995C00AEEB5C /* NetWork */,
@@ -724,6 +737,7 @@
 				ABAA629E15010BD100D86E3C /* SHKActivityIndicator.m in Sources */,
 				ABAA62A315010CD000D86E3C /* UIDevice+Orientation.m in Sources */,
 				ABAA62A615010CDA00D86E3C /* UILabel+Size.m in Sources */,
+				4547F20B1508A8CE0082FD13 /* ZJTHelpler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
