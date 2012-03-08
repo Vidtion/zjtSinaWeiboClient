@@ -8,6 +8,7 @@
 
 #import "OAuthWebView.h"
 #import "WeiBoHttpManager.h"
+#import "SHKActivityIndicator.h"
 
 @implementation OAuthWebView
 @synthesize webV;
@@ -108,6 +109,17 @@
 		return NO;
 	}
 	return YES;
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+    [[SHKActivityIndicator currentIndicator] setRotationWithOritation:UIDeviceOrientationPortrait animted:NO];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [[SHKActivityIndicator currentIndicator] hide];
 }
 
 @end
