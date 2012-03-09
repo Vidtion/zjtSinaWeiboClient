@@ -13,7 +13,9 @@
 @synthesize inReplyToUserId, inReplyToScreenName, thumbnailPic, bmiddlePic, originalPic, user;
 @synthesize commentsCount, retweetsCount, retweetedStatus, unread, hasReply;
 @synthesize statusKey;
-
+@synthesize hasRetwitter;
+@synthesize haveRetwitterImage;
+@synthesize hasImage;
 
 
 - (Status*)initWithJsonDictionary:(NSDictionary*)dic {
@@ -87,8 +89,24 @@
 		
 		NSDictionary* retweetedStatusDic = [dic objectForKey:@"retweeted_status"];
 		if (retweetedStatusDic) {
-			retweetedStatus = [[Status statusWithJsonDictionary:retweetedStatusDic] retain];
+			self.retweetedStatus = [Status statusWithJsonDictionary:retweetedStatusDic];
+            
+            //有转发的博文
+            if (retweetedStatus && ![retweetedStatus isEqual:[NSNull null]])
+            {
+                hasRetwitter = YES;
+                
+                NSString *url = retweetedStatus.thumbnailPic;
+                haveRetwitterImage = (url != nil && [url length] != 0 ? YES : NO);
+            }
 		}
+        //无转发
+        else 
+        {
+            hasRetwitter = NO;
+            NSString *url = thumbnailPic;
+            hasImage = (url != nil && [url length] != 0 ? YES : NO);
+        }
 	}
 	return self;
 }

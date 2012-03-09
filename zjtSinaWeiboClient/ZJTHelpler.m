@@ -59,4 +59,14 @@
     return theAnimation;
 }
 
+
+
++ (CGFloat)getTextViewHeight:(NSString*)contentText with:(CGFloat)with sizeOfFont:(CGFloat)fontSize addtion:(CGFloat)add
+{
+    UIFont * font=[UIFont  systemFontOfSize:fontSize];
+    CGSize size=[contentText sizeWithFont:font constrainedToSize:CGSizeMake(with - kTextViewPadding, 300000.0f) lineBreakMode:kLineBreakMode];
+    CGFloat height = size.height + add;
+    return height;
+}
+
 @end

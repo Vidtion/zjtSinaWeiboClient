@@ -16,7 +16,7 @@
 #import "ImageBrowser.h"
 #import "GifView.h"
 #import "SHKActivityIndicator.h"
-#import "ZJTHelpler.h"
+#import "ZJTDetailStatusVC.h"
 
 #define kTextViewPadding            16.0
 #define kLineBreakMode              UILineBreakModeWordWrap
@@ -138,7 +138,6 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    shouldLoad = YES;
     [defaultNotifCenter removeObserver:self name:MMSinaGotUserID            object:nil];
     [defaultNotifCenter removeObserver:self name:MMSinaGotHomeLine          object:nil];
     [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
@@ -149,10 +148,10 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
-    [[SHKActivityIndicator currentIndicator] setRotationWithOritation:UIDeviceOrientationPortrait animted:NO];
+//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+//    [[SHKActivityIndicator currentIndicator] setRotationWithOritation:UIDeviceOrientationPortrait animted:NO];
     
-    [self getImages];
+//    [self getImages];
 }
 
 - (void)viewDidUnload 
@@ -403,6 +402,30 @@
         height = height + 80;
     }
     return height + 10;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger  row = indexPath.row;
+    if (row > [statuesArr count]) {
+        NSLog(@"didSelectRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
+        return ;
+    }
+    
+    ZJTDetailStatusVC *detailVC = [[ZJTDetailStatusVC alloc] initWithNibName:@"ZJTDetailStatusVC" bundle:nil];
+    Status *status  = [statuesArr objectAtIndex:row];
+    detailVC.status = status;
+    
+    NSData *data = [headDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
+    detailVC.avatarImage = [UIImage imageWithData:data];
+    
+    NSData *imageData = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
+    if (![imageData isEqual:[NSNull null]]) 
+    {
+        detailVC.contentImage = [UIImage imageWithData:imageData];
+    }
+    
+    [self.navigationController pushViewController:detailVC animated:YES];
 }
 
 #pragma mark - StatusCellDelegate

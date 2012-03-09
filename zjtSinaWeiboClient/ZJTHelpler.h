@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 
+#define kTextViewPadding            16.0
+#define kLineBreakMode              UILineBreakModeWordWrap
+
 @interface ZJTHelpler : NSObject
 {
     
@@ -22,5 +25,9 @@
 
 //透明度变化动画
 + (CAAnimation *)animationWithOpacityFrom:(CGFloat) from To:(CGFloat) to Duration:(CGFloat) duration BeginTime:(CGFloat)beginTime;
+
+
++(CGFloat)getTextViewHeight:(NSString*)contentText with:(CGFloat)with sizeOfFont:(CGFloat)fontSize addtion:(CGFloat)add;
+
 
 @end
