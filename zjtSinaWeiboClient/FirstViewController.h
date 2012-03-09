@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "StatusCell.h"
+#import "PullRefreshTableViewController.h"
+#import "EGORefreshTableHeaderView.h"
 
 @class WeiBoMessageManager;
 @class ImageBrowser;
 
-@interface FirstViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,StatusCellDelegate>{
+@interface FirstViewController : PullRefreshTableViewController<EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource,StatusCellDelegate>{
     BOOL shouldLoad;
     BOOL shouldLoadAvatar;
     WeiBoMessageManager *manager;
@@ -26,7 +28,14 @@
     NSMutableDictionary *imageDictionary;
     ImageBrowser *browserView;
     BOOL shouldShowIndicator;
+    
+	EGORefreshTableHeaderView *_refreshHeaderView;
+	
+	//  Reloading var should really be your tableviews datasource
+	//  Putting it here for demo purposes 
+	BOOL _reloading;
 }
+
 @property (retain, nonatomic)   IBOutlet UITableView *table;
 @property (nonatomic, copy)     NSString *userID;
 @property (nonatomic, retain)   UINib *statusCellNib;

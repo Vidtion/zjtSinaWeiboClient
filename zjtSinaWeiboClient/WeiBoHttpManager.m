@@ -534,7 +534,7 @@
 #pragma mark - ASINetworkQueueDelegate
 //失败
 - (void)requestFailed:(ASIHTTPRequest *)request{
-    NSLog(@"requestFailed");
+    NSLog(@"requestFailed:%@,%@,",request.responseString,[request.error localizedDescription]);
 }
 
 //成功

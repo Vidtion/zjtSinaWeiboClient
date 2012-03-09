@@ -28,6 +28,7 @@
 @property (nonatomic,assign)id delegate;
 
 -(void)setUp;
+-(void)loadImage;
 -(void)dismiss;
 
 @end

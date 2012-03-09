@@ -22,7 +22,8 @@
 #define kLineBreakMode              UILineBreakModeWordWrap
 
 @interface FirstViewController() 
--(void)getImages;
+- (void)getImages;
+- (void)doneLoadingTableViewData;
 @end
 
 @implementation FirstViewController
@@ -42,7 +43,7 @@
     self.statuesArr = nil;
     self.userID = nil;
     self.browserView = nil;
-    
+    _refreshHeaderView=nil;
     [table release];
     [super dealloc];
 }
@@ -53,6 +54,10 @@
     if (self) {
         self.title = @"ZJT微博";// NSLocalizedString(@"First", @"First");
 //        self.tabBarItem.image = [UIImage imageNamed:@"first"];
+        
+        CGRect frame = self.table.frame;
+        frame.size.height = frame.size.height + REFRESH_FOOTER_HEIGHT;
+        self.table.frame = frame;
         
         //init data
         shouldLoad = NO;
@@ -74,11 +79,30 @@
     }
     return statusCellNib;
 }
+
+-(void)setUpRefreshView
+{
+    if (_refreshHeaderView == nil) {
+		
+		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
+		view.delegate = self;
+		[self.tableView addSubview:view];
+		_refreshHeaderView = view;
+		[view release];
+		
+	}
+	
+	//  update the last update date
+	[_refreshHeaderView refreshLastUpdatedDate];
+}
 							
 #pragma mark - View lifecycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self setUpRefreshView];
+    self.tableView.contentInset = UIEdgeInsetsOriginal;
     
     //如果未授权，则调入授权页面。
     NSString *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
@@ -93,7 +117,7 @@
     else
     {
         [manager getUserID];
-        [manager getHomeLine:-1 maxID:-1 count:50 page:-1 baseApp:-1 feature:-1];
+        [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
     }
 }
 
@@ -106,20 +130,20 @@
         [manager getUserID];
         [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
     }
-    [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID            object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine          object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
     shouldLoad = YES;
-    [defaultNotifCenter removeObserver:self name:MMSinaGotUserID object:nil];
-    [defaultNotifCenter removeObserver:self name:MMSinaGotHomeLine object:nil];
+    [defaultNotifCenter removeObserver:self name:MMSinaGotUserID            object:nil];
+    [defaultNotifCenter removeObserver:self name:MMSinaGotHomeLine          object:nil];
     [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
-    [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo object:nil];
+    [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo          object:nil];
+    [super viewWillDisappear:animated];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -134,6 +158,7 @@
 - (void)viewDidUnload 
 {
     [self setTable:nil];
+    _refreshHeaderView=nil;
     [super viewDidUnload];
 }
 
@@ -177,8 +202,8 @@
 -(void)getAvatar:(NSNotification*)sender
 {
     NSDictionary * dic = sender.object;
-    NSString * url=[dic objectForKey:HHNetDataCacheURLKey];
-    NSNumber *indexNumber = [dic objectForKey:HHNetDataCacheIndex];
+    NSString * url          = [dic objectForKey:HHNetDataCacheURLKey];
+    NSNumber *indexNumber   = [dic objectForKey:HHNetDataCacheIndex];
     NSInteger index = [indexNumber intValue];
     
     if (index > [statuesArr count]) {
@@ -250,11 +275,19 @@
         }
     }
     
+    [self stopLoading];
+    [self doneLoadingTableViewData];
+    
     shouldLoadAvatar = YES;
     self.statuesArr = sender.object;
     [table reloadData];
     [[SHKActivityIndicator currentIndicator] hide];
     [self getImages];
+}
+
+-(void)refresh
+{
+    [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
 }
 
 //计算text field 的高度。
@@ -414,20 +447,20 @@
     CGRect frame = CGRectMake(0, 0, 320, 480);
     if (browserView == nil) {
         self.browserView = [[[ImageBrowser alloc]initWithFrame:frame] autorelease];
+        [browserView setUp];
     }
     
     browserView.image = image;
     browserView.delegate = self;
     browserView.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
-    [browserView setUp];
+    [browserView loadImage];
 
     app.statusBarHidden = YES;
     [app.keyWindow addSubview:browserView];
-    browserView.frame = frame;    
     
     //animation
-    CAAnimation *anim = [ZJTHelpler animationWithOpacityFrom:0.0f To:1.0f Duration:0.3f BeginTime:0.0f];
-    [browserView.layer addAnimation:anim forKey:@"jtone"];
+//    CAAnimation *anim = [ZJTHelpler animationWithOpacityFrom:0.0f To:1.0f Duration:0.3f BeginTime:0.0f];
+//    [browserView.layer addAnimation:anim forKey:@"jtone"];
     
     if (shouldShowIndicator == YES) {
         [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
@@ -436,5 +469,70 @@
     }
     else shouldShowIndicator = YES;
 }
+
+#pragma mark -
+#pragma mark  - Data Source Loading / Reloading Methods
+
+- (void)reloadTableViewDataSource{
+	
+	//  should be calling your tableviews data source model to reload
+	//  put here just for demo
+	_reloading = YES;
+	
+}
+
+//调用此方法来停止。
+- (void)doneLoadingTableViewData{
+	
+	//  model should call this when its done loading
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+	
+}
+
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{	
+    
+    if (scrollView.contentOffset.y < 200) {
+        [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    }
+    else
+        [super scrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
+    if (scrollView.contentOffset.y < 200)
+    {
+        [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    }
+    else
+        [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+}
+
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+    _reloading = YES;
+	[manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	
+	return _reloading; // should return if data source model is reloading
+	
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	
+	return [NSDate date]; // should return date data source was last changed
+	
+}
+
 
 @end

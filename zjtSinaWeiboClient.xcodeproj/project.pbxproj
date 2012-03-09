@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4506A7C51509D9D800C47A93 /* PullRefreshTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4506A7C41509D9D800C47A93 /* PullRefreshTableViewController.m */; };
+		4506A7C91509D9F500C47A93 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 4506A7C71509D9F400C47A93 /* blueArrow.png */; };
+		4506A7CA1509D9F500C47A93 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4506A7C81509D9F400C47A93 /* blueArrow@2x.png */; };
+		4506A7D51509DCC300C47A93 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4506A7D41509DCC200C47A93 /* EGORefreshTableHeaderView.m */; };
 		450CE5A114FD09D50078052E /* ZJTCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 450CE59F14FD09D50078052E /* ZJTCommentCell.m */; };
 		450CE5A214FD09D50078052E /* ZJTCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450CE5A014FD09D50078052E /* ZJTCommentCell.xib */; };
 		4547F20B1508A8CE0082FD13 /* ZJTHelpler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4547F20A1508A8CE0082FD13 /* ZJTHelpler.m */; };
@@ -106,6 +110,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4506A7C31509D9D800C47A93 /* PullRefreshTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullRefreshTableViewController.h; sourceTree = "<group>"; };
+		4506A7C41509D9D800C47A93 /* PullRefreshTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullRefreshTableViewController.m; sourceTree = "<group>"; };
+		4506A7C71509D9F400C47A93 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
+		4506A7C81509D9F400C47A93 /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueArrow@2x.png"; sourceTree = "<group>"; };
+		4506A7D31509DCC200C47A93 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		4506A7D41509DCC200C47A93 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
 		450CE59E14FD09D50078052E /* ZJTCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTCommentCell.h; sourceTree = "<group>"; };
 		450CE59F14FD09D50078052E /* ZJTCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJTCommentCell.m; sourceTree = "<group>"; };
 		450CE5A014FD09D50078052E /* ZJTCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZJTCommentCell.xib; sourceTree = "<group>"; };
@@ -280,6 +290,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4506A7C11509D9A600C47A93 /* PullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				4506A7D31509DCC200C47A93 /* EGORefreshTableHeaderView.h */,
+				4506A7D41509DCC200C47A93 /* EGORefreshTableHeaderView.m */,
+				4506A7C31509D9D800C47A93 /* PullRefreshTableViewController.h */,
+				4506A7C41509D9D800C47A93 /* PullRefreshTableViewController.m */,
+			);
+			name = PullToRefresh;
+			sourceTree = "<group>";
+		};
+		4506A7C61509D9E000C47A93 /* pullToRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				4506A7C71509D9F400C47A93 /* blueArrow.png */,
+				4506A7C81509D9F400C47A93 /* blueArrow@2x.png */,
+			);
+			name = pullToRefresh;
+			sourceTree = "<group>";
+		};
 		4547F2071508A8790082FD13 /* ZJTTools */ = {
 			isa = PBXGroup;
 			children = (
@@ -530,6 +560,7 @@
 		ABF23FBC14B59F3B00AEEB5C /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				4506A7C11509D9A600C47A93 /* PullToRefresh */,
 				ABE295B514F8C98000FDABA3 /* VCs */,
 				ABF23FBD14B59F6F00AEEB5C /* TableCells */,
 			);
@@ -562,6 +593,7 @@
 		ABFDE20014B5A21F00B57C9F /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				4506A7C61509D9E000C47A93 /* pullToRefresh */,
 				AB968C3314FE849500A17AFE /* timelineBG */,
 				ABFDE20114B5A25100B57C9F /* WeiboImages */,
 				AB5554FD14B6F63200B27BCE /* table_header_bg.png */,
@@ -684,6 +716,8 @@
 				AB968C3E14FE84AD00A17AFE /* timeline_rt_border_m@2x.png in Resources */,
 				AB968C3F14FE84AD00A17AFE /* timeline_rt_border_t.png in Resources */,
 				AB968C4014FE84AD00A17AFE /* timeline_rt_border_t@2x.png in Resources */,
+				4506A7C91509D9F500C47A93 /* blueArrow.png in Resources */,
+				4506A7CA1509D9F500C47A93 /* blueArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -738,6 +772,8 @@
 				ABAA62A315010CD000D86E3C /* UIDevice+Orientation.m in Sources */,
 				ABAA62A615010CDA00D86E3C /* UILabel+Size.m in Sources */,
 				4547F20B1508A8CE0082FD13 /* ZJTHelpler.m in Sources */,
+				4506A7C51509D9D800C47A93 /* PullRefreshTableViewController.m in Sources */,
+				4506A7D51509DCC300C47A93 /* EGORefreshTableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

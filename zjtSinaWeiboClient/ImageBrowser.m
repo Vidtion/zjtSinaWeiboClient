@@ -46,31 +46,36 @@
     return self;
 }
 
--(void)removeFromSuperview
-{
-    [super removeFromSuperview];
-}
+//-(void)removeFromSuperview
+//{
+//    [super removeFromSuperview];
+//}
 
--(void)showStatusBar
-{
-    [UIApplication sharedApplication].statusBarHidden = NO;
-}
+//-(void)showStatusBar
+//{
+//    [UIApplication sharedApplication].statusBarHidden = NO;
+//}
 
 -(void)dismiss
 {
-    for (UIView *view in self.subviews) {
+    NSLog(@"dismiss");
+    for (UIView *view in self.subviews) 
+    {
         if (view.tag == GIF_VIEW_TAG) {
             [view removeFromSuperview];
         }
     }
     
-    [[NSNotificationCenter defaultCenter] removeObserver:delegate name:HHNetDataCacheNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:delegate   name:HHNetDataCacheNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self       name:@"tapClicked"              object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self       name:@"doubelClicked"           object:nil];
+//    CAAnimation *anim = [ZJTHelpler animationWithOpacityFrom:1.0f To:0.0f Duration:0.3f BeginTime:0.0f];
+//    [self.layer addAnimation:anim forKey:@"jtone"];
     
-    CAAnimation *anim = [ZJTHelpler animationWithOpacityFrom:1.0f To:0.0f Duration:0.3f BeginTime:0.0f];
-    [self.layer addAnimation:anim forKey:@"jtone"];
-    
-    [self performSelector:@selector(showStatusBar) withObject:self afterDelay:0.0];
-    [self performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.3];
+//    [self performSelector:@selector(showStatusBar) withObject:nil afterDelay:0.0];
+//    [self performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.0];
+    [UIApplication sharedApplication].statusBarHidden = NO;
+    [self removeFromSuperview];
 }
 
 -(void)saveImage
@@ -87,6 +92,19 @@
 
 
 #pragma mark - View lifecycle
+-(void)loadImage
+{
+    [[NSNotificationCenter defaultCenter] addObserver:delegate  selector:@selector(getOriginImage:) name:HHNetDataCacheNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self      selector:@selector(doubelClicked)   name:@"doubelClicked"           object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self      selector:@selector(dismiss)         name:@"tapClicked"              object:nil];
+    
+    [imageView setImage:image];
+    if (bigImageURL!=nil) 
+    {
+        [[HHNetDataCacheManager getInstance] getDataWithURL:bigImageURL];
+    }
+}
+
 -(void)setUp
 {
     aScrollView.minimumZoomScale = 1.0; //最小到1.0倍
@@ -95,16 +113,8 @@
     aScrollView.backgroundColor = [UIColor blackColor];
     [imageView setContentMode:UIViewContentModeScaleAspectFit];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(doubelClicked) name:@"doubelClicked"  object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismiss)       name:@"tapClicked"     object:nil];
-    UIBarButtonItem *rightButton=[[UIBarButtonItem alloc] initWithTitle:@"保存到相册" style:UIBarButtonItemStylePlain target:self action:@selector(saveImage)];
-    [rightButton release];
-    
-    [imageView setImage:image];
-    [[NSNotificationCenter defaultCenter] addObserver:delegate selector:@selector(getOriginImage:) name:HHNetDataCacheNotification object:nil];
-    if (bigImageURL!=nil) {
-        [[HHNetDataCacheManager getInstance] getDataWithURL:bigImageURL];
-    }
+//    UIBarButtonItem *rightButton=[[UIBarButtonItem alloc] initWithTitle:@"保存到相册" style:UIBarButtonItemStylePlain target:self action:@selector(saveImage)];
+//    [rightButton release];
 }
 
 -(void)doubelClicked{
