@@ -13,6 +13,8 @@
 
 #define IMAGE_VIEW_HEIGHT 80.0f
 
+@class WeiBoMessageManager;
+
 @interface ZJTDetailStatusVC : PullRefreshTableViewController<UITableViewDelegate,UITableViewDataSource>
 {
     UIView      *headerView;
@@ -29,12 +31,15 @@
     
     UINib       *commentCellNib;
     
+    WeiBoMessageManager *manager;
+    
     //data
     Status  *status;
     User    *user;
     
-    UIImage *avatarImage;
-    UIImage *contentImage;
+    UIImage         *avatarImage;
+    UIImage         *contentImage;
+    NSMutableArray  *commentArr;
     
     BOOL _hasRetwitter;
     BOOL _haveRetwitterImage;
@@ -57,5 +62,6 @@
 @property (retain, nonatomic) User      *user;
 @property (retain, nonatomic) UIImage   *avatarImage;
 @property (retain, nonatomic) UIImage   *contentImage;
+@property (retain, nonatomic) NSMutableArray  *commentArr;
 
 @end

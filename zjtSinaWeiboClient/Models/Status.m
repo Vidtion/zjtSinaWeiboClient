@@ -82,6 +82,9 @@
 		bmiddlePic = [[dic getStringValueForKey:@"bmiddle_pic" defaultValue:@""] retain];
 		originalPic = [[dic getStringValueForKey:@"original_pic" defaultValue:@""] retain];
 		
+        commentsCount = [dic getIntValueForKey:@"comments_count" defaultValue:-1];
+        retweetsCount = [dic getIntValueForKey:@"reposts_count" defaultValue:-1];
+        
 		NSDictionary* userDic = [dic objectForKey:@"user"];
 		if (userDic) {
 			user = [[User userWithJsonDictionary:userDic] retain];

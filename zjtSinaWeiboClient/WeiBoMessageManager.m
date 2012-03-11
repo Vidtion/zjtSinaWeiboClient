@@ -73,6 +73,13 @@ static WeiBoMessageManager * instance=nil;
     [httpManager getUserInfoWithUserID:uid];
 }
 
+//根据微博消息ID返回某条微博消息的评论列表
+-(void)getCommentListWithID:(long long)weiboID
+{
+    [httpManager getCommentListWithID:weiboID];
+}
+
+
 //获取用户双向关注的用户ID列表，即互粉UID列表 
 -(void)getBilateralIdListAll:(long long)uid sort:(int)sort
 {
@@ -179,6 +186,13 @@ static WeiBoMessageManager * instance=nil;
 {
     NSLog(@"userInfo = %@",user.screenName);
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotUserInfo object:user];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+//根据微博消息ID返回某条微博消息的评论列表
+-(void)didGetCommentList:(NSDictionary *)commentInfo
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotCommentList object:commentInfo];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 

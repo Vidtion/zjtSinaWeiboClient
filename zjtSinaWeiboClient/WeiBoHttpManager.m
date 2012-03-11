@@ -11,6 +11,7 @@
 #import "ASIFormDataRequest.h"
 #import "Status.h"
 #import "JSON.h"
+#import "Comment.h"
 
 @implementation WeiBoHttpManager
 @synthesize requestQueue;
@@ -207,6 +208,26 @@
     ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
     NSLog(@"url=%@",url);
     [self setGetUserInfo:request withRequestType:SinaGetUserInfo];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
+-(void)getCommentListWithID:(long long)weiboID
+{
+    //https://api.weibo.com/2/comments/show.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    self.userId = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
+    
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,                                       @"access_token",
+                                       [NSString stringWithFormat:@"%lld",weiboID],     @"id",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/comments/show.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetComment];
     [requestQueue addOperation:request];
     [request release];
 }
@@ -598,6 +619,29 @@
             [delegate didGetUserInfo:user];
         }
         [user release];
+    }
+    
+    //根据微博消息ID返回某条微博消息的评论列表
+    if (requestType == SinaGetComment) {
+        SBJsonParser    *parser     = [[SBJsonParser alloc] init];    
+        NSDictionary    *info       = [parser objectWithString:responseString];
+        NSArray         *arr        = [info objectForKey:@"comments"];
+        NSNumber        *count      = [info objectForKey:@"total_number"];
+        if (arr == nil) {
+            return;
+        }
+        
+        NSMutableArray  *commentArr = [[NSMutableArray alloc]initWithCapacity:0];
+        for (id item in arr) {
+            Comment *comm = [Comment commentWithJsonDictionary:item];
+            [commentArr addObject:comm];
+        }
+        [parser release];
+        
+        if ([delegate respondsToSelector:@selector(didGetCommentList:)]) {
+            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:commentArr,@"commentArrary",count,@"count", nil];
+            [delegate didGetCommentList:dic];
+        }
     }
     
     //获取用户双向关注的用户ID列表，即互粉UID列表

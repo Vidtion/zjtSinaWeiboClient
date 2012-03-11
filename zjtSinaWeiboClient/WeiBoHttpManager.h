@@ -44,6 +44,7 @@ typedef enum {
     SinaPostText,                   //发布文字微博
     SinaPostTextAndImage,           //发布文字图片微博
     SinaGetHomeLine,                //获取当前登录用户及其所关注用户的最新微博
+    SinaGetComment,                 //根据微博消息ID返回某条微博消息的评论列表
 }RequestType;
 
 @class ASINetworkQueue;
@@ -63,6 +64,9 @@ typedef enum {
 
 //获取任意一个用户的信息
 -(void)didGetUserInfo:(User*)user;
+
+//根据微博消息ID返回某条微博消息的评论列表
+-(void)didGetCommentList:(NSDictionary *)commentInfo;
 
 //获取用户双向关注的用户ID列表，即互粉UID列表
 -(void)didGetBilateralIdList:(NSArray*)arr;
@@ -129,6 +133,9 @@ typedef enum {
 
 //获取任意一个用户的信息
 -(void)getUserInfoWithUserID:(long long)uid;
+
+//根据微博消息ID返回某条微博消息的评论列表
+-(void)getCommentListWithID:(long long)weiboID;
 
 //获取用户双向关注的用户ID列表，即互粉UID列表 
 -(void)getBilateralIdListAll:(long long)uid sort:(int)sort;

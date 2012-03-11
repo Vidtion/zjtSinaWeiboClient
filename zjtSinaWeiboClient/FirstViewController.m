@@ -282,6 +282,10 @@
     [table reloadData];
     [[SHKActivityIndicator currentIndicator] hide];
     [self getImages];
+    
+    //test
+    Status *status = [statuesArr objectAtIndex:0];
+    [manager getCommentListWithID:status.statusId];
 }
 
 -(void)refresh
@@ -314,7 +318,7 @@
     NSInteger  row = indexPath.row;
     StatusCell *cell = [StatusCell cellForTableView:table fromNib:self.statusCellNib];
     
-    if (row > [statuesArr count]) {
+    if (row >= [statuesArr count]) {
         NSLog(@"cellForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
         return cell;
     }
@@ -372,7 +376,7 @@
 {
     NSInteger  row = indexPath.row;
     
-    if (row > [statuesArr count]) {
+    if (row >= [statuesArr count]) {
         NSLog(@"heightForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
         return 1;
     }
@@ -407,7 +411,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger  row = indexPath.row;
-    if (row > [statuesArr count]) {
+    if (row >= [statuesArr count]) {
         NSLog(@"didSelectRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
         return ;
     }

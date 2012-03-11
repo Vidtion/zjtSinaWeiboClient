@@ -9,6 +9,8 @@
 #import "ZJTDetailStatusVC.h"
 #import "ZJTCommentCell.h"
 #import "ZJTHelpler.h"
+#import "WeiBoMessageManager.h"
+#import "Comment.h"
 
 @interface ZJTDetailStatusVC ()
 -(void)setViewsHeight;
@@ -32,7 +34,7 @@
 @synthesize user;
 @synthesize avatarImage;
 @synthesize contentImage;
-
+@synthesize commentArr;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,6 +57,8 @@
 {
     [super viewDidLoad];
     
+    manager = [WeiBoMessageManager getInstance];
+    
     self.user = status.user;
     _hasRetwitter   = status.hasRetwitter;
     _hasImage       = status.hasImage;
@@ -65,7 +69,7 @@
     twitterNameLB.text = user.screenName;
     contentTF.text = status.text;
     timeLB.text = status.timestamp;
-    countLB.text = [NSString stringWithFormat:@"%d",status.commentsCount];
+    countLB.text = [NSString stringWithFormat:@"评论:%d转发:%d",status.commentsCount,status.retweetsCount];
     
     avatarImageV.image = avatarImage;
     
@@ -82,6 +86,24 @@
     contentImageV.hidden = !_hasImage;
     retwitterImageV.hidden = !_haveRetwitterImage;
     retwitterMainV.hidden = !_hasRetwitter;
+    
+    [manager getCommentListWithID:status.statusId];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    
+    [center addObserver:self selector:@selector(didGetComments:) name:MMSinaGotCommentList object:nil];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    
+    [center removeObserver:self name:MMSinaGotCommentList object:nil];
 }
 
 - (void)viewDidUnload
@@ -127,7 +149,7 @@
     self.user = nil;
     self.avatarImage = nil;
     self.contentImage = nil;
-    
+    self.commentArr = nil;
     [super dealloc];
 }
 
@@ -197,17 +219,51 @@
 //    retwitterBgImage.image = [[UIImage imageNamed:@"timeline_rt_border_t.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:7];
 }
 
+#pragma mark HTTP Response
+-(void)didGetComments:(NSNotification*)sender
+{
+    if ([sender.object isKindOfClass:[NSDictionary class]])
+    {
+        NSDictionary *dic = sender.object;
+        
+        self.commentArr = [dic objectForKey:@"commentArrary"];
+        if (commentArr != nil && ![commentArr isEqual:[NSNull null]]) 
+        {
+            NSNumber *count = [dic objectForKey:@"count"];
+            countLB.text = [NSString stringWithFormat:@"评论:%d转发:%d",[count intValue],status.retweetsCount];
+        }
+        [table reloadData];
+    }
+}
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    if (commentArr == nil || [commentArr isEqual:[NSNull null]]) {
+        return 0;
+    }
+    return [commentArr count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    NSInteger  row = indexPath.row;
+    NSInteger  row = indexPath.row;
     ZJTCommentCell *cell = [ZJTCommentCell cellForTableView:table fromNib:self.commentCellNib];
-    cell.nameLB.text = @"name test";
+    
+    if (commentArr == nil || [commentArr isEqual:[NSNull null]]) {
+        return cell;
+    }
+    else if (row >= [commentArr count] || [commentArr count] == 0)
+    {
+        NSLog(@"cellForRowAtIndexPath error ,index = %d,count = %d",row,[commentArr count]);
+        return cell;
+    }
+    
+    Comment *comment = [commentArr objectAtIndex:row];
+    
+    cell.nameLB.text = comment.user.screenName;
+    cell.contentLB.text = comment.text;
+    cell.timeLB.text = comment.timestamp;
     return cell;
 }
 
