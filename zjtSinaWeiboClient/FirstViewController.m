@@ -17,6 +17,7 @@
 #import "GifView.h"
 #import "SHKActivityIndicator.h"
 #import "ZJTDetailStatusVC.h"
+#import "TwitterVC.h"
 
 #define kTextViewPadding            16.0
 #define kLineBreakMode              UILineBreakModeWordWrap
@@ -24,6 +25,7 @@
 @interface FirstViewController() 
 - (void)getImages;
 - (void)doneLoadingTableViewData;
+- (void)twitter;
 @end
 
 @implementation FirstViewController
@@ -95,6 +97,13 @@
 	//  update the last update date
 	[_refreshHeaderView refreshLastUpdatedDate];
 }
+
+- (void)twitter
+{
+    TwitterVC *tv = [[TwitterVC alloc]initWithNibName:@"TwitterVC" bundle:nil];
+    [self.navigationController pushViewController:tv animated:YES];
+    [tv release];
+}
 							
 #pragma mark - View lifecycle
 - (void)viewDidLoad
@@ -103,6 +112,10 @@
     
     [self setUpRefreshView];
     self.tableView.contentInset = UIEdgeInsetsOriginal;
+    
+    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发微博" style:UIBarButtonItemStyleDone target:self action:@selector(twitter)];
+    self.navigationItem.rightBarButtonItem = retwitterBtn;
+    [retwitterBtn release];
     
     //如果未授权，则调入授权页面。
     NSString *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];

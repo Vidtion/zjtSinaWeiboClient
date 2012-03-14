@@ -13,6 +13,8 @@
 		4506A7D51509DCC300C47A93 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4506A7D41509DCC200C47A93 /* EGORefreshTableHeaderView.m */; };
 		450CE5A114FD09D50078052E /* ZJTCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 450CE59F14FD09D50078052E /* ZJTCommentCell.m */; };
 		450CE5A214FD09D50078052E /* ZJTCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450CE5A014FD09D50078052E /* ZJTCommentCell.xib */; };
+		452065761510872500CF3A01 /* TwitterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 452065741510872500CF3A01 /* TwitterVC.m */; };
+		452065771510872500CF3A01 /* TwitterVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 452065751510872500CF3A01 /* TwitterVC.xib */; };
 		4547F20B1508A8CE0082FD13 /* ZJTHelpler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4547F20A1508A8CE0082FD13 /* ZJTHelpler.m */; };
 		4571CD0C14FD049E00CBEF46 /* ZJTDetailStatusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4571CD0A14FD049D00CBEF46 /* ZJTDetailStatusVC.m */; };
 		4571CD0D14FD049E00CBEF46 /* ZJTDetailStatusVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4571CD0B14FD049D00CBEF46 /* ZJTDetailStatusVC.xib */; };
@@ -119,6 +121,9 @@
 		450CE59E14FD09D50078052E /* ZJTCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTCommentCell.h; sourceTree = "<group>"; };
 		450CE59F14FD09D50078052E /* ZJTCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJTCommentCell.m; sourceTree = "<group>"; };
 		450CE5A014FD09D50078052E /* ZJTCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZJTCommentCell.xib; sourceTree = "<group>"; };
+		452065731510872400CF3A01 /* TwitterVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterVC.h; sourceTree = "<group>"; };
+		452065741510872500CF3A01 /* TwitterVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TwitterVC.m; sourceTree = "<group>"; };
+		452065751510872500CF3A01 /* TwitterVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TwitterVC.xib; sourceTree = "<group>"; };
 		4547F2091508A8CE0082FD13 /* ZJTHelpler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTHelpler.h; sourceTree = "<group>"; };
 		4547F20A1508A8CE0082FD13 /* ZJTHelpler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJTHelpler.m; sourceTree = "<group>"; };
 		4571CD0914FD049D00CBEF46 /* ZJTDetailStatusVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTDetailStatusVC.h; sourceTree = "<group>"; };
@@ -439,6 +444,9 @@
 				4571CD0914FD049D00CBEF46 /* ZJTDetailStatusVC.h */,
 				4571CD0A14FD049D00CBEF46 /* ZJTDetailStatusVC.m */,
 				4571CD0B14FD049D00CBEF46 /* ZJTDetailStatusVC.xib */,
+				452065731510872400CF3A01 /* TwitterVC.h */,
+				452065741510872500CF3A01 /* TwitterVC.m */,
+				452065751510872500CF3A01 /* TwitterVC.xib */,
 			);
 			name = VCs;
 			sourceTree = "<group>";
@@ -718,6 +726,7 @@
 				AB968C4014FE84AD00A17AFE /* timeline_rt_border_t@2x.png in Resources */,
 				4506A7C91509D9F500C47A93 /* blueArrow.png in Resources */,
 				4506A7CA1509D9F500C47A93 /* blueArrow@2x.png in Resources */,
+				452065771510872500CF3A01 /* TwitterVC.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -774,6 +783,7 @@
 				4547F20B1508A8CE0082FD13 /* ZJTHelpler.m in Sources */,
 				4506A7C51509D9D800C47A93 /* PullRefreshTableViewController.m in Sources */,
 				4506A7D51509DCC300C47A93 /* EGORefreshTableHeaderView.m in Sources */,
+				452065761510872500CF3A01 /* TwitterVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
