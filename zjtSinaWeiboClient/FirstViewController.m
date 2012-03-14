@@ -113,7 +113,7 @@
     [self setUpRefreshView];
     self.tableView.contentInset = UIEdgeInsetsOriginal;
     
-    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发微博" style:UIBarButtonItemStyleDone target:self action:@selector(twitter)];
+    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发微博" style:UIBarButtonItemStylePlain target:self action:@selector(twitter)];
     self.navigationItem.rightBarButtonItem = retwitterBtn;
     [retwitterBtn release];
     

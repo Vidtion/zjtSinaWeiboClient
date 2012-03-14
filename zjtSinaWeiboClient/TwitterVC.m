@@ -78,7 +78,7 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"插入图" style:UIBarButtonItemStyleDone target:self action:@selector(addImageAlert)];
+    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"插入图" style:UIBarButtonItemStylePlain target:self action:@selector(addImageAlert)];
     self.navigationItem.rightBarButtonItem = retwitterBtn;
     [retwitterBtn release];
 }
