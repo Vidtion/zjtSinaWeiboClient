@@ -151,15 +151,21 @@ static WeiBoMessageManager * instance=nil;
 }
 
 //发布文字图片微博
--(void)postWithText:(NSString *)text imageName:(NSString*)imageName
+-(void)postWithText:(NSString *)text image:(UIImage*)image
 {
-    [httpManager postWithText:text imageName:imageName];
+    [httpManager postWithText:text image:image];
 }
 
 //获取当前登录用户及其所关注用户的最新微博
 -(void)getHomeLine:(int64_t)sinceID maxID:(int64_t)maxID count:(int)count page:(int)page baseApp:(int)baseApp feature:(int)feature
 {
     [httpManager getHomeLine:sinceID maxID:maxID count:count page:page baseApp:baseApp feature:feature];
+}
+
+//获取某个用户最新发表的微博列表
+-(void)getUserStatusUserID:(NSString *) uid sinceID:(int64_t)sinceID maxID:(int64_t)maxID count:(int)count page:(int)page baseApp:(int)baseApp feature:(int)feature
+{
+    [httpManager getUserStatusUserID:uid sinceID:sinceID maxID:maxID count:count page:page baseApp:baseApp feature:feature];
 }
 
 
@@ -270,6 +276,13 @@ static WeiBoMessageManager * instance=nil;
 -(void)didGetHomeLine:(NSArray *)statusArr
 {
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotHomeLine object:statusArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+//获取某个用户最新发表的微博列表
+-(void)didGetUserStatus:(NSArray*)statusArr
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotUserStatus object:statusArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 

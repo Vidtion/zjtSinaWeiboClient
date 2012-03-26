@@ -11,6 +11,7 @@
 #import "ZJTHelpler.h"
 #import "WeiBoMessageManager.h"
 #import "Comment.h"
+#import "ProfileVC.h"
 
 @interface ZJTDetailStatusVC ()
 -(void)setViewsHeight;
@@ -218,6 +219,15 @@
 //    bgImage.image = [[UIImage imageNamed:@"table_header_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
 //    retwitterBgImage.image = [[UIImage imageNamed:@"timeline_rt_border_t.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:7];
 }
+
+- (IBAction)gotoProfileView:(id)sender 
+{
+    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+    profile.userID = [NSString stringWithFormat:@"%lld",self.user.userId];
+    [self.navigationController pushViewController:profile animated:YES];
+    [profile release];
+}
+
 
 #pragma mark HTTP Response
 -(void)didGetComments:(NSNotification*)sender

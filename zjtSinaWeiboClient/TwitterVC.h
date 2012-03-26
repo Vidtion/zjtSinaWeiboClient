@@ -8,10 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@class WeiBoMessageManager;
+
 @interface TwitterVC : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     UIImageView *imageV;
+    WeiBoMessageManager *manager;
 }
 @property (retain, nonatomic) IBOutlet UIImageView *imageV;
+@property (retain, nonatomic) IBOutlet UIScrollView *theScrollView;
+@property (retain, nonatomic) IBOutlet UIImageView *theImageView;
 
+@property (retain, nonatomic) IBOutlet UITextView *theTextView;
 @end

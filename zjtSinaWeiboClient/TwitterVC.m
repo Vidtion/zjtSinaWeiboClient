@@ -7,6 +7,7 @@
 //
 
 #import "TwitterVC.h"
+#import "WeiBoMessageManager.h"
 
 @interface TwitterVC ()
 
@@ -15,6 +16,9 @@
 @implementation TwitterVC
 
 @synthesize imageV;
+@synthesize theScrollView;
+@synthesize theImageView;
+@synthesize theTextView;
 
 #pragma mark - Tool Methods
 - (void)addPhoto
@@ -32,8 +36,8 @@
 {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) 
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil//@"该设备不支持拍照功能" 
-                                                        message:@"该设备不支持拍照功能"//nil 
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil 
+                                                        message:@"该设备不支持拍照功能" 
                                                        delegate:nil 
                                               cancelButtonTitle:nil 
                                               otherButtonTitles:@"好", nil];
@@ -51,11 +55,26 @@
     }
 }
 
--(void)addImageAlert
+-(IBAction)addImageAlert
 {
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"插入图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"系统相册",@"拍摄", nil];
     [alert show];
     [alert release];
+}
+
+- (void)send:(id)sender 
+{
+    NSString *content = theTextView.text;
+    UIImage *image = theImageView.image;
+    if (content != nil && [content length] != 0) {
+        if (image == nil) {
+            [manager postWithText:content];
+        }
+        else {
+            [manager postWithText:content image:image];
+        }
+    }
+    
 }
 
 #pragma mark - Lifecycle
@@ -65,12 +84,16 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        manager = [WeiBoMessageManager getInstance];
     }
     return self;
 }
 
 - (void)dealloc {
     [imageV release];
+    [theScrollView release];
+    [theImageView release];
+    [theTextView release];
     [super dealloc];
 }
 
@@ -78,14 +101,25 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"插入图" style:UIBarButtonItemStylePlain target:self action:@selector(addImageAlert)];
+    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(send:)];
     self.navigationItem.rightBarButtonItem = retwitterBtn;
     [retwitterBtn release];
+    
+    theScrollView.contentSize = CGSizeMake(320, 410);
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [theTextView becomeFirstResponder];
 }
 
 - (void)viewDidUnload
 {
     [self setImageV:nil];
+    [self setTheScrollView:nil];
+    [self setTheImageView:nil];
+    [self setTheTextView:nil];
     [super viewDidUnload];
 }
 

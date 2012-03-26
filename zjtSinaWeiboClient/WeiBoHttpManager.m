@@ -460,19 +460,16 @@
 }
 
 //发布文字图片微博
--(void)postWithText:(NSString *)text imageName:(NSString*)imageName
+-(void)postWithText:(NSString *)text image:(UIImage*)image
 {
     //https://api.weibo.com/2/statuses/upload.json
     NSURL *url = [NSURL URLWithString:@"https://api.weibo.com/2/statuses/upload.json"];
     ASIFormDataRequest *item = [[ASIFormDataRequest alloc] initWithURL:url];
     self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
     
-    NSString *path = [[NSBundle mainBundle] bundlePath];
-    NSString *finalPath = [path stringByAppendingPathComponent:imageName];
-    
     [item setPostValue:authToken    forKey:@"access_token"];
     [item setPostValue:text         forKey:@"status"];
-    [item setFile:finalPath         forKey:@"pic"];
+    [item addData:UIImagePNGRepresentation(image) forKey:@"pic"];
     
     [self setPostUserInfo:item withRequestType:SinaPostTextAndImage];
     [requestQueue addOperation:item];
@@ -523,6 +520,51 @@
     [request release];
 }
 
+//获取某个用户最新发表的微博列表
+-(void)getUserStatusUserID:(NSString *) uid sinceID:(int64_t)sinceID maxID:(int64_t)maxID count:(int)count page:(int)page baseApp:(int)baseApp feature:(int)feature
+{
+    //https://api.weibo.com/2/statuses/user_timeline.json
+    
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    self.userId = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
+    
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:authToken,@"access_token",nil];
+    [params setObject:uid forKey:@"uid"];
+    NSLog(@"uid = %@",uid);
+    if (sinceID >= 0) {
+        NSString *tempString = [NSString stringWithFormat:@"%lld",sinceID];
+        [params setObject:tempString forKey:@"since_id"];
+    }
+    if (maxID >= 0) {
+        NSString *tempString = [NSString stringWithFormat:@"%lld",maxID];
+        [params setObject:tempString forKey:@"max_id"];
+    }
+    if (count >= 0) {
+        NSString *tempString = [NSString stringWithFormat:@"%d",count];
+        [params setObject:tempString forKey:@"count"];
+    }
+    if (page >= 0) {
+        NSString *tempString = [NSString stringWithFormat:@"%d",page];
+        [params setObject:tempString forKey:@"page"];
+    }
+    if (baseApp >= 0) {
+        NSString *tempString = [NSString stringWithFormat:@"%d",baseApp];
+        [params setObject:tempString forKey:@"baseApp"];
+    }
+    if (feature >= 0) {
+        NSString *tempString = [NSString stringWithFormat:@"%d",feature];
+        [params setObject:tempString forKey:@"feature"];
+    }
+    
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/statuses/user_timeline.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetUserStatus];
+    [requestQueue addOperation:request];
+    [request release];
+}
 #pragma mark - Http Result
 
 #pragma mark - Operate queue
@@ -784,6 +826,32 @@
         }
         if ([delegate respondsToSelector:@selector(didGetHomeLine:)]) {
             [delegate didGetHomeLine:statuesArr];
+        }
+        [statuesArr release];
+    }
+    
+    //获取某个用户最新发表的微博列表
+    if (requestType == SinaGetUserStatus) {
+        SBJsonParser    *parser     = [[SBJsonParser alloc] init];    
+        NSDictionary    *info       = [parser objectWithString:responseString];
+        NSArray         *arr        = [info objectForKey:@"statuses"];
+        [parser release];
+        
+        if (arr == nil || [arr isEqual:[NSNull null]]) 
+        {
+            if ([delegate respondsToSelector:@selector(didGetUserStatus:)]) {
+                [delegate didGetUserStatus:[NSArray arrayWithObject:info]];
+                return;
+            }
+        }
+        
+        NSMutableArray  *statuesArr = [[NSMutableArray alloc]initWithCapacity:0];
+        for (id item in arr) {
+            Status* sts = [Status statusWithJsonDictionary:item];
+            [statuesArr addObject:sts];
+        }
+        if ([delegate respondsToSelector:@selector(didGetUserStatus:)]) {
+            [delegate didGetUserStatus:statuesArr];
         }
         [statuesArr release];
     }

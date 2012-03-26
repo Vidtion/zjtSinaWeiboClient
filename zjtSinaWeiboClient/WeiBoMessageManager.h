@@ -61,6 +61,10 @@
 //返回成员为Status的NSArray
 #define MMSinaGotHomeLine @"MMSinaGotHomeLine"
 
+//获取某个用户最新发表的微博列表
+//返回成员为Status的NSArray
+#define MMSinaGotUserStatus @"MMSinaGotUserStatus"
+
 @interface WeiBoMessageManager : NSObject <WeiBoHttpDelegate>
 {
     WeiBoHttpManager *httpManager;
@@ -121,9 +125,12 @@
 -(void)postWithText:(NSString*)text;
 
 //发布文字图片微博
--(void)postWithText:(NSString *)text imageName:(NSString*)imageName;
+-(void)postWithText:(NSString *)text image:(UIImage*)image;
 
 //获取当前登录用户及其所关注用户的最新微博
 -(void)getHomeLine:(int64_t)sinceID maxID:(int64_t)maxID count:(int)count page:(int)page baseApp:(int)baseApp feature:(int)feature;
+
+//获取某个用户最新发表的微博列表
+-(void)getUserStatusUserID:(NSString *) uid sinceID:(int64_t)sinceID maxID:(int64_t)maxID count:(int)count page:(int)page baseApp:(int)baseApp feature:(int)feature;
 
 @end

@@ -45,6 +45,7 @@ typedef enum {
     SinaPostTextAndImage,           //发布文字图片微博
     SinaGetHomeLine,                //获取当前登录用户及其所关注用户的最新微博
     SinaGetComment,                 //根据微博消息ID返回某条微博消息的评论列表
+    SinaGetUserStatus,              //获取某个用户最新发表的微博列表
 }RequestType;
 
 @class ASINetworkQueue;
@@ -94,6 +95,9 @@ typedef enum {
 
 //获取当前登录用户及其所关注用户的最新微博
 -(void)didGetHomeLine:(NSArray*)statusArr;
+
+//获取某个用户最新发表的微博列表
+-(void)didGetUserStatus:(NSArray*)statusArr;
 
 @end
 
@@ -170,9 +174,12 @@ typedef enum {
 -(void)postWithText:(NSString*)text;
 
 //发布文字图片微博
--(void)postWithText:(NSString *)text imageName:(NSString*)imageName;
+-(void)postWithText:(NSString *)text image:(UIImage*)image;
 
 //获取当前登录用户及其所关注用户的最新微博
 -(void)getHomeLine:(int64_t)sinceID maxID:(int64_t)maxID count:(int)count page:(int)page baseApp:(int)baseApp feature:(int)feature;
+
+//获取某个用户最新发表的微博列表
+-(void)getUserStatusUserID:(NSString *) uid sinceID:(int64_t)sinceID maxID:(int64_t)maxID count:(int)count page:(int)page baseApp:(int)baseApp feature:(int)feature;
 
 @end

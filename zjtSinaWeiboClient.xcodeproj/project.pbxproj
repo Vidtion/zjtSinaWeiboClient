@@ -661,7 +661,7 @@
 		ABA94F2C147FA7F70010C283 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 			};
 			buildConfigurationList = ABA94F2F147FA7F70010C283 /* Build configuration list for PBXProject "zjtSinaWeiboClient" */;
 			compatibilityVersion = "Xcode 3.2";

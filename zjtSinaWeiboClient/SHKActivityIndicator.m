@@ -214,7 +214,7 @@ static SHKActivityIndicator *currentIndicator = nil;
 	else
 		[self persist];
     
-	[self hideAfterDelay];
+	[self hideAfterDelay:1];
 }
 
 - (void)setCenterMessage:(NSString *)message
