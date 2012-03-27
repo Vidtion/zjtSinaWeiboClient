@@ -45,7 +45,7 @@ static SHKActivityIndicator *currentIndicator = nil;
 {
 	if (currentIndicator == nil)
 	{
-        currentIndicator = [[SHKActivityIndicator alloc] initWithFrame:CGRectMake(0, 0, 600, 600)];
+        currentIndicator = [[SHKActivityIndicator alloc] initWithFrame:CGRectMake(160, 240, 120, 120)];
         
         UIWindow *window = [UIApplication sharedApplication].keyWindow;
         currentIndicator.center = CGPointMake(CGRectGetMidX(window.bounds), CGRectGetMidY(window.bounds)); 
@@ -75,6 +75,7 @@ static SHKActivityIndicator *currentIndicator = nil;
         modalBackView.layer.borderColor = [UIColor whiteColor].CGColor;
         modalBackView.layer.cornerRadius = 10;
 		modalBackView.alpha = 0.65;
+        modalBackView.userInteractionEnabled = NO;
 		[self addSubview:modalBackView];
         
         //    self.frame = CGRectMake(0, 0, 480, 320);
@@ -145,6 +146,23 @@ static SHKActivityIndicator *currentIndicator = nil;
 	[UIView commitAnimations];
 }
 
+- (void)showInView:(UIView*)view
+{	
+	if ([self superview] != [[UIApplication sharedApplication] keyWindow]) 
+    {
+		[view addSubview:self];
+	}
+    
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hide) object:nil];
+	
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.3];
+	
+	self.alpha = 1;
+	
+	[UIView commitAnimations];
+}
+
 - (void)hideAfterDelay:(NSTimeInterval)delay
 {
 	[self performSelector:@selector(hide) withObject:nil afterDelay:delay];
@@ -197,6 +215,20 @@ static SHKActivityIndicator *currentIndicator = nil;
 	
 	if ([self superview] == nil)
 		[self show];
+	else
+		[self persist];
+}
+
+- (void)displayActivity:(NSString *)m inView:(UIView*)view
+{		
+	[self setSubMessage:m];
+	[self showSpinner];	
+	
+	[centerMessageLabel removeFromSuperview];
+	self.centerMessageLabel = nil;
+	
+	if ([self superview] == nil)
+		[self showInView:view];
 	else
 		[self persist];
 }
@@ -305,21 +337,12 @@ static SHKActivityIndicator *currentIndicator = nil;
 	{
 		self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 
-//        if ([subMessageLabel.text isEqualToString:@""]) {
-            spinner.frame = CGRectMake(round(self.bounds.size.width/2 - spinner.frame.size.width/2),
-                                       round(self.frame.size.height / 2 - spinner.frame.size.height/2),
-                                       spinner.frame.size.width,
-                                       spinner.frame.size.height);
-            
-//        }else
-//        {
-//            spinner.frame = CGRectMake(round(self.bounds.size.width/2 - spinner.frame.size.width/2),
-//                                       round(modalBackView.frame.origin.y + spinner.frame.size.height/2),
-//                                       spinner.frame.size.width,
-//                                       spinner.frame.size.height);
-//        }
+        spinner.frame = CGRectMake(round(self.bounds.size.width/2 - spinner.frame.size.width/2),
+                               round(self.frame.size.height / 2 - spinner.frame.size.height/2),
+                               spinner.frame.size.width,
+                               spinner.frame.size.height);
 
-		[spinner release];	
+        [spinner release];	
 	}
 	
 	[self addSubview:spinner];

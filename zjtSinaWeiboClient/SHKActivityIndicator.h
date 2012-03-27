@@ -44,10 +44,12 @@
 + (SHKActivityIndicator *)currentIndicator;
 
 - (void)show;
+- (void)showInView:(UIView*)view;
 - (void)hideAfterDelay:(NSTimeInterval)delay;
 - (void)hide;
 - (void)hidden;
 - (void)displayActivity:(NSString *)m;
+- (void)displayActivity:(NSString *)m inView:(UIView*)view;
 - (void)displayCompleted:(NSString *)m;
 - (void)setCenterMessage:(NSString *)message;
 - (void)setSubMessage:(NSString *)message;

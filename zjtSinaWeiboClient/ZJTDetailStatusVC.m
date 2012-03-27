@@ -57,10 +57,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     manager = [WeiBoMessageManager getInstance];
     
     self.user = status.user;
+    self.title = user.screenName;
     _hasRetwitter   = status.hasRetwitter;
     _hasImage       = status.hasImage;
     _haveRetwitterImage = status.haveRetwitterImage;

@@ -91,6 +91,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = user.screenName;
     [table setTableHeaderView:headerView];
     
     if (avatarImage) {
@@ -414,8 +415,8 @@
     //    CAAnimation *anim = [ZJTHelpler animationWithOpacityFrom:0.0f To:1.0f Duration:0.3f BeginTime:0.0f];
     //    [browserView.layer addAnimation:anim forKey:@"jtone"];
     
-    if (shouldShowIndicator == YES) {
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+    if (shouldShowIndicator == YES && browserView) {
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:browserView];
         [[SHKActivityIndicator currentIndicator] setRotationWithOritation:UIDeviceOrientationPortrait animted:NO];
         [[SHKActivityIndicator currentIndicator] hideAfterDelay:20];
     }
