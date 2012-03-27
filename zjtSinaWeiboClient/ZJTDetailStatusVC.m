@@ -234,6 +234,14 @@
     [profile release];
 }
 
+//计算text field 的高度。
+-(CGFloat)cellHeight:(NSString*)contentText with:(CGFloat)with
+{
+    UIFont * font=[UIFont  systemFontOfSize:14];
+    CGSize size=[contentText sizeWithFont:font constrainedToSize:CGSizeMake(with, 300000.0f) lineBreakMode:kLineBreakMode];
+    CGFloat height = size.height + 0.;
+    return height;
+}
 
 #pragma mark HTTP Response
 -(void)didGetComments:(NSNotification*)sender
@@ -280,13 +288,25 @@
     
     cell.nameLB.text = comment.user.screenName;
     cell.contentLB.text = comment.text;
+    
+    CGRect frame = cell.contentLB.frame;
+    frame.size.height = [self cellHeight:comment.text with:233.];
+    cell.contentLB.frame = frame;
+    
     cell.timeLB.text = comment.timestamp;
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 94;
+    NSInteger  row = indexPath.row;
+    Comment *comment = [commentArr objectAtIndex:row];
+    CGFloat height = 0.0f;
+    height = [self cellHeight:comment.text with:233.0f] + 30.;
+    if (height < 58.) {
+        height = 58.;
+    }
+    return height;
 }
 
 
