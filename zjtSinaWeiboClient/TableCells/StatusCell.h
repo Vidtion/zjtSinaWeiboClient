@@ -7,6 +7,8 @@
 //
 
 #import "LPBaseCell.h"
+#import "Status.h"
+#import "User.h"
 
 @class StatusCell;
 
@@ -44,5 +46,5 @@
 @property (retain, nonatomic) NSIndexPath *cellIndexPath;
 
 -(CGFloat)setTFHeightWithImage:(BOOL)hasImage haveRetwitterImage:(BOOL)haveRetwitterImage;
-
+-(void)setupCell:(Status*)status avatarImageData:(NSData*)avatarData contentImageData:(NSData*)imageData;
 @end

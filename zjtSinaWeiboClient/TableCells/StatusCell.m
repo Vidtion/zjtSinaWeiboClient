@@ -23,6 +23,48 @@
 @synthesize delegate;
 @synthesize cellIndexPath;
 
+//
+-(void)setupCell:(Status *)status avatarImageData:(NSData *)avatarData contentImageData:(NSData *)imageData
+{
+    self.contentTF.text = status.text;
+    self.userNameLB.text = status.user.screenName;
+    self.avatarImage.image = [UIImage imageWithData:avatarData];
+    
+    Status  *retwitterStatus    = status.retweetedStatus;
+    
+    //有转发
+    if (retwitterStatus && ![retwitterStatus isEqual:[NSNull null]]) 
+    {
+        self.retwitterMainV.hidden = NO;
+        self.retwitterContentTF.text = [NSString stringWithFormat:@"%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text];
+        self.contentImage.hidden = YES;
+        
+        if (![imageData isEqual:[NSNull null]]) 
+        {
+            self.retwitterContentImage.image = [UIImage imageWithData:imageData];
+        }
+        
+        NSString *url = status.retweetedStatus.thumbnailPic;
+        self.retwitterContentImage.hidden = url != nil && [url length] != 0 ? NO : YES;
+        [self setTFHeightWithImage:NO 
+                haveRetwitterImage:url != nil && [url length] != 0 ? YES : NO];//计算cell的高度，以及背景图的处理
+    }
+    
+    //无转发
+    else
+    {
+        self.retwitterMainV.hidden = YES;
+        if (![imageData isEqual:[NSNull null]]) {
+            self.contentImage.image = [UIImage imageWithData:imageData];
+        }
+        
+        NSString *url = status.thumbnailPic;
+        self.contentImage.hidden = url != nil && [url length] != 0 ? NO : YES;
+        [self setTFHeightWithImage:url != nil && [url length] != 0 ? YES : NO 
+                haveRetwitterImage:NO];//计算cell的高度，以及背景图的处理
+    }
+}
+
 //计算cell的高度，以及背景图的处理
 -(CGFloat)setTFHeightWithImage:(BOOL)hasImage haveRetwitterImage:(BOOL)haveRetwitterImage
 {

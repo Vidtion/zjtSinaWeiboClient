@@ -295,10 +295,6 @@
     [table reloadData];
     [[SHKActivityIndicator currentIndicator] hide];
     [self getImages];
-    
-    //test
-    Status *status = [statuesArr objectAtIndex:0];
-    [manager getCommentListWithID:status.statusId];
 }
 
 -(void)refresh
@@ -336,51 +332,13 @@
         return cell;
     }
     
+    NSData *imageData = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
+    NSData *avatarData = [headDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
     Status *status = [statuesArr objectAtIndex:row];
-    cell.contentTF.text = status.text;
-    cell.userNameLB.text = status.user.screenName;
     cell.delegate = self;
     cell.cellIndexPath = indexPath;
-    
-    NSData *data = [headDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
-    cell.avatarImage.image = [UIImage imageWithData:data];
-    
-    Status  *retwitterStatus    = status.retweetedStatus;
-//    User    *retwitterUser      = status.user;
-    
-    //有转发
-    if (retwitterStatus && ![retwitterStatus isEqual:[NSNull null]]) 
-    {
-        cell.retwitterMainV.hidden = NO;
-        cell.retwitterContentTF.text = [NSString stringWithFormat:@"%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text];
-        cell.contentImage.hidden = YES;
-        
-        NSData *data = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
-        if (![data isEqual:[NSNull null]]) 
-        {
-            cell.retwitterContentImage.image = [UIImage imageWithData:data];
-        }
-        
-        NSString *url = status.retweetedStatus.thumbnailPic;
-        cell.retwitterContentImage.hidden = url != nil && [url length] != 0 ? NO : YES;
-        [cell setTFHeightWithImage:NO 
-                haveRetwitterImage:url != nil && [url length] != 0 ? YES : NO];//计算cell的高度，以及背景图的处理
-    }
-    
-    //无转发
-    else
-    {
-        cell.retwitterMainV.hidden = YES;
-        NSData *data = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
-        if (![data isEqual:[NSNull null]]) {
-            cell.contentImage.image = [UIImage imageWithData:data];
-        }
-        
-        NSString *url = status.thumbnailPic;
-        cell.contentImage.hidden = url != nil && [url length] != 0 ? NO : YES;
-        [cell setTFHeightWithImage:url != nil && [url length] != 0 ? YES : NO 
-                haveRetwitterImage:NO];//计算cell的高度，以及背景图的处理
-    }
+
+    [cell setupCell:status avatarImageData:avatarData contentImageData:imageData];
     return cell;
 }
 

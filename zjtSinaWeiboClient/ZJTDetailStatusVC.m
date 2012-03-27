@@ -99,7 +99,7 @@
     [center addObserver:self selector:@selector(didGetComments:) name:MMSinaGotCommentList object:nil];
 }
 
--(void)viewDidAppear:(BOOL)animated
+-(void)viewWillDisappear:(BOOL)animated 
 {
     [super viewWillDisappear:animated];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -220,10 +220,16 @@
 //    retwitterBgImage.image = [[UIImage imageNamed:@"timeline_rt_border_t.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:7];
 }
 
+- (void)refresh {
+    [manager getCommentListWithID:status.statusId];
+}
+
 - (IBAction)gotoProfileView:(id)sender 
 {
     ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
     profile.userID = [NSString stringWithFormat:@"%lld",self.user.userId];
+    profile.user = self.user;
+    profile.avatarImage = self.avatarImage;
     [self.navigationController pushViewController:profile animated:YES];
     [profile release];
 }
@@ -243,6 +249,7 @@
             countLB.text = [NSString stringWithFormat:@"评论:%d转发:%d",[count intValue],status.retweetsCount];
         }
         [table reloadData];
+        [self stopLoading];
     }
 }
 

@@ -37,9 +37,13 @@
 @synthesize weiboCount;
 @synthesize followerCount;
 @synthesize followingCount;
+@synthesize user;
+@synthesize avatarImage;
 
 -(void)dealloc
 {
+    self.avatarImage = nil;
+    self.user = nil;
     self.headDictionary = nil;
     self.imageDictionary = nil;
     self.statusCellNib = nil;
@@ -61,10 +65,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
 //        self.title = 
-        
-//        CGRect frame = self.table.frame;
-//        frame.size.height = frame.size.height + REFRESH_FOOTER_HEIGHT;
-//        self.table.frame = frame;
         
         //init data
         shouldLoad = NO;
@@ -91,6 +91,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [table setTableHeaderView:headerView];
+    
+    if (avatarImage) {
+        self.headerVImageV.image = avatarImage;
+    }
+    
+    if (user) {
+        self.headerVNameLB.text = user.screenName;
+        self.weiboCount.text = [NSString stringWithFormat:@"%d",user.statusesCount];
+        self.followerCount.text = [NSString stringWithFormat:@"%d",user.followersCount];
+        self.followingCount.text = [NSString stringWithFormat:@"%d",user.friendsCount];
+    }
     
     self.tableView.contentInset = UIEdgeInsetsOriginal;
     
@@ -145,7 +157,7 @@
         NSNumber *indexNumber = [NSNumber numberWithInt:i];
         
         //下载头像图片
-        [[HHNetDataCacheManager getInstance] getDataWithURL:member.user.profileImageUrl withIndex:i];
+        [[HHNetDataCacheManager getInstance] getDataWithURL:member.user.profileLargeImageUrl withIndex:i];
         
         //下载博文图片
         if (member.thumbnailPic && [member.thumbnailPic length] != 0)
@@ -183,13 +195,13 @@
     }
     
     Status *sts = [statuesArr objectAtIndex:index];
-    User *user = sts.user;
     
     //得到的是头像图片
-    if ([url isEqualToString:user.profileImageUrl]) 
+    if ([url isEqualToString:user.profileLargeImageUrl]) 
     {
         UIImage * image     = [UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
         user.avatarImage    = image;
+        self.headerVImageV.image = image;
         
         [headDictionary setObject:[dic objectForKey:HHNetDataCacheData] forKey:indexNumber];
     }
@@ -224,8 +236,8 @@
 
 -(void)didGetUserInfo:(NSNotification*)sender
 {
-    User *user = sender.object;
-    self.title = user.screenName;
+    User *aUser = sender.object;
+    self.title = aUser.screenName;
 }
 
 -(void)didGetHomeLine:(NSNotification*)sender
@@ -237,10 +249,6 @@
     [table reloadData];
     [[SHKActivityIndicator currentIndicator] hide];
     [self getImages];
-    
-    //test
-    Status *status = [statuesArr objectAtIndex:0];
-    [manager getCommentListWithID:status.statusId];
 }
 
 -(void)refresh
@@ -278,51 +286,13 @@
         return cell;
     }
     
+    NSData *imageData = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
+    NSData *avatarData = [headDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
     Status *status = [statuesArr objectAtIndex:row];
-    cell.contentTF.text = status.text;
-    cell.userNameLB.text = status.user.screenName;
     cell.delegate = self;
     cell.cellIndexPath = indexPath;
     
-    NSData *data = [headDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
-    cell.avatarImage.image = [UIImage imageWithData:data];
-    
-    Status  *retwitterStatus    = status.retweetedStatus;
-    //    User    *retwitterUser      = status.user;
-    
-    //有转发
-    if (retwitterStatus && ![retwitterStatus isEqual:[NSNull null]]) 
-    {
-        cell.retwitterMainV.hidden = NO;
-        cell.retwitterContentTF.text = [NSString stringWithFormat:@"%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text];
-        cell.contentImage.hidden = YES;
-        
-        NSData *data = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
-        if (![data isEqual:[NSNull null]]) 
-        {
-            cell.retwitterContentImage.image = [UIImage imageWithData:data];
-        }
-        
-        NSString *url = status.retweetedStatus.thumbnailPic;
-        cell.retwitterContentImage.hidden = url != nil && [url length] != 0 ? NO : YES;
-        [cell setTFHeightWithImage:NO 
-                haveRetwitterImage:url != nil && [url length] != 0 ? YES : NO];//计算cell的高度，以及背景图的处理
-    }
-    
-    //无转发
-    else
-    {
-        cell.retwitterMainV.hidden = YES;
-        NSData *data = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
-        if (![data isEqual:[NSNull null]]) {
-            cell.contentImage.image = [UIImage imageWithData:data];
-        }
-        
-        NSString *url = status.thumbnailPic;
-        cell.contentImage.hidden = url != nil && [url length] != 0 ? NO : YES;
-        [cell setTFHeightWithImage:url != nil && [url length] != 0 ? YES : NO 
-                haveRetwitterImage:NO];//计算cell的高度，以及背景图的处理
-    }
+    [cell setupCell:status avatarImageData:avatarData contentImageData:imageData];
     return cell;
 }
 

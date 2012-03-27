@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "StatusCell.h"
 #import "PullRefreshTableViewController.h"
+#import "User.h"
 
 @class WeiBoMessageManager;
 @class ImageBrowser;
@@ -42,6 +43,8 @@
 @property (nonatomic, retain)   NSMutableDictionary     *headDictionary;
 @property (nonatomic, retain)   NSMutableDictionary     *imageDictionary;
 @property (nonatomic, retain)   ImageBrowser            *browserView;
+@property (nonatomic, retain) User *user;
+@property (nonatomic, retain) UIImage *avatarImage;
 @property (retain, nonatomic) IBOutlet UIView *headerView;
 @property (retain, nonatomic) IBOutlet UIImageView *headerVImageV;
 @property (retain, nonatomic) IBOutlet UILabel *headerVNameLB;
