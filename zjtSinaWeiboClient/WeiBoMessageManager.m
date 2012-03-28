@@ -168,6 +168,11 @@ static WeiBoMessageManager * instance=nil;
     [httpManager getUserStatusUserID:uid sinceID:sinceID maxID:maxID count:count page:page baseApp:baseApp feature:feature];
 }
 
+//转发一条微博
+-(void)repost:(NSString*)weiboID content:(NSString*)content withComment:(int)isComment
+{
+    [httpManager repost:weiboID content:content withComment:isComment];
+}
 
 #pragma mark - WeiBoHttpDelegate
 //获取最新的公共微博
@@ -286,5 +291,11 @@ static WeiBoMessageManager * instance=nil;
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
-
+//转发一条微博
+-(void)didRepost:(Status *)sts
+{
+    NSLog(@"sts.text = %@",sts.text);
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotRepost object:sts];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
 @end

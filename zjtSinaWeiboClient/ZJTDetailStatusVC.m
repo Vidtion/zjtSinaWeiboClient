@@ -12,6 +12,7 @@
 #import "WeiBoMessageManager.h"
 #import "Comment.h"
 #import "ProfileVC.h"
+#import "AddCommentVC.h"
 
 @interface ZJTDetailStatusVC ()
 -(void)setViewsHeight;
@@ -232,6 +233,13 @@
     profile.avatarImage = self.avatarImage;
     [self.navigationController pushViewController:profile animated:YES];
     [profile release];
+}
+- (IBAction)addComment:(id)sender {
+    AddCommentVC *add = [[AddCommentVC alloc]initWithNibName:@"AddCommentVC" bundle:nil];
+    add.status = self.status;
+    add.weiboID = [NSString stringWithFormat:@"%lld",status.statusId];
+    [self.navigationController pushViewController:add animated:YES];
+    [add release];
 }
 
 //计算text field 的高度。

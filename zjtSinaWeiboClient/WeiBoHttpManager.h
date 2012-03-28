@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ASIHTTPRequestDelegate.h"
 #import "StringUtil.h"
+#import "NSStringAdditions.h"
 
 #define SINA_V2_DOMAIN              @"https://api.weibo.com/2"
 #define SINA_API_AUTHORIZE          @"https://api.weibo.com/oauth2/authorize"
@@ -46,6 +47,7 @@ typedef enum {
     SinaGetHomeLine,                //获取当前登录用户及其所关注用户的最新微博
     SinaGetComment,                 //根据微博消息ID返回某条微博消息的评论列表
     SinaGetUserStatus,              //获取某个用户最新发表的微博列表
+    SinaRepost,                     //转发一条微博
 }RequestType;
 
 @class ASINetworkQueue;
@@ -98,6 +100,9 @@ typedef enum {
 
 //获取某个用户最新发表的微博列表
 -(void)didGetUserStatus:(NSArray*)statusArr;
+
+//转发一条微博
+-(void)didRepost:(Status*)sts;
 
 @end
 
@@ -182,4 +187,7 @@ typedef enum {
 //获取某个用户最新发表的微博列表
 -(void)getUserStatusUserID:(NSString *) uid sinceID:(int64_t)sinceID maxID:(int64_t)maxID count:(int)count page:(int)page baseApp:(int)baseApp feature:(int)feature;
 
+//转发一条微博
+//isComment(int):是否在转发的同时发表评论，0：否、1：评论给当前微博、2：评论给原微博、3：都评论，默认为0 。
+-(void)repost:(NSString*)weiboID content:(NSString*)content withComment:(int)isComment;
 @end

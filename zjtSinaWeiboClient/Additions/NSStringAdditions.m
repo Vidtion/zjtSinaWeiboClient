@@ -120,5 +120,15 @@
 	return [[self dataUsingEncoding:NSUTF8StringEncoding] md5Hash];
 }
 
+- (NSString *)URLEncodedString 
+{
+    NSString *result = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                                           (CFStringRef)self,
+                                                                           NULL,
+																		   CFSTR("!*'();:@&=+$,/?%#[]"),
+                                                                           kCFStringEncodingUTF8);
+    [result autorelease];
+	return result;
+}
 
 @end

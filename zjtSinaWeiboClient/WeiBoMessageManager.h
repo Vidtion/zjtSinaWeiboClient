@@ -65,6 +65,10 @@
 //返回成员为Status的NSArray
 #define MMSinaGotUserStatus @"MMSinaGotUserStatus"
 
+//转发一条微博
+//返回一个Status对象
+#define MMSinaGotRepost @"MMSinaGotRepost"
+
 @interface WeiBoMessageManager : NSObject <WeiBoHttpDelegate>
 {
     WeiBoHttpManager *httpManager;
@@ -132,5 +136,9 @@
 
 //获取某个用户最新发表的微博列表
 -(void)getUserStatusUserID:(NSString *) uid sinceID:(int64_t)sinceID maxID:(int64_t)maxID count:(int)count page:(int)page baseApp:(int)baseApp feature:(int)feature;
+
+//转发一条微博
+//isComment(int):是否在转发的同时发表评论，0：否、1：评论给当前微博、2：评论给原微博、3：都评论，默认为0 。
+-(void)repost:(NSString*)weiboID content:(NSString*)content withComment:(int)isComment;
 
 @end

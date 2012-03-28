@@ -105,6 +105,14 @@
     [self.navigationController pushViewController:tv animated:YES];
     [tv release];
 }
+
+-(void)logout
+{
+    shouldLoad = YES;
+    OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
+    [self presentModalViewController:webV animated:NO];
+    [webV release];
+}
 							
 #pragma mark - View lifecycle
 - (void)viewDidLoad
@@ -117,6 +125,10 @@
     UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发微博" style:UIBarButtonItemStylePlain target:self action:@selector(twitter)];
     self.navigationItem.rightBarButtonItem = retwitterBtn;
     [retwitterBtn release];
+    
+    UIBarButtonItem *logoutBtn = [[UIBarButtonItem alloc]initWithTitle:@"更换账号" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
+    self.navigationItem.leftBarButtonItem = logoutBtn;
+    [logoutBtn release];
     
     //如果未授权，则调入授权页面。
     NSString *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
@@ -217,14 +229,14 @@
     NSNumber *indexNumber   = [dic objectForKey:HHNetDataCacheIndex];
     NSInteger index = [indexNumber intValue];
     
-    if (index > [statuesArr count]) {
-        NSLog(@"statues arr error ,index = %d,count = %d",index,[statuesArr count]);
-        return;
-    }
-    
     //当下载大图过程中，后退，又返回，如果此时收到大图的返回数据，会引起crash，在此做预防。
     if (indexNumber == nil) {
         NSLog(@"indexNumber = nil");
+        return;
+    }
+    
+    if (index > [statuesArr count]) {
+        NSLog(@"statues arr error ,index = %d,count = %d",index,[statuesArr count]);
         return;
     }
     

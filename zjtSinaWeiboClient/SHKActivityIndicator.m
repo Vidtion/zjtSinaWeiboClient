@@ -45,7 +45,7 @@ static SHKActivityIndicator *currentIndicator = nil;
 {
 	if (currentIndicator == nil)
 	{
-        currentIndicator = [[SHKActivityIndicator alloc] initWithFrame:CGRectMake(160, 240, 120, 120)];
+        currentIndicator = [[SHKActivityIndicator alloc] initWithFrame:CGRectMake(160, 100, 120, 120)];
         
         UIWindow *window = [UIApplication sharedApplication].keyWindow;
         currentIndicator.center = CGPointMake(CGRectGetMidX(window.bounds), CGRectGetMidY(window.bounds)); 

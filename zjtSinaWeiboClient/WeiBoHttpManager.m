@@ -129,28 +129,6 @@
     return url;
 }
 
-//获取access_token
-//-(void)getAccessToken
-//{
-//    //https://api.weibo.com/oauth2/access_token
-//    NSURL *url = [NSURL URLWithString:SINA_API_ACCESS_TOKEN];
-//    ASIFormDataRequest *item = [[ASIFormDataRequest alloc] initWithURL:url];
-//    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
-//    if (!authToken) {
-//        return;
-//    }
-//    [item setPostValue:SINA_APP_KEY             forKey:@"client_id"];
-//    [item setPostValue:SINA_APP_SECRET          forKey:@"client_secret"];
-//    [item setPostValue:@"authorization_code"    forKey:@"grant_type"];
-//    
-//    [item setPostValue:authToken                forKey:@"code"];
-//    [item setPostValue:@""                      forKey:@"redirect_uri"];
-//    
-//    [self setPostUserInfo:item withRequestType:SinaGetOauthToken];
-//    [requestQueue addOperation:item];
-//    [item release];
-//}
-
 -(void)getPublicTimelineWithCount:(int)count withPage:(int)page
 {
     //https://api.weibo.com/2/statuses/public_timeline.json
@@ -565,6 +543,26 @@
     [requestQueue addOperation:request];
     [request release];
 }
+
+//转发一条微博
+-(void)repost:(NSString*)weiboID content:(NSString*)content withComment:(int)isComment
+{
+    //https://api.weibo.com/2/statuses/repost.json
+    NSURL *url = [NSURL URLWithString:@"https://api.weibo.com/2/statuses/repost.json"];
+    ASIFormDataRequest *item = [[ASIFormDataRequest alloc] initWithURL:url];
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSNumber *number = [NSNumber numberWithLongLong:[weiboID longLongValue]];
+    
+    [item setPostValue:authToken                            forKey:@"access_token"];
+    [item setPostValue:[content URLEncodedString]           forKey:@"status"];
+    [item setPostValue:weiboID                              forKey:@"id"];
+    [item setPostValue:[NSNumber numberWithInt:isComment]   forKey:@"is_comment"];
+    
+    [self setPostUserInfo:item withRequestType:SinaRepost];
+    [requestQueue addOperation:item];
+    [item release];
+}
+
 #pragma mark - Http Result
 
 #pragma mark - Operate queue
@@ -854,6 +852,17 @@
             [delegate didGetUserStatus:statuesArr];
         }
         [statuesArr release];
+    }
+    
+    //转发一条微博
+    if (requestType == SinaRepost) {
+        SBJsonParser *parser = [[SBJsonParser alloc] init];    
+        NSDictionary *userInfo = [parser objectWithString:responseString];
+        Status* sts = [Status statusWithJsonDictionary:userInfo];
+        [parser release];
+        if ([delegate respondsToSelector:@selector(didRepost:)]) {
+            [delegate didRepost:sts];
+        }
     }
 }
 

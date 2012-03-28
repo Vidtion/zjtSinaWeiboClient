@@ -48,13 +48,13 @@
     self.statuesArr = nil;
     self.userID = nil;
     self.browserView = nil;
-    [table release];
-    [headerView release];
-    [headerVImageV release];
-    [headerVNameLB release];
-    [weiboCount release];
-    [followerCount release];
-    [followingCount release];
+    self.table = nil;
+    self.headerView = nil;
+    self.headerVImageV = nil;
+    self.headerVNameLB = nil;
+    self.weiboCount = nil;
+    self.followerCount = nil;
+    self.followingCount = nil;
     [super dealloc];
 }
 
@@ -62,8 +62,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-//        self.title = 
-        
         //init data
         isFirstCell = YES;
         shouldLoad = NO;
@@ -135,13 +133,6 @@
 
 - (void)viewDidUnload 
 {
-    [self setTable:nil];
-    [self setHeaderView:nil];
-    [self setHeaderVImageV:nil];
-    [self setHeaderVNameLB:nil];
-    [self setWeiboCount:nil];
-    [self setFollowerCount:nil];
-    [self setFollowingCount:nil];
     [super viewDidUnload];
 }
 
@@ -189,12 +180,6 @@
     NSString * url          = [dic objectForKey:HHNetDataCacheURLKey];
     NSNumber *indexNumber   = [dic objectForKey:HHNetDataCacheIndex];
     NSInteger index = [indexNumber intValue];
-    Status *sts = [statuesArr objectAtIndex:index];
-    
-    if (index > [statuesArr count]) {
-        NSLog(@"statues arr error ,index = %d,count = %d",index,[statuesArr count]);
-        return;
-    }
     
     if([url isEqualToString:user.profileLargeImageUrl])
     {
@@ -208,6 +193,13 @@
         NSLog(@"indexNumber = nil");
         return;
     }
+    
+    if (index > [statuesArr count]) {
+        NSLog(@"statues arr error ,index = %d,count = %d",index,[statuesArr count]);
+        return;
+    }
+    
+    Status *sts = [statuesArr objectAtIndex:index];
     
     //得到的是博文图片
     if([url isEqualToString:sts.thumbnailPic])

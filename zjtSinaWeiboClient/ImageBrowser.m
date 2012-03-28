@@ -40,6 +40,11 @@
         imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
         aScrollView.userInteractionEnabled = YES;
         
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(dismiss)];
+        [imageView addGestureRecognizer:tap];
+        [tap release];
+        imageView.userInteractionEnabled = YES;
+        
         [self           addSubview:aScrollView];
         [aScrollView    addSubview:imageView];
     }
