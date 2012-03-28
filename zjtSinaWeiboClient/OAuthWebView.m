@@ -114,8 +114,7 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
-    [[SHKActivityIndicator currentIndicator] setRotationWithOritation:UIDeviceOrientationPortrait animted:NO];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView

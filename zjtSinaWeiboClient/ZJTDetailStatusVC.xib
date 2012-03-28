@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1296</int>
-		<string key="IBDocument.SystemVersion">11D50d</string>
+		<string key="IBDocument.SystemVersion">11D50</string>
 		<string key="IBDocument.InterfaceBuilderVersion">2182</string>
 		<string key="IBDocument.AppKitVersion">1138.32</string>
 		<string key="IBDocument.HIToolboxVersion">568.00</string>
@@ -37,11 +37,9 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUITableView" id="905534213">
-				<reference key="NSNextResponder"/>
+				<nil key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<string key="NSFrameSize">{320, 416}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<string key="NSReuseIdentifierKey">_NS:418</string>
 				<object class="NSColor" key="IBUIBackgroundColor" id="520547982">
 					<int key="NSColorSpace">3</int>
@@ -75,7 +73,7 @@
 					<object class="IBUILabel" id="932285472">
 						<reference key="NSNextResponder" ref="269510209"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{51, 0}, {136, 21}}</string>
+						<string key="NSFrame">{{51, 0}, {129, 21}}</string>
 						<reference key="NSSuperview" ref="269510209"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1029598255"/>
@@ -295,7 +293,7 @@
 					<object class="IBUILabel" id="681495253">
 						<reference key="NSNextResponder" ref="269510209"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{6, 435}, {103, 21}}</string>
+						<string key="NSFrame">{{20, 435}, {103, 21}}</string>
 						<reference key="NSSuperview" ref="269510209"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="111279195"/>
@@ -316,7 +314,7 @@
 					<object class="IBUILabel" id="111279195">
 						<reference key="NSNextResponder" ref="269510209"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{224, 435}, {95, 21}}</string>
+						<string key="NSFrame">{{205, 435}, {95, 21}}</string>
 						<reference key="NSSuperview" ref="269510209"/>
 						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:328</string>
@@ -497,15 +495,15 @@
 						<reference key="object" ref="269510209"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="876584557"/>
-							<reference ref="932285472"/>
 							<reference ref="622726622"/>
 							<reference ref="435945079"/>
 							<reference ref="1029598255"/>
 							<reference ref="404786104"/>
 							<reference ref="839800945"/>
 							<reference ref="801239216"/>
-							<reference ref="681495253"/>
 							<reference ref="111279195"/>
+							<reference ref="681495253"/>
+							<reference ref="932285472"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>

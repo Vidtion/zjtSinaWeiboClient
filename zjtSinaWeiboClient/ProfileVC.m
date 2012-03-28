@@ -28,7 +28,6 @@
 @synthesize userID;
 @synthesize statusCellNib;
 @synthesize statuesArr;
-@synthesize headDictionary;
 @synthesize imageDictionary;
 @synthesize browserView;
 @synthesize headerView;
@@ -44,7 +43,6 @@
 {
     self.avatarImage = nil;
     self.user = nil;
-    self.headDictionary = nil;
     self.imageDictionary = nil;
     self.statusCellNib = nil;
     self.statuesArr = nil;
@@ -67,12 +65,12 @@
 //        self.title = 
         
         //init data
+        isFirstCell = YES;
         shouldLoad = NO;
         shouldLoadAvatar = NO;
         shouldShowIndicator = YES;
         manager = [WeiBoMessageManager getInstance];
         defaultNotifCenter = [NSNotificationCenter defaultCenter];
-        headDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
         imageDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
     }
     return self;
@@ -110,6 +108,7 @@
     NSLog([manager isNeedToRefreshTheToken] == YES ? @"need to login":@"will login");
     
     [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -119,6 +118,7 @@
     {
         shouldLoad = NO;
         [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
     }
     [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotUserStatus        object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
@@ -151,14 +151,14 @@
 //异步加载图片
 -(void)getImages
 {
+    //下载头像图片
+    [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileLargeImageUrl];
+    
     //得到文字数据后，开始加载图片
     for(int i=0;i<[statuesArr count];i++)
     {
         Status * member=[statuesArr objectAtIndex:i];
         NSNumber *indexNumber = [NSNumber numberWithInt:i];
-        
-        //下载头像图片
-        [[HHNetDataCacheManager getInstance] getDataWithURL:member.user.profileLargeImageUrl withIndex:i];
         
         //下载博文图片
         if (member.thumbnailPic && [member.thumbnailPic length] != 0)
@@ -189,22 +189,24 @@
     NSString * url          = [dic objectForKey:HHNetDataCacheURLKey];
     NSNumber *indexNumber   = [dic objectForKey:HHNetDataCacheIndex];
     NSInteger index = [indexNumber intValue];
+    Status *sts = [statuesArr objectAtIndex:index];
     
     if (index > [statuesArr count]) {
         NSLog(@"statues arr error ,index = %d,count = %d",index,[statuesArr count]);
         return;
     }
     
-    Status *sts = [statuesArr objectAtIndex:index];
-    
-    //得到的是头像图片
-    if ([url isEqualToString:user.profileLargeImageUrl]) 
+    if([url isEqualToString:user.profileLargeImageUrl])
     {
         UIImage * image     = [UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
-        user.avatarImage    = image;
-        self.headerVImageV.image = image;
-        
-        [headDictionary setObject:[dic objectForKey:HHNetDataCacheData] forKey:indexNumber];
+        avatarImage = image;
+        headerVImageV.image = image;
+    }
+    
+    //当下载大图过程中，后退，又返回，如果此时收到大图的返回数据，会引起crash，在此做预防。
+    if (indexNumber == nil) {
+        NSLog(@"indexNumber = nil");
+        return;
     }
     
     //得到的是博文图片
@@ -249,12 +251,15 @@
     self.statuesArr = sender.object;
     [table reloadData];
     [[SHKActivityIndicator currentIndicator] hide];
+    
+    [imageDictionary removeAllObjects];
     [self getImages];
 }
 
 -(void)refresh
 {
     [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
 }
 
 //计算text field 的高度。
@@ -264,6 +269,25 @@
     CGSize size=[contentText sizeWithFont:font constrainedToSize:CGSizeMake(with - kTextViewPadding, 300000.0f) lineBreakMode:kLineBreakMode];
     CGFloat height = size.height + 44;
     return height;
+}
+
+- (id)cellForTableView:(UITableView *)tableView fromNib:(UINib *)nib {
+    NSString *cellID = NSStringFromClass([StatusCell class]);
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        if (isFirstCell) {
+            [[SHKActivityIndicator currentIndicator] hide];
+            isFirstCell = NO;
+        }
+        NSLog(@"cell new");
+        NSArray *nibObjects = [nib instantiateWithOwner:nil options:nil];
+        cell = [nibObjects objectAtIndex:0];
+    }
+    else {
+        [(LPBaseCell *)cell reset];
+    }
+    
+    return cell;
 }
 
 #pragma mark - UITableViewDataSource
@@ -280,7 +304,7 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger  row = indexPath.row;
-    StatusCell *cell = [StatusCell cellForTableView:table fromNib:self.statusCellNib];
+    StatusCell *cell = [self cellForTableView:table fromNib:self.statusCellNib];
     
     if (row >= [statuesArr count]) {
         NSLog(@"cellForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
@@ -288,12 +312,17 @@
     }
     
     NSData *imageData = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
-    NSData *avatarData = [headDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
     Status *status = [statuesArr objectAtIndex:row];
     cell.delegate = self;
     cell.cellIndexPath = indexPath;
     
-    [cell setupCell:status avatarImageData:avatarData contentImageData:imageData];
+    [cell setupCell:status avatarImageData:UIImagePNGRepresentation(avatarImage) contentImageData:imageData];
+    
+    //开始绘制第一个cell时，隐藏indecator.
+    if (isFirstCell) {
+        [[SHKActivityIndicator currentIndicator] hide];
+        isFirstCell = NO;
+    }
     return cell;
 }
 
@@ -346,8 +375,7 @@
     Status *status  = [statuesArr objectAtIndex:row];
     detailVC.status = status;
     
-    NSData *data = [headDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
-    detailVC.avatarImage = [UIImage imageWithData:data];
+    detailVC.avatarImage = avatarImage;
     
     NSData *imageData = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
     if (![imageData isEqual:[NSNull null]]) 
@@ -417,8 +445,6 @@
     
     if (shouldShowIndicator == YES && browserView) {
         [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:browserView];
-        [[SHKActivityIndicator currentIndicator] setRotationWithOritation:UIDeviceOrientationPortrait animted:NO];
-        [[SHKActivityIndicator currentIndicator] hideAfterDelay:20];
     }
     else shouldShowIndicator = YES;
 }

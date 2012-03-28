@@ -21,7 +21,7 @@
 													 forKey:(NSString *)kCGImagePropertyGIFDictionary] retain];
 		gif = CGImageSourceCreateWithURL((CFURLRef)[NSURL fileURLWithPath:_filePath], (CFDictionaryRef)gifProperties);
 		count =CGImageSourceGetCount(gif);
-		timer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(play) userInfo:nil repeats:YES];
+		timer = [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(play) userInfo:nil repeats:YES];
 		[timer fire];
     }
     return self;
@@ -37,7 +37,7 @@
 //		gif = CGImageSourceCreateWithURL((CFURLRef)[NSURL fileURLWithPath:_filePath], (CFDictionaryRef)gifProperties);
         gif = CGImageSourceCreateWithData((CFDataRef)_data, (CFDictionaryRef)gifProperties);
 		count =CGImageSourceGetCount(gif);
-		timer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(play) userInfo:nil repeats:YES];
+		timer = [NSTimer scheduledTimerWithTimeInterval:0.15 target:self selector:@selector(play) userInfo:nil repeats:YES];
 		[timer fire];
     }
     return self;

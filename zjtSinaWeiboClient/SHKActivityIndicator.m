@@ -231,6 +231,7 @@ static SHKActivityIndicator *currentIndicator = nil;
 		[self showInView:view];
 	else
 		[self persist];
+    [self setRotationWithOritation:UIDeviceOrientationPortrait animted:NO];
 }
 
 - (void)displayCompleted:(NSString *)m

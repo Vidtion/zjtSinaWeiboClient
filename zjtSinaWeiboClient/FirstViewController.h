@@ -31,6 +31,8 @@
     BOOL                shouldLoad;
     BOOL                shouldLoadAvatar;
     
+    BOOL                isFirstCell;
+    
 	EGORefreshTableHeaderView *_refreshHeaderView;
 	
 	//  Reloading var should really be your tableviews datasource

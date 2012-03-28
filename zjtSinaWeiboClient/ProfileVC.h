@@ -26,7 +26,6 @@
     NSString            *userID;
     UINib               *statusCellNib;
     NSMutableArray      *statuesArr;
-    NSMutableDictionary *headDictionary;
     NSMutableDictionary *imageDictionary;
     ImageBrowser        *browserView;
     
@@ -34,13 +33,13 @@
     BOOL                shouldShowIndicator;
     BOOL                shouldLoad;
     BOOL                shouldLoadAvatar;
+    BOOL                isFirstCell;
 }
 
 @property (retain, nonatomic)   IBOutlet UITableView    *table;
 @property (nonatomic, copy)     NSString                *userID;
 @property (nonatomic, retain)   UINib                   *statusCellNib;
 @property (nonatomic, retain)   NSMutableArray          *statuesArr;
-@property (nonatomic, retain)   NSMutableDictionary     *headDictionary;
 @property (nonatomic, retain)   NSMutableDictionary     *imageDictionary;
 @property (nonatomic, retain)   ImageBrowser            *browserView;
 @property (nonatomic, retain) User *user;

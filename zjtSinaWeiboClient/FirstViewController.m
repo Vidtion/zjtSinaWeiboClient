@@ -62,6 +62,7 @@
         self.table.frame = frame;
         
         //init data
+        isFirstCell = YES;
         shouldLoad = NO;
         shouldLoadAvatar = NO;
         shouldShowIndicator = YES;
@@ -131,6 +132,7 @@
     {
         [manager getUserID];
         [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
     }
 }
 
@@ -142,6 +144,7 @@
         shouldLoad = NO;
         [manager getUserID];
         [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
     }
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID            object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine          object:nil];
@@ -161,10 +164,6 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
-//    [[SHKActivityIndicator currentIndicator] setRotationWithOritation:UIDeviceOrientationPortrait animted:NO];
-    
-//    [self getImages];
 }
 
 - (void)viewDidUnload 
@@ -220,6 +219,12 @@
     
     if (index > [statuesArr count]) {
         NSLog(@"statues arr error ,index = %d,count = %d",index,[statuesArr count]);
+        return;
+    }
+    
+    //当下载大图过程中，后退，又返回，如果此时收到大图的返回数据，会引起crash，在此做预防。
+    if (indexNumber == nil) {
+        NSLog(@"indexNumber = nil");
         return;
     }
     
@@ -294,12 +299,16 @@
     self.statuesArr = sender.object;
     [table reloadData];
     [[SHKActivityIndicator currentIndicator] hide];
+    
+    [headDictionary  removeAllObjects];
+    [imageDictionary removeAllObjects];
     [self getImages];
 }
 
 -(void)refresh
 {
     [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
 }
 
 //计算text field 的高度。
@@ -309,6 +318,21 @@
     CGSize size=[contentText sizeWithFont:font constrainedToSize:CGSizeMake(with - kTextViewPadding, 300000.0f) lineBreakMode:kLineBreakMode];
     CGFloat height = size.height + 44;
     return height;
+}
+
+- (id)cellForTableView:(UITableView *)tableView fromNib:(UINib *)nib {
+    NSString *cellID = NSStringFromClass([StatusCell class]);
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        NSLog(@"cell new");
+        NSArray *nibObjects = [nib instantiateWithOwner:nil options:nil];
+        cell = [nibObjects objectAtIndex:0];
+    }
+    else {
+        [(LPBaseCell *)cell reset];
+    }
+    
+    return cell;
 }
 
 #pragma mark - UITableViewDataSource
@@ -325,7 +349,7 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger  row = indexPath.row;
-    StatusCell *cell = [StatusCell cellForTableView:table fromNib:self.statusCellNib];
+    StatusCell *cell = [self cellForTableView:table fromNib:self.statusCellNib];
     
     if (row >= [statuesArr count]) {
         NSLog(@"cellForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
@@ -339,6 +363,12 @@
     cell.cellIndexPath = indexPath;
 
     [cell setupCell:status avatarImageData:avatarData contentImageData:imageData];
+    
+    //开始绘制第一个cell时，隐藏indecator.
+    if (isFirstCell) {
+        [[SHKActivityIndicator currentIndicator] hide];
+        isFirstCell = NO;
+    }
     return cell;
 }
 
@@ -420,7 +450,16 @@
         NSLog(@"big url = %@",browserView.bigImageURL);
         if ([browserView.bigImageURL hasSuffix:@".gif"]) 
         {
-            GifView *gifView = [[GifView alloc]initWithFrame:browserView.frame data:[dic objectForKey:HHNetDataCacheData]];
+            UIImageView *iv = browserView.imageView; // your image view
+            CGSize imageSize = iv.image.size;
+            CGFloat imageScale = fminf(CGRectGetWidth(iv.bounds)/imageSize.width, CGRectGetHeight(iv.bounds)/imageSize.height);
+            CGSize scaledImageSize = CGSizeMake(imageSize.width*imageScale, imageSize.height*imageScale);
+            CGRect imageFrame = CGRectMake(floorf(0.5f*(CGRectGetWidth(iv.bounds)-scaledImageSize.width)), floorf(0.5f*(CGRectGetHeight(iv.bounds)-scaledImageSize.height)), scaledImageSize.width, scaledImageSize.height);
+            
+            GifView *gifView = [[GifView alloc]initWithFrame:imageFrame data:[dic objectForKey:HHNetDataCacheData]];
+            
+
+            
             gifView.userInteractionEnabled = NO;
             gifView.tag = GIF_VIEW_TAG;
             [browserView addSubview:gifView];
@@ -462,8 +501,6 @@
     
     if (shouldShowIndicator == YES && browserView) {
         [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:browserView];
-        [[SHKActivityIndicator currentIndicator] setRotationWithOritation:UIDeviceOrientationPortrait animted:NO];
-        [[SHKActivityIndicator currentIndicator] hideAfterDelay:20];
     }
     else shouldShowIndicator = YES;
 }
@@ -518,6 +555,7 @@
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
     _reloading = YES;
 	[manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
