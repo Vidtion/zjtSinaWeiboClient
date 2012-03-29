@@ -13,6 +13,9 @@
 #import "Comment.h"
 #import "ProfileVC.h"
 #import "AddCommentVC.h"
+#import "SHKActivityIndicator.h"
+#import "GifView.h"
+#import "HHNetDataCacheManager.h"
 
 @interface ZJTDetailStatusVC ()
 -(void)setViewsHeight;
@@ -20,6 +23,8 @@
 
 
 @implementation ZJTDetailStatusVC
+@synthesize headerBackgroundView;
+@synthesize mainViewBackView;
 @synthesize headerView;
 @synthesize table;
 @synthesize avatarImageV;
@@ -38,6 +43,7 @@
 @synthesize contentImage;
 @synthesize commentArr;
 @synthesize isFromProfileVC;
+@synthesize browserView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,6 +52,7 @@
     {
         _hasRetwitter = NO;
         isFromProfileVC = NO;
+        shouldShowIndicator = YES;
     }
     return self;
 }
@@ -67,9 +74,7 @@
     _hasRetwitter   = status.hasRetwitter;
     _hasImage       = status.hasImage;
     _haveRetwitterImage = status.haveRetwitterImage;
-    
-    [self.table setTableHeaderView:headerView];
-    
+        
     twitterNameLB.text = user.screenName;
     contentTF.text = status.text;
     timeLB.text = status.timestamp;
@@ -92,6 +97,7 @@
     retwitterMainV.hidden = !_hasRetwitter;
     
     [self setViewsHeight];
+    [self.table setTableHeaderView:headerView];
     
     [manager getCommentListWithID:status.statusId];
 }
@@ -126,6 +132,8 @@
     [self setTimeLB:nil];
     [self setCountLB:nil];
     
+    [self setHeaderBackgroundView:nil];
+    [self setMainViewBackView:nil];
     [super viewDidUnload];
 }
 
@@ -138,6 +146,7 @@
 }
 
 - (void)dealloc {
+    self.browserView = nil;
     [headerView release];
     [table release];
     [avatarImageV release];
@@ -156,6 +165,8 @@
     self.avatarImage = nil;
     self.contentImage = nil;
     self.commentArr = nil;
+    [headerBackgroundView release];
+    [mainViewBackView release];
     [super dealloc];
 }
 
@@ -175,7 +186,7 @@
     //size
     frame = retwitterTF.frame;
     frame.size = retwitterTF.contentSize;
-    frame.origin = CGPointMake(0, 0);
+    frame.origin = CGPointMake(10, 0);
     retwitterTF.frame = frame;
     
     //转发的主View
@@ -205,16 +216,59 @@
     //headerView
     frame = headerView.frame;
     if (_hasRetwitter) {
-        frame.size.height = retwitterMainV.frame.origin.y + retwitterMainV.frame.size.height + 10;
+        frame.size.height = retwitterMainV.frame.origin.y + retwitterMainV.frame.size.height + 27;
     }
     else {
-        frame.size.height = retwitterMainV.frame.origin.y + 10;
+        frame.size.height = retwitterMainV.frame.origin.y + 27;
     }
     headerView.frame = frame;
+    
+    //背景设置
+    headerBackgroundView.image = [[UIImage imageNamed:@"table_header_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:5];
+    mainViewBackView.image = [[UIImage imageNamed:@"timeline_rt_border_t.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:5];
 }
 
 - (void)refresh {
     [manager getCommentListWithID:status.statusId];
+}
+
+- (IBAction)tapDetected:(id)sender {
+    shouldShowIndicator = YES;
+    
+    UITapGestureRecognizer*tap = (UITapGestureRecognizer*)sender;
+    
+    UIImageView *imageView = (UIImageView*)tap.view;
+    
+    Status *sts = status;
+    BOOL isRetwitter = sts.retweetedStatus && sts.retweetedStatus.originalPic != nil;
+    UIApplication *app = [UIApplication sharedApplication];
+    
+    CGRect frame = CGRectMake(0, 0, 320, 480);
+    
+    if (browserView == nil) {
+        self.browserView = [[[ImageBrowser alloc]initWithFrame:frame] autorelease];
+        [browserView setUp];
+    }
+    
+    if ([imageView isEqual:contentImageV]) {
+        browserView.image = contentImageV.image;
+    }
+    else if ([imageView isEqual:retwitterImageV])
+    {
+        NSLog(@"browserView = %@",browserView);
+        browserView.image = retwitterImageV.image;
+    }
+    
+    browserView.theDelegate = self;
+    browserView.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
+    [browserView loadImage];
+    
+    app.statusBarHidden = YES;
+    [app.keyWindow addSubview:browserView];
+    if (shouldShowIndicator == YES && browserView) {
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:browserView];
+    }
+    else shouldShowIndicator = YES;
 }
 
 - (IBAction)gotoProfileView:(id)sender 
@@ -307,11 +361,42 @@
     NSInteger  row = indexPath.row;
     Comment *comment = [commentArr objectAtIndex:row];
     CGFloat height = 0.0f;
-    height = [self cellHeight:comment.text with:233.0f] + 30.;
-    if (height < 58.) {
-        height = 58.;
+    height = [self cellHeight:comment.text with:233.0f] + 42.;
+    if (height < 66.) {
+        height = 66.;
     }
     return height;
+}
+
+-(void)browserDidGetOriginImage:(NSDictionary*)dic
+{
+    NSString * url=[dic objectForKey:HHNetDataCacheURLKey];
+    if ([url isEqualToString:browserView.bigImageURL]) 
+    {
+        [[SHKActivityIndicator currentIndicator] hide];
+        shouldShowIndicator = NO;
+        
+        UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
+        [browserView.imageView setImage:img];
+        contentImageV.image = img;
+        
+        NSLog(@"big url = %@",browserView.bigImageURL);
+        if ([browserView.bigImageURL hasSuffix:@".gif"]) 
+        {
+            UIImageView *iv = browserView.imageView; // your image view
+            CGSize imageSize = iv.image.size;
+            CGFloat imageScale = fminf(CGRectGetWidth(iv.bounds)/imageSize.width, CGRectGetHeight(iv.bounds)/imageSize.height);
+            CGSize scaledImageSize = CGSizeMake(imageSize.width*imageScale, imageSize.height*imageScale);
+            CGRect imageFrame = CGRectMake(floorf(0.5f*(CGRectGetWidth(iv.bounds)-scaledImageSize.width)), floorf(0.5f*(CGRectGetHeight(iv.bounds)-scaledImageSize.height)), scaledImageSize.width, scaledImageSize.height);
+            
+            GifView *gifView = [[GifView alloc]initWithFrame:imageFrame data:[dic objectForKey:HHNetDataCacheData]];
+            
+            gifView.userInteractionEnabled = NO;
+            gifView.tag = GIF_VIEW_TAG;
+            [browserView addSubview:gifView];
+            [gifView release];
+        }
+    }
 }
 
 

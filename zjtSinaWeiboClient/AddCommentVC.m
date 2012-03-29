@@ -42,16 +42,19 @@
     //回复微博
     if (_vctype == kReplyAStatus) {
         sendBtn = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(commentStatus)];
+        self.title = @"回复微博";
     }
     
     //转发
     else if(_vctype == kRepost){
         sendBtn = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(repost)];
+        self.title = @"转发微博";
     }
     
     //回复评论
     else{
         sendBtn = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(commentComment)];
+        self.title = @"回复评论";
     }
 
     self.navigationItem.rightBarButtonItem = sendBtn;

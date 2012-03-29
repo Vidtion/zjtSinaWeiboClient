@@ -58,13 +58,13 @@ static HHNetDataCacheManager * instance;
             NSString * str=[cacheArray objectAtIndex:i];
             if (str!=nil) {
                 if ([[cacheArray objectAtIndex:i] isEqualToString:url]) {
-                    NSLog(@"HHNetDataCacheManager url = %@",url);
                     break;
                 }
             }
         }
         if (i<[cacheArray count]) 
         {//match
+            NSLog(@"match url = %@",url);
             NSData * result=[cacheDic objectForKey:[cacheArray objectAtIndex:i]];
             NSNumber *indexNumber = [NSNumber numberWithInt:index];
             [self sendNotificationWithKey:url Data:result index:indexNumber];
@@ -75,6 +75,7 @@ static HHNetDataCacheManager * instance;
         }
         else
         {//unmatch
+            NSLog(@"unmatch url = %@",url);
             ASIHTTPRequest * request=[ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
             [request setDelegate:self];
             

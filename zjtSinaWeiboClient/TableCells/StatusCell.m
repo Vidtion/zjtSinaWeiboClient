@@ -14,6 +14,7 @@
 @synthesize retwitterBgImage;
 @synthesize retwitterContentTF;
 @synthesize retwitterContentImage;
+@synthesize countLB;
 @synthesize avatarImage;
 @synthesize contentTF;
 @synthesize userNameLB;
@@ -22,6 +23,8 @@
 @synthesize retwitterMainV;
 @synthesize delegate;
 @synthesize cellIndexPath;
+@synthesize fromLB;
+@synthesize timeLB;
 
 //
 -(void)setupCell:(Status *)status avatarImageData:(NSData *)avatarData contentImageData:(NSData *)imageData
@@ -29,6 +32,9 @@
     self.contentTF.text = status.text;
     self.userNameLB.text = status.user.screenName;
     self.avatarImage.image = [UIImage imageWithData:avatarData];
+    countLB.text = [NSString stringWithFormat:@"评论:%d 转发:%d",status.commentsCount,status.retweetsCount];
+    fromLB.text = [NSString stringWithFormat:@"来自:%@",status.source];
+    timeLB.text = status.timestamp;
     
     Status  *retwitterStatus    = status.retweetedStatus;
     
@@ -143,6 +149,9 @@
     [retwitterContentTF release];
     [retwitterContentImage release];
     [cellIndexPath release];
+    [countLB release];
+    [fromLB release];
+    [timeLB release];
     [super dealloc];
 }
 @end

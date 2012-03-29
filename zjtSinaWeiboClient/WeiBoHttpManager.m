@@ -610,7 +610,8 @@
     [parser release];
     if ([returnObject isKindOfClass:[NSDictionary class]]) {
         NSString *errorString = [returnObject  objectForKey:@"error"];
-        if (errorString != nil && [errorString isEqualToString:@"auth faild!"]) {
+        if (errorString != nil && ([errorString isEqualToString:@"auth faild!"] || [errorString isEqualToString:@"expired_token"])) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:NeedToReLogin object:nil];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_STORE_ACCESS_TOKEN];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_STORE_USER_ID];
             NSLog(@"detected auth faild!");
@@ -665,7 +666,7 @@
         NSDictionary    *info       = [parser objectWithString:responseString];
         NSArray         *arr        = [info objectForKey:@"comments"];
         NSNumber        *count      = [info objectForKey:@"total_number"];
-        if (arr == nil) {
+        if (arr == nil || [arr isEqual:[NSNull null]]) {
             return;
         }
         
@@ -809,10 +810,7 @@
         
         if (arr == nil || [arr isEqual:[NSNull null]]) 
         {
-            if ([delegate respondsToSelector:@selector(didGetHomeLine:)]) {
-                [delegate didGetHomeLine:[NSArray arrayWithObject:info]];
-                return;
-            }
+            return;
         }
         
         NSMutableArray  *statuesArr = [[NSMutableArray alloc]initWithCapacity:0];
@@ -835,10 +833,7 @@
         
         if (arr == nil || [arr isEqual:[NSNull null]]) 
         {
-            if ([delegate respondsToSelector:@selector(didGetUserStatus:)]) {
-                [delegate didGetUserStatus:[NSArray arrayWithObject:info]];
-                return;
-            }
+            return;
         }
         
         NSMutableArray  *statuesArr = [[NSMutableArray alloc]initWithCapacity:0];

@@ -23,6 +23,7 @@
 #define USER_STORE_ACCESS_TOKEN     @"SinaAccessToken"
 #define USER_STORE_EXPIRATION_DATE  @"SinaExpirationDate"
 #define USER_STORE_USER_ID          @"SinaUserID"
+#define NeedToReLogin               @"NeedToReLogin"
 
 typedef enum {
     SinaGetOauthCode = 0,           //authorize_code

@@ -161,6 +161,7 @@
     [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine          object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(relogin)            name:NeedToReLogin              object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -169,6 +170,7 @@
     [defaultNotifCenter removeObserver:self name:MMSinaGotHomeLine          object:nil];
     [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
     [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo          object:nil];
+    [defaultNotifCenter removeObserver:self name:NeedToReLogin              object:nil];
     [super viewWillDisappear:animated];
 }
 
@@ -183,6 +185,14 @@
 }
 
 #pragma mark - Methods
+
+-(void)relogin
+{
+    shouldLoad = YES;
+    OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
+    [self presentModalViewController:webV animated:NO];
+    [webV release];
+}
 
 //异步加载图片
 -(void)getImages
@@ -418,7 +428,7 @@
     {
         height = height + 80;
     }
-    return height + 10;
+    return height + 30;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -468,8 +478,6 @@
             CGRect imageFrame = CGRectMake(floorf(0.5f*(CGRectGetWidth(iv.bounds)-scaledImageSize.width)), floorf(0.5f*(CGRectGetHeight(iv.bounds)-scaledImageSize.height)), scaledImageSize.width, scaledImageSize.height);
             
             GifView *gifView = [[GifView alloc]initWithFrame:imageFrame data:[dic objectForKey:HHNetDataCacheData]];
-            
-
             
             gifView.userInteractionEnabled = NO;
             gifView.tag = GIF_VIEW_TAG;

@@ -353,7 +353,7 @@
     {
         height = height + 80;
     }
-    return height + 10;
+    return height + 30;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -395,7 +395,14 @@
         NSLog(@"big url = %@",browserView.bigImageURL);
         if ([browserView.bigImageURL hasSuffix:@".gif"]) 
         {
-            GifView *gifView = [[GifView alloc]initWithFrame:browserView.frame data:[dic objectForKey:HHNetDataCacheData]];
+            UIImageView *iv = browserView.imageView; // your image view
+            CGSize imageSize = iv.image.size;
+            CGFloat imageScale = fminf(CGRectGetWidth(iv.bounds)/imageSize.width, CGRectGetHeight(iv.bounds)/imageSize.height);
+            CGSize scaledImageSize = CGSizeMake(imageSize.width*imageScale, imageSize.height*imageScale);
+            CGRect imageFrame = CGRectMake(floorf(0.5f*(CGRectGetWidth(iv.bounds)-scaledImageSize.width)), floorf(0.5f*(CGRectGetHeight(iv.bounds)-scaledImageSize.height)), scaledImageSize.width, scaledImageSize.height);
+            
+            GifView *gifView = [[GifView alloc]initWithFrame:imageFrame data:[dic objectForKey:HHNetDataCacheData]];
+            
             gifView.userInteractionEnabled = NO;
             gifView.tag = GIF_VIEW_TAG;
             [browserView addSubview:gifView];

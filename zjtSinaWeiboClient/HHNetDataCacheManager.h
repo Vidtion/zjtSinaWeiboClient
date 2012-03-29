@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ASIHTTPRequest.h"
 
-#define MaxCacheBufferSize 100
+#define MaxCacheBufferSize 20
 #define HHNetDataCacheNotification @"HHNetDataCacheNotification"
 
 #define HHNetDataCacheURLKey @"HHNetDataCacheURLKey"

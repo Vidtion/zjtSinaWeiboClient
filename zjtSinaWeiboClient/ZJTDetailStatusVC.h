@@ -10,12 +10,13 @@
 #import "PullRefreshTableViewController.h"
 #import "Status.h"
 #import "User.h"
+#import "ImageBrowser.h"
 
-#define IMAGE_VIEW_HEIGHT 80.0f
+#define IMAGE_VIEW_HEIGHT 100.0f
 
 @class WeiBoMessageManager;
 
-@interface ZJTDetailStatusVC : PullRefreshTableViewController<UITableViewDelegate,UITableViewDataSource>
+@interface ZJTDetailStatusVC : PullRefreshTableViewController<UITableViewDelegate,UITableViewDataSource,ImageBrowserDelegate>
 {
     UIView      *headerView;
     UITableView *table;
@@ -44,7 +45,10 @@
     BOOL _hasRetwitter;
     BOOL _haveRetwitterImage;
     BOOL _hasImage;
+    BOOL shouldShowIndicator;
 }
+@property (retain, nonatomic) IBOutlet UIImageView *headerBackgroundView;
+@property (retain, nonatomic) IBOutlet UIImageView *mainViewBackView;
 
 @property (retain, nonatomic) IBOutlet UIView       *headerView;
 @property (retain, nonatomic) IBOutlet UITableView  *table;
@@ -64,4 +68,6 @@
 @property (retain, nonatomic) UIImage   *contentImage;
 @property (retain, nonatomic) NSMutableArray  *commentArr;
 @property (assign, nonatomic) BOOL isFromProfileVC;
+@property (retain, nonatomic) ImageBrowser *browserView;
+
 @end

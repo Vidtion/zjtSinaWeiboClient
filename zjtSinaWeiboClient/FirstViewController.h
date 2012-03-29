@@ -13,7 +13,6 @@
 #import "ImageBrowser.h"
 
 @class WeiBoMessageManager;
-@class ImageBrowser;
 
 @interface FirstViewController : PullRefreshTableViewController<EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource,StatusCellDelegate,ImageBrowserDelegate>{
 
