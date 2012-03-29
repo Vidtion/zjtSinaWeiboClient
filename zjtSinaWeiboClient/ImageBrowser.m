@@ -18,7 +18,7 @@
 @synthesize aScrollView;
 @synthesize bigImageURL;
 @synthesize viewTitle;
-@synthesize delegate;
+@synthesize theDelegate;
 
 
 - (void)dealloc
@@ -51,16 +51,6 @@
     return self;
 }
 
-//-(void)removeFromSuperview
-//{
-//    [super removeFromSuperview];
-//}
-
-//-(void)showStatusBar
-//{
-//    [UIApplication sharedApplication].statusBarHidden = NO;
-//}
-
 -(void)dismiss
 {
     NSLog(@"dismiss");
@@ -71,14 +61,8 @@
         }
     }
     
-    [[NSNotificationCenter defaultCenter] removeObserver:delegate   name:HHNetDataCacheNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self   name:HHNetDataCacheNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self       name:@"tapClicked"              object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self       name:@"doubelClicked"           object:nil];
-//    CAAnimation *anim = [ZJTHelpler animationWithOpacityFrom:1.0f To:0.0f Duration:0.3f BeginTime:0.0f];
-//    [self.layer addAnimation:anim forKey:@"jtone"];
-    
-//    [self performSelector:@selector(showStatusBar) withObject:nil afterDelay:0.0];
-//    [self performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.0];
     [UIApplication sharedApplication].statusBarHidden = NO;
     [self removeFromSuperview];
 }
@@ -99,10 +83,9 @@
 #pragma mark - View lifecycle
 -(void)loadImage
 {
-    [[NSNotificationCenter defaultCenter] addObserver:delegate  selector:@selector(getOriginImage:) name:HHNetDataCacheNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self      selector:@selector(doubelClicked)   name:@"doubelClicked"           object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(getOriginImage:) name:HHNetDataCacheNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self      selector:@selector(dismiss)         name:@"tapClicked"              object:nil];
-    
+    aScrollView.zoomScale = 1.0;
     [imageView setImage:image];
     if (bigImageURL!=nil) 
     {
@@ -117,9 +100,6 @@
     aScrollView.delegate = self;
     aScrollView.backgroundColor = [UIColor blackColor];
     [imageView setContentMode:UIViewContentModeScaleAspectFit];
-    
-//    UIBarButtonItem *rightButton=[[UIBarButtonItem alloc] initWithTitle:@"保存到相册" style:UIBarButtonItemStylePlain target:self action:@selector(saveImage)];
-//    [rightButton release];
 }
 
 -(void)doubelClicked{
@@ -145,15 +125,13 @@
     return imageView;
 }
 
-//- (void) getImageAck:(NSNotification*) hhack
-//{
-//    NSDictionary * dic=hhack.object;
-//    NSString * url=[dic objectForKey:HHNetDataCacheURLKey];
-//    if ([url isEqualToString:bigImageURL]) {
-//        UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
-//        [imageView setImage:img];
-//
-//    }
-//}
+ -(void)getOriginImage:(NSNotification*)sender
+{
+    NSDictionary *dic = sender.object;
+    if (theDelegate && [theDelegate respondsToSelector:@selector(browserDidGetOriginImage:)]) {
+        [theDelegate browserDidGetOriginImage:dic];
+    }
+}
+
 
 @end

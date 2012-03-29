@@ -10,6 +10,7 @@
 #import "StatusCell.h"
 #import "PullRefreshTableViewController.h"
 #import "User.h"
+#import "ImageBrowser.h"
 
 @class WeiBoMessageManager;
 @class ImageBrowser;
@@ -17,7 +18,7 @@
 #define kTextViewPadding            16.0
 #define kLineBreakMode              UILineBreakModeWordWrap
 
-@interface ProfileVC : PullRefreshTableViewController<UITableViewDelegate,UITableViewDataSource,StatusCellDelegate>
+@interface ProfileVC : PullRefreshTableViewController<UITableViewDelegate,UITableViewDataSource,StatusCellDelegate,ImageBrowserDelegate>
 {
     WeiBoMessageManager *manager;
     NSNotificationCenter *defaultNotifCenter;

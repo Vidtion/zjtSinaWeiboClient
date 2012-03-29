@@ -96,11 +96,13 @@
     //转发的图片
     frame = retwitterContentImage.frame;
     frame.origin.y = retwitterContentTF.frame.size.height;
+    frame.size.height = IMAGE_VIEW_HEIGHT;
     retwitterContentImage.frame = frame;
     
     //正文的图片
     frame = contentImage.frame;
     frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y - 5.0f;
+    frame.size.height = IMAGE_VIEW_HEIGHT;
     contentImage.frame = frame;
     
     //背景设置

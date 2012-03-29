@@ -106,7 +106,7 @@
     NSLog([manager isNeedToRefreshTheToken] == YES ? @"need to login":@"will login");
     
     [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -116,7 +116,7 @@
     {
         shouldLoad = NO;
         [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
     }
     [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotUserStatus        object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
@@ -245,13 +245,14 @@
     [[SHKActivityIndicator currentIndicator] hide];
     
     [imageDictionary removeAllObjects];
+    
     [self getImages];
 }
 
 -(void)refresh
 {
     [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
 }
 
 //计算text field 的高度。
@@ -366,7 +367,7 @@
     ZJTDetailStatusVC *detailVC = [[ZJTDetailStatusVC alloc] initWithNibName:@"ZJTDetailStatusVC" bundle:nil];
     Status *status  = [statuesArr objectAtIndex:row];
     detailVC.status = status;
-    
+    detailVC.isFromProfileVC = YES;
     detailVC.avatarImage = avatarImage;
     
     NSData *imageData = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
@@ -380,9 +381,8 @@
 
 #pragma mark - StatusCellDelegate
 
--(void)getOriginImage:(NSNotification*) hhack
+-(void)browserDidGetOriginImage:(NSDictionary*)dic
 {
-    NSDictionary * dic=hhack.object;
     NSString * url=[dic objectForKey:HHNetDataCacheURLKey];
     if ([url isEqualToString:browserView.bigImageURL]) 
     {
@@ -424,7 +424,7 @@
     }
     
     browserView.image = image;
-    browserView.delegate = self;
+    browserView.theDelegate = self;
     browserView.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
     [browserView loadImage];
     

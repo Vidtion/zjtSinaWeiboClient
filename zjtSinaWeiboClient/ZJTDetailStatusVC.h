@@ -63,5 +63,5 @@
 @property (retain, nonatomic) UIImage   *avatarImage;
 @property (retain, nonatomic) UIImage   *contentImage;
 @property (retain, nonatomic) NSMutableArray  *commentArr;
-
+@property (assign, nonatomic) BOOL isFromProfileVC;
 @end

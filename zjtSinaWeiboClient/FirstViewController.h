@@ -10,11 +10,12 @@
 #import "StatusCell.h"
 #import "PullRefreshTableViewController.h"
 #import "EGORefreshTableHeaderView.h"
+#import "ImageBrowser.h"
 
 @class WeiBoMessageManager;
 @class ImageBrowser;
 
-@interface FirstViewController : PullRefreshTableViewController<EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource,StatusCellDelegate>{
+@interface FirstViewController : PullRefreshTableViewController<EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource,StatusCellDelegate,ImageBrowserDelegate>{
 
     WeiBoMessageManager *manager;
     NSNotificationCenter *defaultNotifCenter;

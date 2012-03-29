@@ -11,6 +11,10 @@
 
 #define GIF_VIEW_TAG 9999
 
+@protocol ImageBrowserDelegate <NSObject>
+-(void)browserDidGetOriginImage:(NSDictionary*)dic;
+@end
+
 @interface ImageBrowser : UIView <UIScrollViewDelegate>
 {
     IBOutlet UIImageView        *imageView;
@@ -18,14 +22,14 @@
     UIImage *image;
     NSString * bigImageURL;//如果填了这个地址，登录后会载入此图片
     NSString *viewTitle;
-    id delegate;
+    id<ImageBrowserDelegate> theDelegate;
 }
 @property (nonatomic,retain) UIImage *image;
 @property (nonatomic,retain) IBOutlet UIImageView        *imageView;
 @property (nonatomic,retain) IBOutlet CustomScrollView   *aScrollView;
 @property (nonatomic,retain) NSString * bigImageURL;
 @property (nonatomic,copy) NSString *viewTitle;
-@property (nonatomic,assign)id delegate;
+@property (nonatomic,assign) id<ImageBrowserDelegate> theDelegate;
 
 -(void)setUp;
 -(void)loadImage;

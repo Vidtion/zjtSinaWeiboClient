@@ -13,7 +13,6 @@
 #import "OAuthWebView.h"
 #import "ASIHTTPRequest.h"
 #import "HHNetDataCacheManager.h"
-#import "ImageBrowser.h"
 #import "GifView.h"
 #import "SHKActivityIndicator.h"
 #import "ZJTDetailStatusVC.h"
@@ -68,8 +67,8 @@
         shouldShowIndicator = YES;
         manager = [WeiBoMessageManager getInstance];
         defaultNotifCenter = [NSNotificationCenter defaultCenter];
-        headDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
-        imageDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
+        headDictionary = [[NSMutableDictionary alloc] init];
+        imageDictionary = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -144,7 +143,7 @@
     {
         [manager getUserID];
         [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
     }
 }
 
@@ -156,7 +155,7 @@
         shouldLoad = NO;
         [manager getUserID];
         [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
     }
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID            object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine          object:nil];
@@ -180,8 +179,6 @@
 
 - (void)viewDidUnload 
 {
-    [self setTable:nil];
-    _refreshHeaderView=nil;
     [super viewDidUnload];
 }
 
@@ -227,10 +224,11 @@
     NSDictionary * dic = sender.object;
     NSString * url          = [dic objectForKey:HHNetDataCacheURLKey];
     NSNumber *indexNumber   = [dic objectForKey:HHNetDataCacheIndex];
-    NSInteger index = [indexNumber intValue];
+    NSInteger index         = [indexNumber intValue];
+    NSData *data            = [dic objectForKey:HHNetDataCacheData];
     
     //当下载大图过程中，后退，又返回，如果此时收到大图的返回数据，会引起crash，在此做预防。
-    if (indexNumber == nil) {
+    if (indexNumber == nil || index == -1) {
         NSLog(@"indexNumber = nil");
         return;
     }
@@ -246,16 +244,16 @@
     //得到的是头像图片
     if ([url isEqualToString:user.profileImageUrl]) 
     {
-        UIImage * image     = [UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
+        UIImage * image     = [UIImage imageWithData:data];
         user.avatarImage    = image;
         
-        [headDictionary setObject:[dic objectForKey:HHNetDataCacheData] forKey:indexNumber];
+        [headDictionary setObject:data forKey:indexNumber];
     }
     
     //得到的是博文图片
     if([url isEqualToString:sts.thumbnailPic])
     {
-        [imageDictionary setObject:[dic objectForKey:HHNetDataCacheData] forKey:indexNumber];
+        [imageDictionary setObject:data forKey:indexNumber];
     }
     
     //得到的是转发的图片
@@ -263,7 +261,7 @@
     {
         if ([url isEqualToString:sts.retweetedStatus.thumbnailPic])
         {
-            [imageDictionary setObject:[dic objectForKey:HHNetDataCacheData] forKey:indexNumber];
+            [imageDictionary setObject:data forKey:indexNumber];
         }
     }
     
@@ -308,19 +306,21 @@
     [self doneLoadingTableViewData];
     
     shouldLoadAvatar = YES;
+    [statuesArr removeAllObjects];
     self.statuesArr = sender.object;
     [table reloadData];
     [[SHKActivityIndicator currentIndicator] hide];
     
     [headDictionary  removeAllObjects];
     [imageDictionary removeAllObjects];
+    
     [self getImages];
 }
 
 -(void)refresh
 {
     [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
 }
 
 //计算text field 的高度。
@@ -447,9 +447,8 @@
 
 #pragma mark - StatusCellDelegate
 
--(void)getOriginImage:(NSNotification*) hhack
+-(void)browserDidGetOriginImage:(NSDictionary*)dic
 {
-    NSDictionary * dic=hhack.object;
     NSString * url=[dic objectForKey:HHNetDataCacheURLKey];
     if ([url isEqualToString:browserView.bigImageURL]) 
     {
@@ -500,7 +499,7 @@
     }
     
     browserView.image = image;
-    browserView.delegate = self;
+    browserView.theDelegate = self;
     browserView.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
     [browserView loadImage];
 
@@ -567,7 +566,7 @@
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
     _reloading = YES;
 	[manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{

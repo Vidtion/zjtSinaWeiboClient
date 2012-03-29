@@ -31,13 +31,17 @@ static HHNetDataCacheManager * instance;
 }
 
 -(void) sendNotificationWithKey:(NSString *) url Data:(NSData *) data index:(NSNumber*)index{
-    NSDictionary * post=[[NSDictionary alloc] initWithObjectsAndKeys:url,HHNetDataCacheURLKey,data,HHNetDataCacheData, index,HHNetDataCacheIndex,nil];
+    NSDictionary * post=[[NSDictionary alloc] initWithObjectsAndKeys:
+                         url,   HHNetDataCacheURLKey,
+                         data,  HHNetDataCacheData, 
+                         index, HHNetDataCacheIndex,nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:HHNetDataCacheNotification object:post];
     [post release];
 }
 
 -(void)dealloc
 {
+    [cacheDic release];
     [cacheArray release];
     [super dealloc];
 }
@@ -47,17 +51,20 @@ static HHNetDataCacheManager * instance;
     if (url==nil||[url length]==0) {
         return ;
     }
-    @synchronized(self) {
+    @synchronized(self) 
+    {
         int i=0;
         for (i=0; i<[cacheArray count]; i++) {
             NSString * str=[cacheArray objectAtIndex:i];
             if (str!=nil) {
                 if ([[cacheArray objectAtIndex:i] isEqualToString:url]) {
+                    NSLog(@"HHNetDataCacheManager url = %@",url);
                     break;
                 }
             }
         }
-        if (i<[cacheArray count]) {//match
+        if (i<[cacheArray count]) 
+        {//match
             NSData * result=[cacheDic objectForKey:[cacheArray objectAtIndex:i]];
             NSNumber *indexNumber = [NSNumber numberWithInt:index];
             [self sendNotificationWithKey:url Data:result index:indexNumber];
@@ -66,7 +73,8 @@ static HHNetDataCacheManager * instance;
             //            [cacheArray removeObjectAtIndex:i];
             //            [cacheArray insertObject:key atIndex:0];
         }
-        else{//unmatch
+        else
+        {//unmatch
             ASIHTTPRequest * request=[ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
             [request setDelegate:self];
             

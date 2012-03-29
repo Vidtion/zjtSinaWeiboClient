@@ -79,7 +79,7 @@ static SHKActivityIndicator *currentIndicator = nil;
 		[self addSubview:modalBackView];
         
         //    self.frame = CGRectMake(0, 0, 480, 320);
-		[self setProperRotation:NO];
+//		[self setProperRotation:NO];
         
     }
     
@@ -356,7 +356,7 @@ static SHKActivityIndicator *currentIndicator = nil;
 - (void)setProperRotation
 {
     //	[self setProperRotation:YES];
-    [self setRotationWithOritation:[UIDevice currentDevice].orientation animted:YES];
+    [self setRotationWithOritation:UIDeviceOrientationPortrait animted:YES];
 }
 
 - (void)setRotationWithOritation:(UIDeviceOrientation)orientation animted:(BOOL)animated

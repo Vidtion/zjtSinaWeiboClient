@@ -551,19 +551,17 @@
     NSURL *url = [NSURL URLWithString:@"https://api.weibo.com/2/statuses/repost.json"];
     ASIFormDataRequest *item = [[ASIFormDataRequest alloc] initWithURL:url];
     self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
-    NSNumber *number = [NSNumber numberWithLongLong:[weiboID longLongValue]];
+    NSString *sts =[NSString stringWithFormat:@"%d",isComment];
     
-    [item setPostValue:authToken                            forKey:@"access_token"];
-    [item setPostValue:[content URLEncodedString]           forKey:@"status"];
-    [item setPostValue:weiboID                              forKey:@"id"];
-    [item setPostValue:[NSNumber numberWithInt:isComment]   forKey:@"is_comment"];
+    [item setPostValue:authToken    forKey:@"access_token"];
+    [item setPostValue:content      forKey:@"status"];
+    [item setPostValue:weiboID      forKey:@"id"];
+    [item setPostValue:sts          forKey:@"is_comment"];
     
     [self setPostUserInfo:item withRequestType:SinaRepost];
     [requestQueue addOperation:item];
     [item release];
 }
-
-#pragma mark - Http Result
 
 #pragma mark - Operate queue
 - (BOOL)isRunning

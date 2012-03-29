@@ -7,14 +7,26 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "zjtSinaWeiboClient/ImageBrowser.m"
-         timestampString = "352965674.723124"
+         filePath = "zjtSinaWeiboClient/HHNetDataCacheManager.m"
+         timestampString = "354697598.606401"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "62"
-         endingLineNumber = "62"
-         landmarkName = "-dismiss"
+         startingLineNumber = "61"
+         endingLineNumber = "61"
+         landmarkName = "-getDataWithURL:withIndex:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "zjtSinaWeiboClient/FirstViewController.m"
+         timestampString = "354700044.395407"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "194"
+         endingLineNumber = "194"
+         landmarkName = "-getImages"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

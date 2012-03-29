@@ -37,6 +37,7 @@
 @synthesize avatarImage;
 @synthesize contentImage;
 @synthesize commentArr;
+@synthesize isFromProfileVC;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,6 +45,7 @@
     if (self) 
     {
         _hasRetwitter = NO;
+        isFromProfileVC = NO;
     }
     return self;
 }
@@ -88,6 +90,8 @@
     contentImageV.hidden = !_hasImage;
     retwitterImageV.hidden = !_haveRetwitterImage;
     retwitterMainV.hidden = !_hasRetwitter;
+    
+    [self setViewsHeight];
     
     [manager getCommentListWithID:status.statusId];
 }
@@ -159,66 +163,54 @@
 -(void)setViewsHeight
 {
     [contentTF layoutIfNeeded];
-    
-//    CGRect frame = contentTF.frame;
-//    frame.size.height = [ZJTHelpler getTextViewHeight:contentTF.text with:320.0f sizeOfFont:14 addtion:0];
+    [retwitterTF layoutIfNeeded];
     
     //博文Text
+    //size
     CGRect frame = contentTF.frame;
     frame.size = contentTF.contentSize;
     contentTF.frame = frame;
     
     //转发博文Text
+    //size
     frame = retwitterTF.frame;
     frame.size = retwitterTF.contentSize;
+    frame.origin = CGPointMake(0, 0);
     retwitterTF.frame = frame;
     
     //转发的主View
     frame = retwitterMainV.frame;
-    if (_haveRetwitterImage) frame.size.height = retwitterTF.frame.size.height + IMAGE_VIEW_HEIGHT + 15;
-    else frame.size.height = retwitterTF.frame.size.height + 15;
-    if(_hasImage) frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y + IMAGE_VIEW_HEIGHT;
-    else frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y;
+    //size
+    if (_haveRetwitterImage)    frame.size.height = retwitterTF.frame.size.height + IMAGE_VIEW_HEIGHT + 10;
+    else                        frame.size.height = retwitterTF.frame.size.height + 10;
+    //origin
+    if(_hasImage)               frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y + IMAGE_VIEW_HEIGHT;
+    else                        frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y ;
     retwitterMainV.frame = frame;
     
-
+    //转发的图片
+    //origin
+    frame = retwitterImageV.frame;
+    frame.origin.y = retwitterTF.frame.size.height;
+    frame.size.height = IMAGE_VIEW_HEIGHT;
+    retwitterImageV.frame = frame;
     
-//    //博文Text
-//    CGRect frame = contentTF.frame;
-//    frame.size = contentTF.contentSize;
-//    contentTF.frame = frame;
-//    
-//    //转发博文Text
-//    frame = retwitterContentTF.frame;
-//    frame.size = retwitterContentTF.contentSize;
-//    retwitterContentTF.frame = frame;
-//    
-//    
-//    //转发的主View
-//    frame = retwitterMainV.frame;
-//    
-//    if (haveRetwitterImage) frame.size.height = retwitterContentTF.frame.size.height + IMAGE_VIEW_HEIGHT + 15;
-//    else frame.size.height = retwitterContentTF.frame.size.height + 15;
-//    
-//    if(hasImage) frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y + IMAGE_VIEW_HEIGHT;
-//    else frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y;
-//    
-//    retwitterMainV.frame = frame;
-//    
-//    
-//    //转发的图片
-//    frame = retwitterContentImage.frame;
-//    frame.origin.y = retwitterContentTF.frame.size.height;
-//    retwitterContentImage.frame = frame;
-//    
-//    //正文的图片
-//    frame = contentImage.frame;
-//    frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y - 5.0f;
-//    contentImage.frame = frame;
-//    
-//    //背景设置
-//    bgImage.image = [[UIImage imageNamed:@"table_header_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
-//    retwitterBgImage.image = [[UIImage imageNamed:@"timeline_rt_border_t.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:7];
+    //正文的图片
+    //origin
+    frame = contentImageV.frame;
+    frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y - 5.0f;
+    frame.size.height = IMAGE_VIEW_HEIGHT;
+    contentImageV.frame = frame;
+    
+    //headerView
+    frame = headerView.frame;
+    if (_hasRetwitter) {
+        frame.size.height = retwitterMainV.frame.origin.y + retwitterMainV.frame.size.height + 10;
+    }
+    else {
+        frame.size.height = retwitterMainV.frame.origin.y + 10;
+    }
+    headerView.frame = frame;
 }
 
 - (void)refresh {
@@ -227,6 +219,11 @@
 
 - (IBAction)gotoProfileView:(id)sender 
 {
+    if (isFromProfileVC) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+    
     ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
     profile.userID = [NSString stringWithFormat:@"%lld",self.user.userId];
     profile.user = self.user;
