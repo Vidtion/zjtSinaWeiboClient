@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "zjtSinaWeiboClient/WeiBoHttpManager.m"
-         timestampString = "354729643.84718"
+         timestampString = "354732177.624656"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "615"
-         endingLineNumber = "615"
+         startingLineNumber = "617"
+         endingLineNumber = "617"
          landmarkName = "-requestFinished:"
          landmarkType = "5">
       </FileBreakpoint>

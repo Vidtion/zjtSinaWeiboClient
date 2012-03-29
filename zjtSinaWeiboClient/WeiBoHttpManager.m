@@ -610,7 +610,9 @@
     [parser release];
     if ([returnObject isKindOfClass:[NSDictionary class]]) {
         NSString *errorString = [returnObject  objectForKey:@"error"];
-        if (errorString != nil && ([errorString isEqualToString:@"auth faild!"] || [errorString isEqualToString:@"expired_token"])) {
+        if (errorString != nil && ([errorString isEqualToString:@"auth faild!"] || 
+                                   [errorString isEqualToString:@"expired_token"] || 
+                                   [errorString isEqualToString:@"invalid_access_token"])) {
             [[NSNotificationCenter defaultCenter] postNotificationName:NeedToReLogin object:nil];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_STORE_ACCESS_TOKEN];
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_STORE_USER_ID];
