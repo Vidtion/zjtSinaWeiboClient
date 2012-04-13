@@ -47,8 +47,8 @@
     BOOL _hasImage;
     BOOL shouldShowIndicator;
 }
-@property (retain, nonatomic) IBOutlet UIImageView *headerBackgroundView;
-@property (retain, nonatomic) IBOutlet UIImageView *mainViewBackView;
+@property (retain, nonatomic) IBOutlet UIImageView  *headerBackgroundView;
+@property (retain, nonatomic) IBOutlet UIImageView  *mainViewBackView;
 
 @property (retain, nonatomic) IBOutlet UIView       *headerView;
 @property (retain, nonatomic) IBOutlet UITableView  *table;
@@ -61,13 +61,13 @@
 @property (retain, nonatomic) IBOutlet UIImageView  *retwitterImageV;
 @property (retain, nonatomic) IBOutlet UILabel      *timeLB;
 @property (retain, nonatomic) IBOutlet UILabel      *countLB;
-@property (retain, nonatomic) UINib     *commentCellNib;
-@property (retain, nonatomic) Status    *status;
-@property (retain, nonatomic) User      *user;
-@property (retain, nonatomic) UIImage   *avatarImage;
-@property (retain, nonatomic) UIImage   *contentImage;
-@property (retain, nonatomic) NSMutableArray  *commentArr;
-@property (assign, nonatomic) BOOL isFromProfileVC;
-@property (retain, nonatomic) ImageBrowser *browserView;
+@property (retain, nonatomic) UINib                 *commentCellNib;
+@property (retain, nonatomic) Status                *status;
+@property (retain, nonatomic) User                  *user;
+@property (retain, nonatomic) UIImage               *avatarImage;
+@property (retain, nonatomic) UIImage               *contentImage;
+@property (retain, nonatomic) NSMutableArray        *commentArr;
+@property (assign, nonatomic) BOOL                  isFromProfileVC;
+@property (retain, nonatomic) ImageBrowser          *browserView;
 
 @end

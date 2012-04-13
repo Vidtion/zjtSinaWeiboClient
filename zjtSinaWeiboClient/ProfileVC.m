@@ -49,12 +49,13 @@
     self.userID = nil;
     self.browserView = nil;
     self.table = nil;
-    self.headerView = nil;
     self.headerVImageV = nil;
     self.headerVNameLB = nil;
     self.weiboCount = nil;
     self.followerCount = nil;
     self.followingCount = nil;
+    
+    self.headerView = nil;
     [super dealloc];
 }
 
@@ -131,12 +132,6 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)viewDidUnload 
-{
-    [super viewDidUnload];
-}
-
-
 #pragma mark - Methods
 
 //异步加载图片
@@ -184,7 +179,7 @@
     if([url isEqualToString:user.profileLargeImageUrl])
     {
         UIImage * image     = [UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
-        avatarImage = image;
+        self.avatarImage = image;
         headerVImageV.image = image;
     }
     
@@ -377,6 +372,7 @@
     }
     
     [self.navigationController pushViewController:detailVC animated:YES];
+    [detailVC release];
 }
 
 #pragma mark - StatusCellDelegate

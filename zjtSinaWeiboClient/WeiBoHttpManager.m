@@ -666,6 +666,8 @@
     if (requestType == SinaGetComment) {
         SBJsonParser    *parser     = [[SBJsonParser alloc] init];    
         NSDictionary    *info       = [parser objectWithString:responseString];
+        [parser release];
+        
         NSArray         *arr        = [info objectForKey:@"comments"];
         NSNumber        *count      = [info objectForKey:@"total_number"];
         if (arr == nil || [arr isEqual:[NSNull null]]) {
@@ -677,12 +679,12 @@
             Comment *comm = [Comment commentWithJsonDictionary:item];
             [commentArr addObject:comm];
         }
-        [parser release];
         
         if ([delegate respondsToSelector:@selector(didGetCommentList:)]) {
             NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:commentArr,@"commentArrary",count,@"count", nil];
             [delegate didGetCommentList:dic];
         }
+        [commentArr release];
     }
     
     //获取用户双向关注的用户ID列表，即互粉UID列表

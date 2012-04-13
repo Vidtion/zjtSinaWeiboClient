@@ -179,11 +179,6 @@
     [super viewDidAppear:animated];
 }
 
-- (void)viewDidUnload 
-{
-    [super viewDidUnload];
-}
-
 #pragma mark - Methods
 
 -(void)relogin
@@ -453,6 +448,7 @@
     }
     
     [self.navigationController pushViewController:detailVC animated:YES];
+    [detailVC release];
 }
 
 #pragma mark - StatusCellDelegate

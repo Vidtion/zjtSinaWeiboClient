@@ -118,25 +118,6 @@
     [center removeObserver:self name:MMSinaGotCommentList object:nil];
 }
 
-- (void)viewDidUnload
-{
-    [self setHeaderView:nil];
-    [self setTable:nil];
-    [self setAvatarImageV:nil];
-    [self setTwitterNameLB:nil];
-    [self setContentTF:nil];
-    [self setContentImageV:nil];
-    [self setRetwitterMainV:nil];
-    [self setRetwitterTF:nil];
-    [self setRetwitterImageV:nil];
-    [self setTimeLB:nil];
-    [self setCountLB:nil];
-    
-    [self setHeaderBackgroundView:nil];
-    [self setMainViewBackView:nil];
-    [super viewDidUnload];
-}
-
 -(UINib*)commentCellNib
 {
     if (commentCellNib == nil) {
@@ -146,27 +127,26 @@
 }
 
 - (void)dealloc {
-    self.browserView = nil;
-    [headerView release];
-    [table release];
-    [avatarImageV release];
-    [twitterNameLB release];
-    [contentTF release];
-    [contentImageV release];
-    [retwitterMainV release];
-    [retwitterTF release];
-    [retwitterImageV release];
-    [timeLB release];
-    [countLB release];
-    
+    self.headerBackgroundView = nil;
+    self.mainViewBackView = nil;
+    self.table = nil;
+    self.avatarImageV = nil;
+    self.twitterNameLB = nil;
+    self.contentTF = nil;
+    self.contentImageV = nil;
+    self.retwitterTF = nil;
+    self.retwitterImageV = nil;
+    self.timeLB = nil;
+    self.countLB = nil;
     self.commentCellNib = nil;
     self.status = nil;
     self.user = nil;
     self.avatarImage = nil;
     self.contentImage = nil;
     self.commentArr = nil;
-    [headerBackgroundView release];
-    [mainViewBackView release];
+//    self.browserView = nil;
+    self.retwitterMainV = nil;
+    self.headerView = nil;
     [super dealloc];
 }
 
