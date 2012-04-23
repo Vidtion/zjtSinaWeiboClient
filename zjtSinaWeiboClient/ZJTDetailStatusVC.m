@@ -92,6 +92,10 @@
         retwitterTF.text = [NSString stringWithFormat:@"%@:%@",status.retweetedStatus.user.screenName,status.retweetedStatus.text];
     }
     
+    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:user.following == YES ? @"取消关注":@"关注"style:UIBarButtonItemStylePlain target:self action:@selector(follow)];
+    self.navigationItem.rightBarButtonItem = retwitterBtn;
+    [retwitterBtn release];
+    
     contentImageV.hidden = !_hasImage;
     retwitterImageV.hidden = !_haveRetwitterImage;
     retwitterMainV.hidden = !_hasRetwitter;
@@ -108,6 +112,8 @@
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     
     [center addObserver:self selector:@selector(didGetComments:) name:MMSinaGotCommentList object:nil];
+    [center addObserver:self selector:@selector(didFollowByUserID:) name:MMSinaFollowedByUserIDWithResult object:nil];
+    [center addObserver:self selector:@selector(didUnfollowByUserID:) name:MMSinaUnfollowedByUserIDWithResult object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated 
@@ -116,6 +122,8 @@
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     
     [center removeObserver:self name:MMSinaGotCommentList object:nil];
+    [center removeObserver:self name:MMSinaFollowedByUserIDWithResult object:nil];
+    [center removeObserver:self name:MMSinaUnfollowedByUserIDWithResult object:nil];
 }
 
 -(UINib*)commentCellNib
@@ -212,6 +220,16 @@
     [manager getCommentListWithID:status.statusId];
 }
 
+-(void)follow
+{
+    if (user.following == YES) {
+        [manager unfollowByUserID:user.userId];
+    }
+    else {
+        [manager followByUserID:user.userId];
+    }
+}
+
 - (IBAction)tapDetected:(id)sender {
     shouldShowIndicator = YES;
     
@@ -297,6 +315,24 @@
         }
         [table reloadData];
         [self stopLoading];
+    }
+}
+
+-(void)didFollowByUserID:(NSNotification*)sender
+{
+    NSNumber *result = sender.object;
+    if (result.intValue == 0) {//成功
+        user.following = YES;
+        [self.navigationItem.rightBarButtonItem setTitle:@"取消关注"];
+    }
+}
+
+-(void)didUnfollowByUserID:(NSNotification *)sender
+{
+    NSNumber *result = sender.object;
+    if (result.intValue == 0) {//成功
+        user.following = NO;
+        [self.navigationItem.rightBarButtonItem setTitle:@"关注"];
     }
 }
 

@@ -15,9 +15,9 @@
 
 @implementation TwitterVC
 
-@synthesize imageV;
 @synthesize theScrollView;
 @synthesize theImageView;
+@synthesize TVBackView;
 @synthesize theTextView;
 
 #pragma mark - Tool Methods
@@ -90,10 +90,10 @@
 }
 
 - (void)dealloc {
-    [imageV release];
     [theScrollView release];
     [theImageView release];
     [theTextView release];
+    [TVBackView release];
     [super dealloc];
 }
 
@@ -106,6 +106,8 @@
     [retwitterBtn release];
     
     theScrollView.contentSize = CGSizeMake(320, 410);
+    
+    TVBackView.image = [[UIImage imageNamed:@"input_window.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:15];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -116,10 +118,10 @@
 
 - (void)viewDidUnload
 {
-    [self setImageV:nil];
     [self setTheScrollView:nil];
     [self setTheImageView:nil];
     [self setTheTextView:nil];
+    [self setTVBackView:nil];
     [super viewDidUnload];
 }
 
@@ -128,7 +130,7 @@
 {
     [picker dismissModalViewControllerAnimated:YES];
     UIImage * image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    self.imageV.image = image;
+    self.theImageView.image = image;
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

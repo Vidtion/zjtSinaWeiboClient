@@ -78,6 +78,8 @@ static HHNetDataCacheManager * instance;
             NSLog(@"unmatch url = %@",url);
             ASIHTTPRequest * request=[ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
             [request setDelegate:self];
+            request.downloadProgressDelegate = self;
+            request.uploadProgressDelegate = self;
             
             if (index >= 0) {
                 NSNumber *indexNumber = [NSNumber numberWithInt:index];
@@ -122,4 +124,12 @@ static HHNetDataCacheManager * instance;
         }
     }
 }
+
+//下载进度
+- (void)setProgress:(ASIHTTPRequest *)request newProgress:(float)newProgress
+{
+    NSLog(@"progress = %f",newProgress);
+}
+
+
 @end

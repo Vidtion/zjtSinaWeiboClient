@@ -16,7 +16,7 @@
 #define HHNetDataCacheData @"HHNetDataCacheData"
 #define HHNetDataCacheIndex @"HHNetDataCacheIndex"
 
-@interface HHNetDataCacheManager : NSObject<ASIHTTPRequestDelegate>{
+@interface HHNetDataCacheManager : NSObject<ASIHTTPRequestDelegate,ASIProgressDelegate>{
     NSMutableDictionary * cacheDic;
     NSMutableArray * cacheArray;
 }
