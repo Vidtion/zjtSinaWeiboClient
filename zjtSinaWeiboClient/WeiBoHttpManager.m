@@ -306,6 +306,52 @@
     [request release];
 }
 
+//获取用户的关注列表
+-(void)getFollowingUserList:(long long)uid count:(int)count cursor:(int)cursor
+{
+    //https://api.weibo.com/2/friendships/friends.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    self.userId = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
+    
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,                                   @"access_token",
+                                       [NSString stringWithFormat:@"%lld",uid],     @"uid",
+                                       [NSString stringWithFormat:@"%d",count],     @"count",
+                                       [NSString stringWithFormat:@"%d",cursor],      @"cursor",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/friendships/friends.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetFollowingUserList];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
+//获取用户粉丝列表
+-(void)getFollowedUserList:(long long)uid count:(int)count cursor:(int)cursor
+{
+    //https://api.weibo.com/2/friendships/followers.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    self.userId = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
+    
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,                                   @"access_token",
+                                       [NSString stringWithFormat:@"%lld",uid],     @"uid",
+                                       [NSString stringWithFormat:@"%d",count],     @"count",
+                                       [NSString stringWithFormat:@"%d",cursor],    @"cursor",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/friendships/followers.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetFollowedUserList];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
 //关注一个用户 by User ID
 -(void)followByUserID:(long long)uid
 {
@@ -317,7 +363,12 @@
     [item setPostValue:authToken                                forKey:@"access_token"];
     [item setPostValue:[NSString stringWithFormat:@"%lld",uid]  forKey:@"uid"];
     
-    [self setPostUserInfo:item withRequestType:SinaFollowByUserID];
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:[NSNumber numberWithInt:SinaFollowByUserID] forKey:USER_INFO_KEY_TYPE];
+    [dict setObject:[NSString stringWithFormat:@"%lld",uid] forKey:@"uid"];
+    [item setUserInfo:dict];
+    [dict release];
+    
     [requestQueue addOperation:item];
     [item release];
 }
@@ -349,7 +400,12 @@
     [item setPostValue:authToken                                forKey:@"access_token"];
     [item setPostValue:[NSString stringWithFormat:@"%lld",uid]  forKey:@"uid"];
     
-    [self setPostUserInfo:item withRequestType:SinaUnfollowByUserID];
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:[NSNumber numberWithInt:SinaUnfollowByUserID] forKey:USER_INFO_KEY_TYPE];
+    [dict setObject:[NSString stringWithFormat:@"%lld",uid] forKey:@"uid"];
+    [item setUserInfo:dict];
+    [dict release];
+    
     [requestQueue addOperation:item];
     [item release];
 }
@@ -598,8 +654,8 @@
 
 //成功
 - (void)requestFinished:(ASIHTTPRequest *)request{
-    NSDictionary *userInfo = [request userInfo];
-    RequestType requestType = [[userInfo objectForKey:USER_INFO_KEY_TYPE] intValue];
+    NSDictionary *userInformation = [request userInfo];
+    RequestType requestType = [[userInformation objectForKey:USER_INFO_KEY_TYPE] intValue];
     NSString * responseString = [request responseString];
     NSLog(@"responseString = %@",responseString);
     
@@ -716,6 +772,44 @@
         [userArr release];
     }
     
+    //获取用户的关注列表
+    if (requestType == SinaGetFollowingUserList) {
+        SBJsonParser *parser = [[SBJsonParser alloc] init];    
+        NSDictionary *userInfo = [parser objectWithString:responseString];
+        [parser release];
+        
+        NSArray *arr = [userInfo objectForKey:@"users"];
+        NSMutableArray *userArr = [[NSMutableArray alloc]initWithCapacity:0];
+        for (id item in arr) {
+            User *user = [[User alloc]initWithJsonDictionary:item];
+            [userArr addObject:user];
+            [user release];
+        }
+        if ([delegate respondsToSelector:@selector(didGetFollowingUsersList:)]) {
+            [delegate didGetFollowingUsersList:userArr];
+        }
+        [userArr release];
+    }
+        
+    //获取用户粉丝列表
+    if (requestType == SinaGetFollowedUserList) {
+        SBJsonParser *parser = [[SBJsonParser alloc] init];    
+        NSDictionary *userInfo = [parser objectWithString:responseString];
+        [parser release];
+        
+        NSArray *arr = [userInfo objectForKey:@"users"];
+        NSMutableArray *userArr = [[NSMutableArray alloc]initWithCapacity:0];
+        for (id item in arr) {
+            User *user = [[User alloc]initWithJsonDictionary:item];
+            [userArr addObject:user];
+            [user release];
+        }
+        if ([delegate respondsToSelector:@selector(didGetFollowedUsersList:)]) {
+            [delegate didGetFollowedUsersList:userArr];
+        }
+        [userArr release];
+    }
+    
     //关注一个用户 by User ID or Name
     if (requestType == SinaFollowByUserID || requestType == SinaFollowByUserName) {
         int result = 1;
@@ -731,8 +825,16 @@
             result = 1; //failed
         }
         [parser release];
+        
+        NSString *uid = [userInformation objectForKey:@"uid"];
+        NSMutableDictionary *dic = [[[NSMutableDictionary alloc]initWithCapacity:0] autorelease];    
+        [dic setObject:[NSNumber numberWithInt:result] forKey:@"result"];
+        if (uid != nil) {
+            [dic setObject:uid forKey:@"uid"];
+        }
+        
         if ([delegate respondsToSelector:@selector(didFollowByUserIDWithResult:)]) {
-            [delegate didFollowByUserIDWithResult:result];
+            [delegate didFollowByUserIDWithResult:dic];
         }
     }
     
@@ -751,8 +853,15 @@
             result = 1; //failed
         }
         [parser release];
+        
+        NSString *uid = [userInformation objectForKey:@"uid"];
+        NSMutableDictionary *dic = [[[NSMutableDictionary alloc]initWithCapacity:0] autorelease];    
+        [dic setObject:[NSNumber numberWithInt:result] forKey:@"result"];
+        if (uid != nil) {
+            [dic setObject:uid forKey:@"uid"];
+        }
         if ([delegate respondsToSelector:@selector(didUnfollowByUserIDWithResult:)]) {
-            [delegate didUnfollowByUserIDWithResult:result];
+            [delegate didUnfollowByUserIDWithResult:dic];
         }
     }
     

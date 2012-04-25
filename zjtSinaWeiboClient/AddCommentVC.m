@@ -59,13 +59,14 @@
 
     self.navigationItem.rightBarButtonItem = sendBtn;
     [sendBtn release];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGetRepostResult:) name:MMSinaGotRepost object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [contentV becomeFirstResponder];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGetRepostResult:) name:MMSinaGotRepost object:nil];
 }
 
 - (void)viewDidUnload

@@ -7,39 +7,26 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "zjtSinaWeiboClient/WeiBoHttpManager.m"
-         timestampString = "354732177.624656"
+         filePath = "zjtSinaWeiboClient/FollowerVC.m"
+         timestampString = "357057118.785608"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "617"
-         endingLineNumber = "617"
-         landmarkName = "-requestFinished:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "zjtSinaWeiboClient/HHNetDataCacheManager.m"
-         timestampString = "356879972.209441"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "80"
-         endingLineNumber = "80"
-         landmarkName = "-getDataWithURL:withIndex:"
+         startingLineNumber = "161"
+         endingLineNumber = "161"
+         landmarkName = "-gotFollowResult:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "zjtSinaWeiboClient/HHNetDataCacheManager.m"
-         timestampString = "356879972.209441"
+         filePath = "zjtSinaWeiboClient/FollowerVC.m"
+         timestampString = "357057118.785608"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "131"
-         endingLineNumber = "131"
-         landmarkName = "-setProgress:newProgress:"
+         startingLineNumber = "188"
+         endingLineNumber = "188"
+         landmarkName = "-gotUnfollowResult:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

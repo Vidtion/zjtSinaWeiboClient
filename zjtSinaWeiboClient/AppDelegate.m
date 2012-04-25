@@ -8,7 +8,8 @@
 
 #import "AppDelegate.h"
 #import "FirstViewController.h"
-#import "SecondViewController.h"
+#import "FollowerVC.h"
+#import "SettingVC.h"
 
 
 @implementation AppDelegate
@@ -27,14 +28,23 @@
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     
-    UIViewController *viewController1 = [[[FirstViewController alloc] initWithNibName:@"FirstViewController" bundle:nil] autorelease];
-    UINavigationController *nav1 = [[[UINavigationController alloc]initWithRootViewController:viewController1] autorelease];
-//    UIViewController *viewController2 = [[[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil] autorelease];
-//    UINavigationController *nav2 = [[[UINavigationController alloc] initWithRootViewController:viewController2] autorelease];
-//    self.tabBarController = [[[UITabBarController alloc] init] autorelease];
+    FirstViewController *firstViewController = [[[FirstViewController alloc] initWithNibName:@"FirstViewController" bundle:nil] autorelease];
+    FollowerVC  *followerVC     = [[[FollowerVC alloc]initWithNibName:@"FollowerVC" bundle:nil] autorelease];
+    FollowerVC *followingVC    = [[[FollowerVC alloc] initWithNibName:@"FollowerVC" bundle:nil] autorelease];
+    SettingVC   *settingVC      = [[[SettingVC alloc] initWithNibName:@"SettingVC" bundle:nil] autorelease];
     
-//    self.tabBarController.viewControllers = [NSArray arrayWithObjects:nav1, nav2, nil];
-    self.window.rootViewController = nav1;//self.tabBarController;
+    followingVC.title = @"关注列表";
+    followingVC.isFollowingViewController = YES;
+    
+    UINavigationController *nav1 = [[[UINavigationController alloc]initWithRootViewController:firstViewController] autorelease];
+    UINavigationController *nav2 = [[[UINavigationController alloc] initWithRootViewController:followerVC] autorelease];
+    UINavigationController *nav3 = [[[UINavigationController alloc] initWithRootViewController:followingVC] autorelease];
+    UINavigationController *nav4 = [[[UINavigationController alloc] initWithRootViewController:settingVC] autorelease];
+    
+    self.tabBarController = [[[UITabBarController alloc] init] autorelease];
+    
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects:nav1, nav2,nav3,nav4,nil];
+    self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
 
     return YES;

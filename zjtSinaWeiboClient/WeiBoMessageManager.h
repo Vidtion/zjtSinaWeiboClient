@@ -33,16 +33,28 @@
 //返回成员为User的NSArray。
 #define MMSinaGotBilateralUserList @"MMSinaGotBilateralUserList"
 
+//获取用户的关注列表
+//返回成员为User的NSArray。
+#define MMSinaGotFollowingUserList @"MMSinaGotFollowingUserList"
+
+//获取用户的粉丝列表
+//返回成员为User的NSArray。
+#define MMSinaGotFollowedUserList @"MMSinaGotFollowedUserList"
+
 //获取某话题下的微博消息
 //返回成员为Status的NSArray
 #define MMSinaGotTrendStatues @"MMSinaGotTrendStatues"
 
 //关注一个用户 by User ID
-//返回一个int(NSNumber)值，int == 0 成功，int == 1，失败
+//返回一个Dic
+//result:(NSNumber)值，int == 0 成功，int == 1，失败
+//uid (NSString)
 #define MMSinaFollowedByUserIDWithResult @"MMSinaFollowedByUserIDWithResult"
 
 //取消关注一个用户 by User ID
-//返回一个int(NSNumber)值，int == 0 成功，int == 1，失败
+//返回一个Dic
+//result:(NSNumber)值，int == 0 成功，int == 1，失败
+//uid (NSString)
 #define MMSinaUnfollowedByUserIDWithResult @"UnfollowedByUserIDWithResult"
 
 //关注某话题
@@ -99,6 +111,12 @@
 //获取用户双向关注的用户ID列表，即互粉UID列表 
 -(void)getBilateralIdListAll:(long long)uid sort:(int)sort;
 -(void)getBilateralIdList:(long long)uid count:(int)count page:(int)page sort:(int)sort;
+
+//获取用户的关注列表
+-(void)getFollowingUserList:(long long)uid count:(int)count cursor:(int)cursor;
+
+//获取用户粉丝列表
+-(void)getFollowedUserList:(long long)uid count:(int)count cursor:(int)cursor;
 
 //获取用户的双向关注user列表，即互粉列表
 -(void)getBilateralUserList:(long long)uid count:(int)count page:(int)page sort:(int)sort;

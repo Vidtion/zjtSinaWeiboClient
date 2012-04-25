@@ -110,23 +110,24 @@
     theScrollView.contentSize = CGSizeMake(320, 410);
     
     TVBackView.image = [[UIImage imageNamed:@"input_window.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:15];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPost:) name:MMSinaGotPostResult object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [theTextView becomeFirstResponder];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPost:) name:MMSinaGotPostResult object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated 
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MMSinaGotPostResult object:nil];
     [super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPost:) name:MMSinaGotPostResult object:nil];
     [self setTheScrollView:nil];
     [self setTheImageView:nil];
     [self setTheTextView:nil];

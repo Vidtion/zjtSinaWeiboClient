@@ -104,26 +104,31 @@
     [self.table setTableHeaderView:headerView];
     
     [manager getCommentListWithID:status.statusId];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(didGetComments:) name:MMSinaGotCommentList object:nil];
     [center addObserver:self selector:@selector(didFollowByUserID:) name:MMSinaFollowedByUserIDWithResult object:nil];
     [center addObserver:self selector:@selector(didUnfollowByUserID:) name:MMSinaUnfollowedByUserIDWithResult object:nil];
 }
 
--(void)viewWillDisappear:(BOOL)animated 
+-(void)viewDidUnload
 {
-    [super viewWillDisappear:animated];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    
     [center removeObserver:self name:MMSinaGotCommentList object:nil];
     [center removeObserver:self name:MMSinaFollowedByUserIDWithResult object:nil];
     [center removeObserver:self name:MMSinaUnfollowedByUserIDWithResult object:nil];
+    
+    [super viewDidUnload];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
+-(void)viewWillDisappear:(BOOL)animated 
+{
+    [super viewWillDisappear:animated];
 }
 
 -(UINib*)commentCellNib
@@ -320,7 +325,9 @@
 
 -(void)didFollowByUserID:(NSNotification*)sender
 {
-    NSNumber *result = sender.object;
+    NSDictionary *dic = sender.object;
+    NSNumber *result = [dic objectForKey:@"result"];
+    
     if (result.intValue == 0) {//成功
         user.following = YES;
         [self.navigationItem.rightBarButtonItem setTitle:@"取消关注"];
@@ -329,7 +336,9 @@
 
 -(void)didUnfollowByUserID:(NSNotification *)sender
 {
-    NSNumber *result = sender.object;
+    NSDictionary *dic = sender.object;
+    NSNumber *result = [dic objectForKey:@"result"];
+    
     if (result.intValue == 0) {//成功
         user.following = NO;
         [self.navigationItem.rightBarButtonItem setTitle:@"关注"];

@@ -143,8 +143,23 @@
     {
         [manager getUserID];
         [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];        
     }
+    [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID            object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine          object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(relogin)            name:NeedToReLogin              object:nil];
+}
+
+-(void)viewDidUnload
+{
+    [defaultNotifCenter removeObserver:self name:MMSinaGotUserID            object:nil];
+    [defaultNotifCenter removeObserver:self name:MMSinaGotHomeLine          object:nil];
+    [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
+    [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo          object:nil];
+    [defaultNotifCenter removeObserver:self name:NeedToReLogin              object:nil];
+    [super viewDidUnload];
 }
 
 - (void)viewWillAppear:(BOOL)animated 
@@ -157,20 +172,10 @@
         [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
         [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
     }
-    [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID            object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine          object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(relogin)            name:NeedToReLogin              object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [defaultNotifCenter removeObserver:self name:MMSinaGotUserID            object:nil];
-    [defaultNotifCenter removeObserver:self name:MMSinaGotHomeLine          object:nil];
-    [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
-    [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo          object:nil];
-    [defaultNotifCenter removeObserver:self name:NeedToReLogin              object:nil];
     [super viewWillDisappear:animated];
 }
 
@@ -238,7 +243,7 @@
         return;
     }
     
-    if (index > [statuesArr count]) {
+    if (index >= [statuesArr count]) {
         NSLog(@"statues arr error ,index = %d,count = %d",index,[statuesArr count]);
         return;
     }
@@ -280,6 +285,8 @@
 {
     self.userID = sender.object;
     [[NSUserDefaults standardUserDefaults] setObject:userID forKey:USER_STORE_USER_ID];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     [manager getUserInfoWithUserID:[userID longLongValue]];
 }
 

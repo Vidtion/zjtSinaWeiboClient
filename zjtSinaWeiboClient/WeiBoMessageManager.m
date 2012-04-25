@@ -102,6 +102,18 @@ static WeiBoMessageManager * instance=nil;
     [httpManager getBilateralUserListAll:uid sort:sort];
 }
 
+//获取用户的关注列表
+-(void)getFollowingUserList:(long long)uid count:(int)count cursor:(int)cursor
+{
+    [httpManager getFollowingUserList:uid count:count cursor:cursor];
+}
+
+//获取用户粉丝列表
+-(void)getFollowedUserList:(long long)uid count:(int)count cursor:(int)cursor
+{
+    [httpManager getFollowedUserList:uid count:count cursor:cursor];
+}
+
 //关注一个用户 by User ID
 -(void)followByUserID:(long long)uid
 {
@@ -224,6 +236,24 @@ static WeiBoMessageManager * instance=nil;
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
+//获取用户的关注列表
+-(void)didGetFollowingUsersList:(NSArray *)userArr
+{
+    User *user = [userArr objectAtIndex:0];
+    NSLog(@"screenName = %@",user.screenName);
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotFollowingUserList object:userArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+//获取用户的粉丝列表
+-(void)didGetFollowedUsersList:(NSArray *)userArr
+{
+    User *user = [userArr objectAtIndex:0];
+    NSLog(@"screenName = %@",user.screenName);
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotFollowedUserList object:userArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
 //获取某话题下的微博消息
 -(void)didGetTrendStatues:(NSArray *)statusArr
 {
@@ -234,20 +264,18 @@ static WeiBoMessageManager * instance=nil;
 }
 
 //关注一个用户 by User ID
--(void)didFollowByUserIDWithResult:(int)result 
+-(void)didFollowByUserIDWithResult:(NSDictionary *)resultDic
 {
-    NSLog(@"result = %d",result);
-    NSNumber *number = [NSNumber numberWithInt:result];
-    NSNotification *notification = [NSNotification notificationWithName:MMSinaFollowedByUserIDWithResult object:number];
+    NSLog(@"result = %@",resultDic);
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaFollowedByUserIDWithResult object:resultDic];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 //取消关注一个用户 by User ID
--(void)didUnfollowByUserIDWithResult:(int)result
+-(void)didUnfollowByUserIDWithResult:(NSDictionary *)resultDic
 {
-    NSLog(@"result = %d",result);
-    NSNumber *number = [NSNumber numberWithInt:result];
-    NSNotification *notification = [NSNotification notificationWithName:MMSinaUnfollowedByUserIDWithResult object:number];
+    NSLog(@"result = %@",resultDic);
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaUnfollowedByUserIDWithResult object:resultDic];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 

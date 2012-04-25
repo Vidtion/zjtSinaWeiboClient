@@ -49,6 +49,8 @@ typedef enum {
     SinaGetComment,                 //根据微博消息ID返回某条微博消息的评论列表
     SinaGetUserStatus,              //获取某个用户最新发表的微博列表
     SinaRepost,                     //转发一条微博
+    SinaGetFollowingUserList,       //获取用户的关注列表
+    SinaGetFollowedUserList,        //获取用户粉丝列表
 }RequestType;
 
 @class ASINetworkQueue;
@@ -78,14 +80,20 @@ typedef enum {
 //获取用户的双向关注user列表，即互粉列表
 -(void)didGetBilateralUserList:(NSArray*)userArr;
 
+//获取用户的关注列表
+-(void)didGetFollowingUsersList:(NSArray*)userArr;
+
+//获取用户粉丝列表
+-(void)didGetFollowedUsersList:(NSArray*)userArr;
+
 //获取某话题下的微博消息
 -(void)didGetTrendStatues:(NSArray*)statusArr;
 
 //关注一个用户 by User ID
--(void)didFollowByUserIDWithResult:(int)result;
+-(void)didFollowByUserIDWithResult:(NSDictionary*)resultDic;
 
 //取消关注一个用户 by User ID
--(void)didUnfollowByUserIDWithResult:(int)result;
+-(void)didUnfollowByUserIDWithResult:(NSDictionary*)resultDic;
 
 //关注某话题
 -(void)didGetTrendIDAfterFollowed:(int64_t)topicID;
@@ -150,6 +158,12 @@ typedef enum {
 //获取用户双向关注的用户ID列表，即互粉UID列表 
 -(void)getBilateralIdListAll:(long long)uid sort:(int)sort;
 -(void)getBilateralIdList:(long long)uid count:(int)count page:(int)page sort:(int)sort;
+
+//获取用户的关注列表
+-(void)getFollowingUserList:(long long)uid count:(int)count cursor:(int)cursor;
+
+//获取用户粉丝列表
+-(void)getFollowedUserList:(long long)uid count:(int)count cursor:(int)cursor;
 
 //获取用户的双向关注user列表，即互粉列表
 -(void)getBilateralUserList:(long long)uid count:(int)count page:(int)page sort:(int)sort;
