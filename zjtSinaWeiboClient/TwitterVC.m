@@ -8,6 +8,7 @@
 
 #import "TwitterVC.h"
 #import "WeiBoMessageManager.h"
+#import "Status.h"
 
 @interface TwitterVC ()
 
@@ -67,7 +68,7 @@
     NSString *content = theTextView.text;
     UIImage *image = theImageView.image;
     if (content != nil && [content length] != 0) {
-        if (image == nil) {
+        if (!_shouldPostImage) {
             [manager postWithText:content];
         }
         else {
@@ -84,6 +85,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        _shouldPostImage = NO;
         manager = [WeiBoMessageManager getInstance];
     }
     return self;
@@ -114,6 +116,13 @@
 {
     [super viewWillAppear:animated];
     [theTextView becomeFirstResponder];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPost:) name:MMSinaGotPostResult object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated 
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MMSinaGotPostResult object:nil];
+    [super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload
@@ -125,12 +134,21 @@
     [super viewDidUnload];
 }
 
+-(void)didPost:(NSNotification*)sender
+{
+    Status *sts = sender.object;
+    if (sts.text != nil && [sts.text length] != 0) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     [picker dismissModalViewControllerAnimated:YES];
     UIImage * image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     self.theImageView.image = image;
+    _shouldPostImage = YES;
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

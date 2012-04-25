@@ -13,6 +13,7 @@
 @interface TwitterVC : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     WeiBoMessageManager *manager;
+    BOOL _shouldPostImage;
 }
 @property (retain, nonatomic) IBOutlet UIScrollView *theScrollView;
 @property (retain, nonatomic) IBOutlet UIImageView *theImageView;
