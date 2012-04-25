@@ -75,6 +75,8 @@
 		ABAA629E15010BD100D86E3C /* SHKActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAA629D15010BD100D86E3C /* SHKActivityIndicator.m */; };
 		ABAA62A315010CD000D86E3C /* UIDevice+Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAA62A215010CD000D86E3C /* UIDevice+Orientation.m */; };
 		ABAA62A615010CDA00D86E3C /* UILabel+Size.m in Sources */ = {isa = PBXBuildFile; fileRef = ABAA62A515010CDA00D86E3C /* UILabel+Size.m */; };
+		ABB2114E15484574001DDF9B /* tabbar_whitebtn.png in Resources */ = {isa = PBXBuildFile; fileRef = ABB2114C15484574001DDF9B /* tabbar_whitebtn.png */; };
+		ABB2114F15484574001DDF9B /* tabbar_whitebtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ABB2114D15484574001DDF9B /* tabbar_whitebtn@2x.png */; };
 		ABE295B914F8C99C00FDABA3 /* ProfileVC.m in Sources */ = {isa = PBXBuildFile; fileRef = ABE295B714F8C99C00FDABA3 /* ProfileVC.m */; };
 		ABE295BA14F8C99C00FDABA3 /* ProfileVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABE295B814F8C99C00FDABA3 /* ProfileVC.xib */; };
 		ABF23F5814B5970100AEEB5C /* NSDataAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF23F5314B5970100AEEB5C /* NSDataAdditions.m */; };
@@ -220,6 +222,8 @@
 		ABAA62A215010CD000D86E3C /* UIDevice+Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Orientation.m"; sourceTree = "<group>"; };
 		ABAA62A415010CDA00D86E3C /* UILabel+Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Size.h"; sourceTree = "<group>"; };
 		ABAA62A515010CDA00D86E3C /* UILabel+Size.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Size.m"; sourceTree = "<group>"; };
+		ABB2114C15484574001DDF9B /* tabbar_whitebtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tabbar_whitebtn.png; path = WeiboImages/tabbar_whitebtn.png; sourceTree = "<group>"; };
+		ABB2114D15484574001DDF9B /* tabbar_whitebtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "tabbar_whitebtn@2x.png"; path = "WeiboImages/tabbar_whitebtn@2x.png"; sourceTree = "<group>"; };
 		ABE295B614F8C99C00FDABA3 /* ProfileVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileVC.h; sourceTree = "<group>"; };
 		ABE295B714F8C99C00FDABA3 /* ProfileVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileVC.m; sourceTree = "<group>"; };
 		ABE295B814F8C99C00FDABA3 /* ProfileVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileVC.xib; sourceTree = "<group>"; };
@@ -664,6 +668,8 @@
 				4506A7C61509D9E000C47A93 /* pullToRefresh */,
 				AB968C3314FE849500A17AFE /* timelineBG */,
 				ABFDE20114B5A25100B57C9F /* WeiboImages */,
+				ABB2114C15484574001DDF9B /* tabbar_whitebtn.png */,
+				ABB2114D15484574001DDF9B /* tabbar_whitebtn@2x.png */,
 				AB0D19D11548250C005EE454 /* tabbar_greenbtn.png */,
 				AB0D19D21548250C005EE454 /* tabbar_greenbtn@2x.png */,
 				AB0D19C915482123005EE454 /* touxiang_40x40.png */,
@@ -810,6 +816,8 @@
 				AB0D19CC15482123005EE454 /* touxiang_40x40@2x.png in Resources */,
 				AB0D19D31548250C005EE454 /* tabbar_greenbtn.png in Resources */,
 				AB0D19D41548250C005EE454 /* tabbar_greenbtn@2x.png in Resources */,
+				ABB2114E15484574001DDF9B /* tabbar_whitebtn.png in Resources */,
+				ABB2114F15484574001DDF9B /* tabbar_whitebtn@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

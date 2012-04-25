@@ -71,7 +71,6 @@
 									<bytes key="NSWhite">MCAwAA</bytes>
 								</object>
 								<bool key="IBUIClipsSubviews">YES</bool>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<bool key="IBUIEditable">NO</bool>
 								<string key="IBUIText">text</string>
@@ -178,7 +177,6 @@
 										<string key="NSReuseIdentifierKey">_NS:639</string>
 										<reference key="IBUIBackgroundColor" ref="736168607"/>
 										<bool key="IBUIClipsSubviews">YES</bool>
-										<bool key="IBUIUserInteractionEnabled">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<bool key="IBUIEditable">NO</bool>
 										<string key="IBUIText"/>
@@ -269,7 +267,6 @@
 								<string key="NSFrame">{{171, 349}, {139, 21}}</string>
 								<reference key="NSSuperview" ref="154365241"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
