@@ -118,10 +118,10 @@
     //https://api.weibo.com/oauth2/authorize
     
     NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-								   SINA_APP_KEY,        @"client_id",       //申请的appkey
-								   @"token",            @"response_type",   //access_token
-								   @"",                 @"redirect_uri",    //申请时的重定向地址
-								   @"wap2.0",           @"display",         //web页面的显示方式
+								   SINA_APP_KEY,                    @"client_id",       //申请的appkey
+								   @"token",                        @"response_type",   //access_token
+								   @"http://hi.baidu.com/jt_one",   @"redirect_uri",    //申请时的重定向地址
+								   @"wap2.0",                       @"display",         //web页面的显示方式
                                    nil];
 	
 	NSURL *url = [self generateURL:SINA_API_AUTHORIZE params:params];
