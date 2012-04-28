@@ -8,20 +8,24 @@
 
 #import <UIKit/UIKit.h>
 #import "LPFriendCell.h"
+#import "PullRefreshTableViewController.h"
 
 @class WeiBoMessageManager;
+@class User;
 
-@interface FollowerVC : UITableViewController<LPFriendCellDelegate>
+@interface FollowerVC : PullRefreshTableViewController<LPFriendCellDelegate>
 {
     NSArray *_usersArr;
     NSMutableDictionary *_userAvatarDic;
     BOOL _isFollowingViewController;
     WeiBoMessageManager *_manager;
     UINib *_followerCellNib;
+    User *_user;
 }
 
 @property (nonatomic,retain) NSArray *userArr;
 @property (nonatomic,retain) NSMutableDictionary *userAvatarDic;
 @property (nonatomic,assign) BOOL isFollowingViewController;
 @property (nonatomic,retain) UINib *followerCellNib;
+@property (nonatomic,retain) User *user;
 @end

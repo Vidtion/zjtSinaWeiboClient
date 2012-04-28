@@ -54,7 +54,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = @"ZJT微博";// NSLocalizedString(@"First", @"First");
-//        self.tabBarItem.image = [UIImage imageNamed:@"first"];
+        self.tabBarItem.image = [UIImage imageNamed:@"first"];
         
         CGRect frame = self.table.frame;
         frame.size.height = frame.size.height + REFRESH_FOOTER_HEIGHT;
@@ -329,6 +329,7 @@
     [self getImages];
 }
 
+//上拉刷新
 -(void)refresh
 {
     [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
@@ -453,7 +454,7 @@
     {
         detailVC.contentImage = [UIImage imageWithData:imageData];
     }
-    
+    detailVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:detailVC animated:YES];
     [detailVC release];
 }

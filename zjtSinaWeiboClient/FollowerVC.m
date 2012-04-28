@@ -12,6 +12,7 @@
 #import "WeiBoMessageManager.h"
 #import "LPFriendCell.h"
 #import "HHNetDataCacheManager.h"
+#import "SHKActivityIndicator.h"
 
 @interface FollowerVC ()
 -(void)getAvatars;
@@ -22,12 +23,14 @@
 @synthesize userAvatarDic = _userAvatarDic;
 @synthesize isFollowingViewController = _isFollowingViewController;
 @synthesize followerCellNib = _followerCellNib;
+@synthesize user = _user;
 
 -(void)dealloc
 {
     self.userArr = nil;
     self.userAvatarDic = nil;
     self.followerCellNib = nil;
+    self.user = nil;
     
     [super dealloc];
 }
@@ -37,7 +40,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = @"粉丝列表";
-        self.tabBarItem.image = [UIImage imageNamed:@"second"];
+        self.tabBarItem.image = [UIImage imageNamed:@"first"];
         _isFollowingViewController = NO;
         _manager = [WeiBoMessageManager getInstance];
         _userAvatarDic = [[NSMutableDictionary alloc] initWithCapacity:0];
@@ -81,7 +84,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSString *userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
+    
+    NSString *userID = nil;
+    if (_user) {
+        userID = [NSString stringWithFormat:@"%lld",_user.userId];
+    }
+    else {
+        userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
+    }
     
     if (_isFollowingViewController) {
         [_manager getFollowingUserList:[userID longLongValue] count:50 cursor:0];
@@ -89,6 +99,7 @@
     else {
         [_manager getFollowedUserList:[userID longLongValue] count:50 cursor:0];
     }
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
     
     NSNotificationCenter *notifCenter = [NSNotificationCenter defaultCenter];
     if (_isFollowingViewController) {
@@ -134,6 +145,8 @@
     self.userArr = sender.object;
     [self.tableView reloadData];
     [self getAvatars];
+    [self stopLoading];
+    [[SHKActivityIndicator currentIndicator] hide];
 }
 
 -(void)gotFollowedUserList:(NSNotification*)sender
@@ -141,6 +154,8 @@
     self.userArr = sender.object;
     [self.tableView reloadData];
     [self getAvatars];
+    [self stopLoading];
+    [[SHKActivityIndicator currentIndicator] hide];
 }
 
 -(void)gotFollowResult:(NSNotification*)sender
@@ -237,6 +252,25 @@
         //下载头像图片
         [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileImageUrl withIndex:i];
     }
+}
+
+- (void)refresh
+{
+    NSString *userID = nil;
+    if (_user) {
+        userID = [NSString stringWithFormat:@"%lld",_user.userId];
+    }
+    else {
+        userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
+    }
+    
+    if (_isFollowingViewController) {
+        [_manager getFollowingUserList:[userID longLongValue] count:50 cursor:0];
+    }
+    else {
+        [_manager getFollowedUserList:[userID longLongValue] count:50 cursor:0];
+    }
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
 }
 
 #pragma mark - Table view data source
@@ -339,6 +373,7 @@
     profile.user = user;
     NSNumber *indexNum = [NSNumber numberWithInt:indexPath.row];
     profile.avatarImage = [_userAvatarDic objectForKey:indexNum];
+    profile.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:profile animated:YES];
     [profile release];
 }

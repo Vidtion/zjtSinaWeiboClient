@@ -16,6 +16,7 @@
 #import "GifView.h"
 #import "SHKActivityIndicator.h"
 #import "ZJTDetailStatusVC.h"
+#import "FollowerVC.h"
 
 @interface ProfileVC ()
 
@@ -139,6 +140,30 @@
     [super viewWillDisappear:animated];
 }
 
+- (IBAction)gotoFollowedVC:(id)sender {
+    FollowerVC  *followerVC     = [[FollowerVC alloc]initWithNibName:@"FollowerVC" bundle:nil];
+    followerVC.title = [NSString stringWithFormat:@"%@的粉丝",user.screenName];
+    followerVC.user = user;
+    followerVC.hidesBottomBarWhenPushed = YES;
+    
+    [self.navigationController pushViewController:followerVC animated:YES];
+    [followerVC release];
+}
+
+- (IBAction)gotoFollowingVC:(id)sender 
+{
+    
+    FollowerVC *followingVC    = [[FollowerVC alloc] initWithNibName:@"FollowerVC" bundle:nil];
+    
+    followingVC.title = [NSString stringWithFormat:@"%@的关注",user.screenName];
+    followingVC.isFollowingViewController = YES;
+    followingVC.user = user;
+    followingVC.hidesBottomBarWhenPushed = YES;
+    
+    [self.navigationController pushViewController:followingVC animated:YES];
+    [followingVC release];
+}
+
 #pragma mark - Methods
 
 //异步加载图片
@@ -196,7 +221,7 @@
         return;
     }
     
-    if (index > [statuesArr count]) {
+    if (index >= [statuesArr count]) {
         NSLog(@"statues arr error ,index = %d,count = %d",index,[statuesArr count]);
         return;
     }
