@@ -75,7 +75,7 @@
 - (void)addPullToRefreshFooter {
     refreshFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320.0f, REFRESH_FOOTER_HEIGHT)];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.tableView.backgroundColor = [UIColor colorWithRed:226.0/255.0 green:231.0/255.0 blue:237.0/255.0 alpha:1.0];
+//    self.tableView.backgroundColor = [UIColor colorWithRed:226.0/255.0 green:231.0/255.0 blue:237.0/255.0 alpha:1.0];
     
     lastUpdatedLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, REFRESH_FOOTER_HEIGHT - 40.0f, 320.0f, 20.0f)];
     lastUpdatedLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;

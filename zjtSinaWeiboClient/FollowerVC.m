@@ -111,6 +111,7 @@
     [notifCenter addObserver:self selector:@selector(gotAvatar:) name:HHNetDataCacheNotification object:nil];
     [notifCenter addObserver:self selector:@selector(gotFollowResult:) name:MMSinaFollowedByUserIDWithResult object:nil];
     [notifCenter addObserver:self selector:@selector(gotUnfollowResult:) name:MMSinaUnfollowedByUserIDWithResult object:nil];
+    [notifCenter addObserver:self selector:@selector(mmRequestFailed:) name:MMSinaRequestFailed object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -136,6 +137,7 @@
     [notifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
     [notifCenter removeObserver:self name:MMSinaFollowedByUserIDWithResult object:nil];
     [notifCenter removeObserver:self name:MMSinaUnfollowedByUserIDWithResult object:nil];
+    [notifCenter removeObserver:self name:MMSinaRequestFailed object:nil];
     
     [super viewDidUnload];
 }
@@ -233,14 +235,24 @@
     {
         UIImage * image     = [UIImage imageWithData:data];
         user.avatarImage    = image;
-        
-        [_userAvatarDic setObject:image forKey:indexNumber];
+        if (image != nil) {
+            [_userAvatarDic setObject:image forKey:indexNumber];
+        }
+        else {
+            [_userAvatarDic setObject:[NSNull null] forKey:indexNumber];
+        }
     }
     
     //reload table
     NSIndexPath *indexPath  = [NSIndexPath indexPathForRow:index inSection:0];
     NSArray     *arr        = [NSArray arrayWithObject:indexPath];
     [self.tableView reloadRowsAtIndexPaths:arr withRowAnimation:NO];
+}
+
+-(void)mmRequestFailed:(id)sender
+{
+    [self stopLoading];
+    [[SHKActivityIndicator currentIndicator] hide];
 }
 
 -(void)getAvatars
@@ -312,7 +324,9 @@
         return cell;
     }
     NSNumber *indexNum = [NSNumber numberWithInt:indexPath.row];
-    cell.headerView.image = [_userAvatarDic objectForKey:indexNum];
+    if ([_userAvatarDic objectForKey:indexNum] != [NSNull null]) {
+        cell.headerView.image = [_userAvatarDic objectForKey:indexNum];
+    }
     
     return cell;
 }

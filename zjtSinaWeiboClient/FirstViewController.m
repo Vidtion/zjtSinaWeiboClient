@@ -150,6 +150,7 @@
     [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(relogin)            name:NeedToReLogin              object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(mmRequestFailed:) name:MMSinaRequestFailed object:nil];
 }
 
 -(void)viewDidUnload
@@ -159,6 +160,8 @@
     [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
     [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo          object:nil];
     [defaultNotifCenter removeObserver:self name:NeedToReLogin              object:nil];
+    [defaultNotifCenter removeObserver:self name:MMSinaRequestFailed object:nil];
+    
     [super viewDidUnload];
 }
 
@@ -327,6 +330,13 @@
     [imageDictionary removeAllObjects];
     
     [self getImages];
+}
+
+-(void)mmRequestFailed:(id)sender
+{
+    [self stopLoading];
+    [self doneLoadingTableViewData];
+    [[SHKActivityIndicator currentIndicator] hide];
 }
 
 //上拉刷新

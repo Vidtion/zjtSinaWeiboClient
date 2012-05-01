@@ -975,6 +975,8 @@
 //跳转
 - (void)request:(ASIHTTPRequest *)request willRedirectToURL:(NSURL *)newURL {
     NSLog(@"request will redirect");
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaRequestFailed object:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 @end

@@ -190,8 +190,6 @@ static WeiBoMessageManager * instance=nil;
 //获取最新的公共微博
 -(void)didGetPublicTimelineWithStatues:(NSArray *)statusArr
 {
-    Status *st = [statusArr objectAtIndex:0];
-    NSLog(@"\n++--%@",st.text);
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotPublicTimeLine object:statusArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
@@ -230,11 +228,6 @@ static WeiBoMessageManager * instance=nil;
 //获取用户的双向关注user列表，即互粉列表
 -(void)didGetBilateralUserList:(NSArray *)userArr
 {
-    if (userArr == nil) {
-        return;
-    }
-    User *user = [userArr objectAtIndex:0];
-    NSLog(@"screenName = %@",user.screenName);
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotBilateralUserList object:userArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
@@ -242,11 +235,6 @@ static WeiBoMessageManager * instance=nil;
 //获取用户的关注列表
 -(void)didGetFollowingUsersList:(NSArray *)userArr
 {
-    if (userArr == nil) {
-        return;
-    }
-    User *user = [userArr objectAtIndex:0];
-    NSLog(@"screenName = %@",user.screenName);
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotFollowingUserList object:userArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
@@ -254,11 +242,6 @@ static WeiBoMessageManager * instance=nil;
 //获取用户的粉丝列表
 -(void)didGetFollowedUsersList:(NSArray *)userArr
 {
-    if (userArr == nil) {
-        return;
-    }
-    User *user = [userArr objectAtIndex:0];
-    NSLog(@"screenName = %@",user.screenName);
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotFollowedUserList object:userArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
@@ -266,11 +249,6 @@ static WeiBoMessageManager * instance=nil;
 //获取某话题下的微博消息
 -(void)didGetTrendStatues:(NSArray *)statusArr
 {
-    if (statusArr == nil) {
-        return;
-    }
-    Status *st = [statusArr objectAtIndex:0];
-    NSLog(@"status = %@",st.text);
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotTrendStatues object:statusArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
@@ -320,7 +298,7 @@ static WeiBoMessageManager * instance=nil;
 //获取当前登录用户及其所关注用户的最新微博
 -(void)didGetHomeLine:(NSArray *)statusArr
 {
-    if (statusArr == nil) {
+    if (statusArr == nil || [statusArr count] == 0) {
         return;
     }
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotHomeLine object:statusArr];
@@ -330,9 +308,6 @@ static WeiBoMessageManager * instance=nil;
 //获取某个用户最新发表的微博列表
 -(void)didGetUserStatus:(NSArray*)statusArr
 {
-    if (statusArr == nil) {
-        return;
-    }
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotUserStatus object:statusArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
