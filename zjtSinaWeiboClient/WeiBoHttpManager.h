@@ -25,6 +25,8 @@
 #define USER_STORE_USER_ID          @"SinaUserID"
 #define NeedToReLogin               @"NeedToReLogin"
 
+#define MMSinaRequestFailed         @"MMSinaRequestFailed"
+
 typedef enum {
     SinaGetOauthCode = 0,           //authorize_code
     SinaGetOauthToken,              //access_token

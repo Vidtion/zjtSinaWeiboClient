@@ -109,6 +109,7 @@
     [center addObserver:self selector:@selector(didGetComments:) name:MMSinaGotCommentList object:nil];
     [center addObserver:self selector:@selector(didFollowByUserID:) name:MMSinaFollowedByUserIDWithResult object:nil];
     [center addObserver:self selector:@selector(didUnfollowByUserID:) name:MMSinaUnfollowedByUserIDWithResult object:nil];
+    [center addObserver:self selector:@selector(mmRequestFailed:) name:MMSinaRequestFailed object:nil];
 }
 
 -(void)viewDidUnload
@@ -117,7 +118,7 @@
     [center removeObserver:self name:MMSinaGotCommentList object:nil];
     [center removeObserver:self name:MMSinaFollowedByUserIDWithResult object:nil];
     [center removeObserver:self name:MMSinaUnfollowedByUserIDWithResult object:nil];
-    
+    [center removeObserver:self name:MMSinaRequestFailed object:nil];
     [super viewDidUnload];
 }
 
@@ -217,7 +218,7 @@
     headerView.frame = frame;
     
     //背景设置
-    headerBackgroundView.image = [[UIImage imageNamed:@"table_header_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:5];
+//    headerBackgroundView.image = [[UIImage imageNamed:@"table_header_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:5];
     mainViewBackView.image = [[UIImage imageNamed:@"timeline_rt_border_t.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:5];
 }
 
@@ -288,6 +289,13 @@
     [self.navigationController pushViewController:profile animated:YES];
     [profile release];
 }
+
+-(void)mmRequestFailed:(id)sender
+{
+    [self stopLoading];
+    [[SHKActivityIndicator currentIndicator] hide];
+}
+
 - (IBAction)addComment:(id)sender {
     AddCommentVC *add = [[AddCommentVC alloc]initWithNibName:@"AddCommentVC" bundle:nil];
     add.status = self.status;
@@ -423,6 +431,14 @@
         }
     }
 }
+
+#pragma mark - Swipe Gesture delegate
+
+- (IBAction)popViewC:(id)sender 
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 
 
 @end
