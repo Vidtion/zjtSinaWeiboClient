@@ -20,7 +20,7 @@
 @end
 
 @implementation FollowerVC
-@synthesize userArr = _usersArr;
+@synthesize userArr = _userArr;
 @synthesize userAvatarDic = _userAvatarDic;
 @synthesize isFollowingViewController = _isFollowingViewController;
 @synthesize followerCellNib = _followerCellNib;
@@ -43,6 +43,7 @@
         self.title = @"粉丝列表";
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
         _isFollowingViewController = NO;
+        _shouldReloadTable = YES;
         _manager = [WeiBoMessageManager getInstance];
         _userAvatarDic = [[NSMutableDictionary alloc] initWithCapacity:0];
     }
@@ -88,10 +89,10 @@
     
     NSNotificationCenter *notifCenter = [NSNotificationCenter defaultCenter];
     if (_isFollowingViewController) {
-        [notifCenter addObserver:self selector:@selector(gotFollowingUserList:) name:MMSinaGotFollowingUserList object:nil];
+        [notifCenter addObserver:self selector:@selector(gotFollowUserList:) name:MMSinaGotFollowingUserList object:nil];
     }
     else {
-        [notifCenter addObserver:self selector:@selector(gotFollowedUserList:) name:MMSinaGotFollowedUserList object:nil];
+        [notifCenter addObserver:self selector:@selector(gotFollowUserList:) name:MMSinaGotFollowedUserList object:nil];
     }
     [notifCenter addObserver:self selector:@selector(gotAvatar:) name:HHNetDataCacheNotification object:nil];
     [notifCenter addObserver:self selector:@selector(gotFollowResult:) name:MMSinaFollowedByUserIDWithResult object:nil];
@@ -129,19 +130,18 @@
     [super viewDidUnload];
 }
 
--(void)gotFollowingUserList:(NSNotification*)sender
+-(void)gotFollowUserList:(NSNotification*)sender
 {
-    self.userArr = sender.object;
-    [self.tableView reloadData];
-    [self getAvatars];
-    [self stopLoading];
-    [[SHKActivityIndicator currentIndicator] hide];
-}
-
--(void)gotFollowedUserList:(NSNotification*)sender
-{
-    self.userArr = sender.object;
-    [self.tableView reloadData];
+    NSArray *arr = sender.object;
+    User *tempUser = [arr lastObject];
+    User *lastUser = [_userArr lastObject];
+    if (![tempUser.screenName isEqualToString:lastUser.screenName]) {
+        self.userArr = arr;
+        [self.tableView reloadData];
+    }
+    else {
+        _shouldReloadTable = NO;
+    }
     [self getAvatars];
     [self stopLoading];
     [[SHKActivityIndicator currentIndicator] hide];
@@ -157,8 +157,8 @@
         return;
     }
     
-    for (int i = 0;i<[_usersArr count];i++) {
-        User *user = [_usersArr objectAtIndex:i];
+    for (int i = 0;i<[_userArr count];i++) {
+        User *user = [_userArr objectAtIndex:i];
         
         if (user.userId == [uid longLongValue]) 
         {
@@ -182,8 +182,8 @@
         return;
     }
     
-    for (int i = 0;i<[_usersArr count];i++) {
-        User *user = [_usersArr objectAtIndex:i];
+    for (int i = 0;i<[_userArr count];i++) {
+        User *user = [_userArr objectAtIndex:i];
         
         if (user.userId == [uid longLongValue]) 
         {
@@ -199,6 +199,10 @@
 
 -(void)gotAvatar:(NSNotification*)sender
 {
+    if (_shouldReloadTable == NO) {
+        return;
+    }
+    
     NSDictionary * dic = sender.object;
     NSString * url          = [dic objectForKey:HHNetDataCacheURLKey];
     NSNumber *indexNumber   = [dic objectForKey:HHNetDataCacheIndex];
@@ -210,12 +214,12 @@
         return;
     }
     
-    if (index >= [_usersArr count]) {
-        NSLog(@"follow cell error ,index = %d,count = %d",index,[_usersArr count]);
+    if (index >= [_userArr count]) {
+        NSLog(@"follow cell error ,index = %d,count = %d",index,[_userArr count]);
         return;
     }
     
-    User *user = [_usersArr objectAtIndex:index];
+    User *user = [_userArr objectAtIndex:index];
     
     //得到的是头像图片
     if ([url isEqualToString:user.profileImageUrl]) 
@@ -244,9 +248,9 @@
 
 -(void)getAvatars
 {
-    for(int i=0;i<[_usersArr count];i++)
+    for(int i=0;i<[_userArr count];i++)
     {
-        User *user=[_usersArr objectAtIndex:i];
+        User *user=[_userArr objectAtIndex:i];
         
         //下载头像图片
         [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileImageUrl withIndex:i];
@@ -260,6 +264,7 @@
 
 -(void)loadData
 {
+    _shouldReloadTable = YES;
     NSString *userID = nil;
     if (_user) {
         userID = [NSString stringWithFormat:@"%lld",_user.userId];
@@ -289,7 +294,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_usersArr count];
+    return [_userArr count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -299,11 +304,11 @@
     cell.lpCellIndexPath = indexPath;
     cell.delegate = self;
     
-    if (row >= [_usersArr count]) {
+    if (row >= [_userArr count]) {
         return cell;
     }
     
-    User *user = [_usersArr objectAtIndex:row];
+    User *user = [_userArr objectAtIndex:row];
     cell.nameLabel.text = user.screenName;
     
     if (user.following == NO) {
@@ -373,7 +378,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    User *user = [_usersArr objectAtIndex:row];
+    User *user = [_userArr objectAtIndex:row];
     
     ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
     profile.userID = [NSString stringWithFormat:@"%lld",user.userId];
@@ -389,11 +394,11 @@
 {
     NSInteger index = cell.lpCellIndexPath.row;
     
-    if (index >= [_usersArr count]) {
+    if (index >= [_userArr count]) {
         return;
     }
     
-    User *user = [_usersArr objectAtIndex:index];
+    User *user = [_userArr objectAtIndex:index];
     
     if (user.following) {
         [_manager unfollowByUserID:user.userId];

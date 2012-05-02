@@ -15,12 +15,13 @@
 
 @interface FollowerVC : PullRefreshTableViewController<LPFriendCellDelegate>
 {
-    NSArray *_usersArr;
+    NSArray *_userArr;
     NSMutableDictionary *_userAvatarDic;
     BOOL _isFollowingViewController;
     WeiBoMessageManager *_manager;
     UINib *_followerCellNib;
     User *_user;
+    BOOL _shouldReloadTable;
 }
 
 @property (nonatomic,retain) NSArray *userArr;

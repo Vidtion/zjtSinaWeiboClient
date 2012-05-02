@@ -27,6 +27,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+//    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackTranslucent;
     
     FirstViewController *firstViewController = [[[FirstViewController alloc] initWithNibName:@"FirstViewController" bundle:nil] autorelease];
     FollowerVC  *followerVC     = [[[FollowerVC alloc]initWithNibName:@"FollowerVC" bundle:nil] autorelease];
