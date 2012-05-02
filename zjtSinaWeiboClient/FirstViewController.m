@@ -45,7 +45,7 @@
     self.userID = nil;
     self.browserView = nil;
     _refreshHeaderView=nil;
-    [table release];
+    [table release];table = nil;
     [super dealloc];
 }
 

@@ -16,6 +16,7 @@
 
 @interface FollowerVC ()
 -(void)getAvatars;
+-(void)loadData;
 @end
 
 @implementation FollowerVC
@@ -85,22 +86,6 @@
 {
     [super viewDidLoad];
     
-    NSString *userID = nil;
-    if (_user) {
-        userID = [NSString stringWithFormat:@"%lld",_user.userId];
-    }
-    else {
-        userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
-    }
-    
-    if (_isFollowingViewController) {
-        [_manager getFollowingUserList:[userID longLongValue] count:50 cursor:0];
-    }
-    else {
-        [_manager getFollowedUserList:[userID longLongValue] count:50 cursor:0];
-    }
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
-    
     NSNotificationCenter *notifCenter = [NSNotificationCenter defaultCenter];
     if (_isFollowingViewController) {
         [notifCenter addObserver:self selector:@selector(gotFollowingUserList:) name:MMSinaGotFollowingUserList object:nil];
@@ -116,6 +101,8 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self loadData];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -256,6 +243,11 @@
 
 - (void)refresh
 {
+    [self loadData];
+}
+
+-(void)loadData
+{
     NSString *userID = nil;
     if (_user) {
         userID = [NSString stringWithFormat:@"%lld",_user.userId];
@@ -263,14 +255,15 @@
     else {
         userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
     }
-    
     if (_isFollowingViewController) {
         [_manager getFollowingUserList:[userID longLongValue] count:50 cursor:0];
     }
     else {
         [_manager getFollowedUserList:[userID longLongValue] count:50 cursor:0];
     }
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+    if (self.userArr == nil) {
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+    }
 }
 
 #pragma mark - Table view data source
