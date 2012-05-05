@@ -30,6 +30,8 @@
 		AB0D19CC15482123005EE454 /* touxiang_40x40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB0D19CA15482123005EE454 /* touxiang_40x40@2x.png */; };
 		AB0D19D31548250C005EE454 /* tabbar_greenbtn.png in Resources */ = {isa = PBXBuildFile; fileRef = AB0D19D11548250C005EE454 /* tabbar_greenbtn.png */; };
 		AB0D19D41548250C005EE454 /* tabbar_greenbtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB0D19D21548250C005EE454 /* tabbar_greenbtn@2x.png */; };
+		AB2C436E155502BD00A4BAFD /* statusbar_background.png in Resources */ = {isa = PBXBuildFile; fileRef = AB2C436D155502BD00A4BAFD /* statusbar_background.png */; };
+		AB2C43791555036000A4BAFD /* ZJTStatusBarAlertWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = AB2C43781555036000A4BAFD /* ZJTStatusBarAlertWindow.m */; };
 		AB2D5BC81483B3A700987DE7 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2D5BC71483B3A700987DE7 /* libsqlite3.dylib */; };
 		AB2D5BCA1483B3D000987DE7 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2D5BC91483B3D000987DE7 /* libicucore.dylib */; };
 		AB2D5BCC1483B3E200987DE7 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2D5BCB1483B3E200987DE7 /* libz.dylib */; };
@@ -163,6 +165,9 @@
 		AB0D19CA15482123005EE454 /* touxiang_40x40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "touxiang_40x40@2x.png"; sourceTree = "<group>"; };
 		AB0D19D11548250C005EE454 /* tabbar_greenbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_greenbtn.png; sourceTree = "<group>"; };
 		AB0D19D21548250C005EE454 /* tabbar_greenbtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_greenbtn@2x.png"; sourceTree = "<group>"; };
+		AB2C436D155502BD00A4BAFD /* statusbar_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = statusbar_background.png; path = WeiboImages/statusbar_background.png; sourceTree = "<group>"; };
+		AB2C43771555036000A4BAFD /* ZJTStatusBarAlertWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTStatusBarAlertWindow.h; sourceTree = "<group>"; };
+		AB2C43781555036000A4BAFD /* ZJTStatusBarAlertWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJTStatusBarAlertWindow.m; sourceTree = "<group>"; };
 		AB2D5BC71483B3A700987DE7 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		AB2D5BC91483B3D000987DE7 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		AB2D5BCB1483B3E200987DE7 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -359,6 +364,8 @@
 			children = (
 				4547F2091508A8CE0082FD13 /* ZJTHelpler.h */,
 				4547F20A1508A8CE0082FD13 /* ZJTHelpler.m */,
+				AB2C43771555036000A4BAFD /* ZJTStatusBarAlertWindow.h */,
+				AB2C43781555036000A4BAFD /* ZJTStatusBarAlertWindow.m */,
 			);
 			name = ZJTTools;
 			sourceTree = "<group>";
@@ -669,6 +676,7 @@
 				AB968C3314FE849500A17AFE /* timelineBG */,
 				ABFDE20114B5A25100B57C9F /* WeiboImages */,
 				ABB2114C15484574001DDF9B /* tabbar_whitebtn.png */,
+				AB2C436D155502BD00A4BAFD /* statusbar_background.png */,
 				ABB2114D15484574001DDF9B /* tabbar_whitebtn@2x.png */,
 				AB0D19D11548250C005EE454 /* tabbar_greenbtn.png */,
 				AB0D19D21548250C005EE454 /* tabbar_greenbtn@2x.png */,
@@ -818,6 +826,7 @@
 				AB0D19D41548250C005EE454 /* tabbar_greenbtn@2x.png in Resources */,
 				ABB2114E15484574001DDF9B /* tabbar_whitebtn.png in Resources */,
 				ABB2114F15484574001DDF9B /* tabbar_whitebtn@2x.png in Resources */,
+				AB2C436E155502BD00A4BAFD /* statusbar_background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -878,6 +887,7 @@
 				AB0D19AD1547ED15005EE454 /* FollowerVC.m in Sources */,
 				AB0D19B71547ED51005EE454 /* SettingVC.m in Sources */,
 				AB0D19C3154820A0005EE454 /* LPFriendCell.m in Sources */,
+				AB2C43791555036000A4BAFD /* ZJTStatusBarAlertWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

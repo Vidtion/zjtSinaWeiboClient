@@ -43,8 +43,8 @@
     UINavigationController *nav4 = [[[UINavigationController alloc] initWithRootViewController:settingVC] autorelease];
     
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
-    
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:nav1, nav2,nav3,nav4,nil];
+//    self.tabBarController.selectedIndex = 2;
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
 
