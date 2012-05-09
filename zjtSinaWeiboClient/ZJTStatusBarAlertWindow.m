@@ -47,6 +47,7 @@ static ZJTStatusBarAlertWindow *instance = nil;
         
         if (_label != nil) {
             _label.text = displayString;
+            _window.windowLevel = UIWindowLevelAlert;
             [_window makeKeyAndVisible];
         }
     }
@@ -131,6 +132,10 @@ static ZJTStatusBarAlertWindow *instance = nil;
 -(void)showWithString:(NSString*)string
 {
     self.displayString = string;
+    if (_window) {
+        _window.windowLevel = UIWindowLevelAlert;
+    }
+    
     if ((_window && _window.frame.origin.y == 0) ){//|| [string isEqualToString:_displayString]) {
         return;
     }
@@ -155,7 +160,16 @@ static ZJTStatusBarAlertWindow *instance = nil;
     _window.frame = CGRectMake(0, -20, 320, 20);
     [UIView commitAnimations];
     
-//    [self performSelector:@selector(removeViewsAndDatas) withObject:nil afterDelay:.35];
+    UIApplication *app = [UIApplication sharedApplication];
+    UIWindow *window = nil;
+    for (UIWindow *win in app.windows) {
+        if (win.tag == 0) {
+            window = win;
+            [window makeKeyWindow];
+        }
+    }
+    
+//    [self performSelector:@selector(removeViewsAndDatas) withObject:nil afterDelay:.7];
 }
 
 @end

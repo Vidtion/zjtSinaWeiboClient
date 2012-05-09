@@ -52,7 +52,8 @@
     {
         shouldLoad = YES;
         OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
-        [self presentModalViewController:webV animated:NO];
+        webV.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:webV animated:NO];
         [webV release];
     }
     else
@@ -114,7 +115,8 @@
 {
     shouldLoad = YES;
     OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
-    [self presentModalViewController:webV animated:NO];
+    webV.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:webV animated:NO];
     [webV release];
 }
 
@@ -147,7 +149,8 @@
                 [[ZJTStatusBarAlertWindow getInstance] hide];
                 shouldLoad = YES;
                 OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
-                [self presentModalViewController:webV animated:NO];
+                webV.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:webV animated:NO];
                 [webV release];
             }
             return;
