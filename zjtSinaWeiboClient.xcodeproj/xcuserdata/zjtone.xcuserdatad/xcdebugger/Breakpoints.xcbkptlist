@@ -7,36 +7,40 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "zjtSinaWeiboClient/FollowerVC.m"
-         timestampString = "357899327.741536"
+         filePath = "zjtSinaWeiboClient/ZJTHomeViewController.m"
+         timestampString = "358248465.48252"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "161"
-         endingLineNumber = "161"
-         landmarkName = "-gotFollowResult:"
+         startingLineNumber = "156"
+         endingLineNumber = "156"
+         landmarkName = "-numberOfSectionsInTableView:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "zjtSinaWeiboClient/FollowerVC.m"
-         timestampString = "357899327.741536"
+         filePath = "zjtSinaWeiboClient/ZJTHomeViewController.m"
+         timestampString = "358248487.960794"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "188"
-         endingLineNumber = "188"
-         landmarkName = "-gotUnfollowResult:"
+         startingLineNumber = "161"
+         endingLineNumber = "161"
+         landmarkName = "-tableView:numberOfRowsInSection:"
          landmarkType = "5">
       </FileBreakpoint>
-   </FileBreakpoints>
-   <ExceptionBreakpoints>
-      <ExceptionBreakpoint
+      <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         scope = "0"
-         stopOnStyle = "0">
-      </ExceptionBreakpoint>
-   </ExceptionBreakpoints>
+         filePath = "zjtSinaWeiboClient/ZJTHomeViewController.m"
+         timestampString = "358248489.181697"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "166"
+         endingLineNumber = "166"
+         landmarkName = "-tableView:cellForRowAtIndexPath:"
+         landmarkType = "5">
+      </FileBreakpoint>
+   </FileBreakpoints>
 </Bucket>

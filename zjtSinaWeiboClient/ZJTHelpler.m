@@ -8,8 +8,24 @@
 
 #import "ZJTHelpler.h"
 
-
+static ZJTHelpler *instance = nil;
 @implementation ZJTHelpler
+@synthesize user;
+
+-(void)dealloc
+{
+    self.user = nil;
+    [super dealloc];
+}
+
+
++(ZJTHelpler*)getInstance
+{
+    if (instance == nil) {
+        instance = [[self alloc] init];
+    }
+    return instance;
+}
 
 + (CAAnimation *)animationMoveFrom:(CGPoint) from To:(CGPoint) to Duration:(CGFloat) duration BeginTime:(CGFloat)beginTime //位置变化动画
 {

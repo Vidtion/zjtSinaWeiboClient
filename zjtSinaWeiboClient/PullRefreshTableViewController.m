@@ -44,6 +44,14 @@
     return self;
 }
 
+- (id)init {
+    self = [super init];
+    if (self != nil) {
+        [self setupStrings];
+    }
+    return self;
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self != nil) {

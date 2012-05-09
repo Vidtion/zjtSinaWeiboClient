@@ -85,6 +85,12 @@
 //返回成员为Status的NSArray
 #define MMSinaGotHotRepostDaily @"MMSinaGotHotRepostDaily"
 
+//按天返回热门微博评论榜的微博列表
+//返回成员为Status的NSArray
+#define MMSinaGotHotCommentDaily @"MMSinaGotHotCommentDaily"
+
+//获取某个用户的各种消息未读数
+#define MMSinaGotUnreadCount @"MMSinaGotUnreadCount"
 
 @interface WeiBoMessageManager : NSObject <WeiBoHttpDelegate>
 {
@@ -166,5 +172,11 @@
 
 //按天返回热门微博转发榜的微博列表
 -(void)getHotRepostDaily:(int)count;
+
+//按天返回热门微博评论榜的微博列表
+-(void)getHotCommnetDaily:(int)count;
+
+//获取某个用户的各种消息未读数
+-(void)getUnreadCount:(NSString*)uid;
 
 @end

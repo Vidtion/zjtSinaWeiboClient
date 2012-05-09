@@ -192,6 +192,17 @@ static WeiBoMessageManager * instance=nil;
     [httpManager getHotRepostDaily:count];
 }
 
+//按天返回热门微博评论榜的微博列表
+-(void)getHotCommnetDaily:(int)count
+{
+    [httpManager getHotCommnetDaily:count];
+}
+
+//获取某个用户的各种消息未读数
+-(void)getUnreadCount:(NSString*)uid
+{
+    [httpManager getUnreadCount:uid];
+}
 
 #pragma mark - WeiBoHttpDelegate
 //获取最新的公共微博
@@ -335,4 +346,17 @@ static WeiBoMessageManager * instance=nil;
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
+//按天返回热门微博评论榜的微博列表
+-(void)didGetHotCommentDaily:(NSArray *)statusArr
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotHotCommentDaily object:statusArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+//获取某个用户的各种消息未读数
+-(void)didGetUnreadCount:(NSDictionary *)dic
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotUnreadCount object:dic];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
 @end

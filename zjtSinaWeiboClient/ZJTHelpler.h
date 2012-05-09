@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
-
+#import "User.h"
+@class ZJTHelpler;
 #define kTextViewPadding            16.0
 #define kLineBreakMode              UILineBreakModeWordWrap
 
@@ -16,6 +17,9 @@
 {
     
 }
+@property (nonatomic,retain)User *user;
+
++(ZJTHelpler*)getInstance;
 
 //大小变化动画
 + (CAAnimation *)animationWithScaleFrom:(CGFloat) from To:(CGFloat) to Duration:(CGFloat) duration BeginTime:(CGFloat)beginTime;

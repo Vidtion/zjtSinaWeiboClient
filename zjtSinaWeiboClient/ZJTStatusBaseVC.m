@@ -1,80 +1,75 @@
 //
-//  ProfileVC.m
+//  ZJTStatusBaseVC.m
 //  zjtSinaWeiboClient
 //
-//  Created by jianting zhu on 12-2-25.
-//  Copyright (c) 2012年 Dunbar Science & Technology. All rights reserved.
+//  Created by Jianting Zhu on 12-5-9.
+//  Copyright (c) 2012年 ZUST. All rights reserved.
 //
 
-#import "ProfileVC.h"
-#import "WeiBoMessageManager.h"
-#import "Status.h"
-#import "User.h"
-#import "ASIHTTPRequest.h"
-#import "HHNetDataCacheManager.h"
-#import "ImageBrowser.h"
-#import "GifView.h"
-#import "SHKActivityIndicator.h"
-#import "ZJTDetailStatusVC.h"
-#import "FollowerVC.h"
-#import "ZJTHelpler.h"
+#import "ZJTStatusBaseVC.h"
 
-@interface ProfileVC ()
+#define kTextViewPadding            16.0
+#define kLineBreakMode              UILineBreakModeWordWrap
 
-- (void)getImages;
-
-@end
-
-@implementation ProfileVC
-@synthesize table;
-@synthesize userID;
+@implementation ZJTStatusBaseVC
 @synthesize statusCellNib;
 @synthesize statuesArr;
+@synthesize headDictionary;
 @synthesize imageDictionary;
 @synthesize browserView;
-@synthesize headerView;
-@synthesize headerVImageV;
-@synthesize headerVNameLB;
-@synthesize weiboCount;
-@synthesize followerCount;
-@synthesize followingCount;
-@synthesize user;
-@synthesize avatarImage;
 
 -(void)dealloc
 {
-    self.avatarImage = nil;
-    self.user = nil;
+    self.headDictionary = nil;
     self.imageDictionary = nil;
     self.statusCellNib = nil;
     self.statuesArr = nil;
-    self.userID = nil;
     self.browserView = nil;
-    self.table = nil;
-    self.headerVImageV = nil;
-    self.headerVNameLB = nil;
-    self.weiboCount = nil;
-    self.followerCount = nil;
-    self.followingCount = nil;
-    
-    self.headerView = nil;
+    _refreshHeaderView=nil;
     [super dealloc];
+}
+
+-(void)setup
+{
+    self.title = @"主页";// NSLocalizedString(@"First", @"First");
+    self.tabBarItem.image = [UIImage imageNamed:@"first"];
+    
+    CGRect frame = self.tableView.frame;
+    frame.size.height = frame.size.height + REFRESH_FOOTER_HEIGHT;
+    self.tableView.frame = frame;
+    
+    //init data
+    isFirstCell = YES;
+    shouldLoad = NO;
+    shouldShowIndicator = YES;
+    manager = [WeiBoMessageManager getInstance];
+    defaultNotifCenter = [NSNotificationCenter defaultCenter];
+    headDictionary = [[NSMutableDictionary alloc] init];
+    imageDictionary = [[NSMutableDictionary alloc] init];
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        [self setup];
+    }
+    return self;
+}
+
+- (id)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:style];
+    if (self != nil) {
+        [self setup];
+    }
+    return self;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        //init data
-        isFirstCell = YES;
-        shouldLoad = NO;
-        shouldLoadAvatar = NO;
-        shouldShowIndicator = YES;
-        manager = [WeiBoMessageManager getInstance];
-        defaultNotifCenter = [NSNotificationCenter defaultCenter];
-        imageDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
-        
-        self.tabBarItem.image = [UIImage imageNamed:@"first"];
+        [self setup];
     }
     return self;
 }
@@ -83,68 +78,52 @@
 {
     if (statusCellNib == nil) 
     {
-        self.statusCellNib = [StatusCell nib];
+        [statusCellNib release];
+        statusCellNib = [[StatusCell nib] retain];
     }
     return statusCellNib;
+}
+
+-(void)setUpRefreshView
+{
+    if (_refreshHeaderView == nil) {
+		
+		EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.tableView.bounds.size.height, self.view.frame.size.width, self.tableView.bounds.size.height)];
+		view.delegate = self;
+		[self.tableView addSubview:view];
+		_refreshHeaderView = [view retain];
+		[view release];
+		
+	}
+	
+	//  update the last update date
+	[_refreshHeaderView refreshLastUpdatedDate];
 }
 
 #pragma mark - View lifecycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [table setTableHeaderView:headerView];
-    
-    if (avatarImage) {
-        self.headerVImageV.image = avatarImage;
-    }
-    else {
-        [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileLargeImageUrl];
-    }
-    
-    if (userID == nil) {
-        userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
-    }
-    if (!user) {
-        self.user = [ZJTHelpler getInstance].user;
-    }
-    self.headerVNameLB.text = user.screenName;
-    self.weiboCount.text = [NSString stringWithFormat:@"%d",user.statusesCount];
-    self.followerCount.text = [NSString stringWithFormat:@"%d",user.followersCount];
-    self.followingCount.text = [NSString stringWithFormat:@"%d",user.friendsCount];
-    
-    if (![self.title isEqualToString:@"我的微博"]) {
-        self.title = user.screenName;
-    }
-    
+    NSLog(@" sts base table = %@,delegate = %@",self.tableView,self.tableView.delegate);
+    [self setUpRefreshView];
     self.tableView.contentInset = UIEdgeInsetsOriginal;
-    
-    [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
-    
-    [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotUserStatus        object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
-//    [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(mmRequestFailed:) name:MMSinaRequestFailed object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(mmRequestFailed:)   name:MMSinaRequestFailed object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(loginSucceed)       name:DID_GET_TOKEN_IN_WEB_VIEW object:nil];
 }
 
 -(void)viewDidUnload
 {
-    [defaultNotifCenter removeObserver:self name:MMSinaGotUserStatus        object:nil];
     [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
-//    [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo          object:nil];
-    [defaultNotifCenter removeObserver:self name:MMSinaRequestFailed object:nil];
+    [defaultNotifCenter removeObserver:self name:MMSinaRequestFailed        object:nil];
+    [defaultNotifCenter removeObserver:self name:DID_GET_TOKEN_IN_WEB_VIEW  object:nil];
+    
     [super viewDidUnload];
 }
 
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
-    if (shouldLoad) 
-    {
-        shouldLoad = NO;
-        [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
-    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -152,43 +131,28 @@
     [super viewWillDisappear:animated];
 }
 
-- (IBAction)gotoFollowedVC:(id)sender {
-    FollowerVC  *followerVC     = [[FollowerVC alloc]initWithNibName:@"FollowerVC" bundle:nil];
-    followerVC.title = [NSString stringWithFormat:@"%@的粉丝",user.screenName];
-    followerVC.user = user;
-    followerVC.hidesBottomBarWhenPushed = YES;
-    
-    [self.navigationController pushViewController:followerVC animated:YES];
-    [followerVC release];
-}
-
-- (IBAction)gotoFollowingVC:(id)sender 
+-(void)viewDidAppear:(BOOL)animated
 {
-    
-    FollowerVC *followingVC    = [[FollowerVC alloc] initWithNibName:@"FollowerVC" bundle:nil];
-    
-    followingVC.title = [NSString stringWithFormat:@"%@的关注",user.screenName];
-    followingVC.isFollowingViewController = YES;
-    followingVC.user = user;
-    followingVC.hidesBottomBarWhenPushed = YES;
-    
-    [self.navigationController pushViewController:followingVC animated:YES];
-    [followingVC release];
+    [super viewDidAppear:animated];
 }
 
 #pragma mark - Methods
+-(void)loginSucceed
+{
+    shouldLoad = YES;
+}
 
 //异步加载图片
 -(void)getImages
 {
-    //下载头像图片
-    [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileLargeImageUrl];
-    
     //得到文字数据后，开始加载图片
     for(int i=0;i<[statuesArr count];i++)
     {
         Status * member=[statuesArr objectAtIndex:i];
         NSNumber *indexNumber = [NSNumber numberWithInt:i];
+        
+        //下载头像图片
+        [[HHNetDataCacheManager getInstance] getDataWithURL:member.user.profileImageUrl withIndex:i];
         
         //下载博文图片
         if (member.thumbnailPic && [member.thumbnailPic length] != 0)
@@ -218,17 +182,11 @@
     NSDictionary * dic = sender.object;
     NSString * url          = [dic objectForKey:HHNetDataCacheURLKey];
     NSNumber *indexNumber   = [dic objectForKey:HHNetDataCacheIndex];
-    NSInteger index = [indexNumber intValue];
-    
-    if([url isEqualToString:user.profileLargeImageUrl])
-    {
-        UIImage * image     = [UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
-        self.avatarImage = image;
-        headerVImageV.image = image;
-    }
+    NSInteger index         = [indexNumber intValue];
+    NSData *data            = [dic objectForKey:HHNetDataCacheData];
     
     //当下载大图过程中，后退，又返回，如果此时收到大图的返回数据，会引起crash，在此做预防。
-    if (indexNumber == nil) {
+    if (indexNumber == nil || index == -1) {
         NSLog(@"indexNumber = nil");
         return;
     }
@@ -239,11 +197,21 @@
     }
     
     Status *sts = [statuesArr objectAtIndex:index];
+    User *user = sts.user;
+    
+    //得到的是头像图片
+    if ([url isEqualToString:user.profileImageUrl]) 
+    {
+        UIImage * image     = [UIImage imageWithData:data];
+        user.avatarImage    = image;
+        
+        [headDictionary setObject:data forKey:indexNumber];
+    }
     
     //得到的是博文图片
     if([url isEqualToString:sts.thumbnailPic])
     {
-        [imageDictionary setObject:[dic objectForKey:HHNetDataCacheData] forKey:indexNumber];
+        [imageDictionary setObject:data forKey:indexNumber];
     }
     
     //得到的是转发的图片
@@ -251,55 +219,28 @@
     {
         if ([url isEqualToString:sts.retweetedStatus.thumbnailPic])
         {
-            [imageDictionary setObject:[dic objectForKey:HHNetDataCacheData] forKey:indexNumber];
+            [imageDictionary setObject:data forKey:indexNumber];
         }
     }
     
     //reload table
     NSIndexPath *indexPath  = [NSIndexPath indexPathForRow:index inSection:0];
     NSArray     *arr        = [NSArray arrayWithObject:indexPath];
-    [table reloadRowsAtIndexPaths:arr withRowAnimation:NO];
-}
-
--(void)didGetUserID:(NSNotification*)sender
-{
-    self.userID = sender.object;
-    [[NSUserDefaults standardUserDefaults] setObject:userID forKey:USER_STORE_USER_ID];
-    [manager getUserInfoWithUserID:[userID longLongValue]];
-}
-
-//-(void)didGetUserInfo:(NSNotification*)sender
-//{
-//    User *aUser = sender.object;
-//    if (self.title != @"我的微博") {
-//        self.title = aUser.screenName;
-//    }
-//}
-
--(void)didGetHomeLine:(NSNotification*)sender
-{
-    [self stopLoading];
-    
-    shouldLoadAvatar = YES;
-    self.statuesArr = sender.object;
-    [table reloadData];
-    [[SHKActivityIndicator currentIndicator] hide];
-    
-    [imageDictionary removeAllObjects];
-    
-    [self getImages];
+    [self.tableView reloadRowsAtIndexPaths:arr withRowAnimation:NO];
 }
 
 -(void)mmRequestFailed:(id)sender
 {
     [self stopLoading];
+    [self doneLoadingTableViewData];
     [[SHKActivityIndicator currentIndicator] hide];
 }
 
+//上拉刷新
 -(void)refresh
 {
-    [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+    [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
 }
 
 //计算text field 的高度。
@@ -312,14 +253,10 @@
 }
 
 - (id)cellForTableView:(UITableView *)tableView fromNib:(UINib *)nib {
-    NSString *cellID = NSStringFromClass([StatusCell class]);
+    static NSString *cellID = @"StatusCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
-        if (isFirstCell) {
-            [[SHKActivityIndicator currentIndicator] hide];
-            isFirstCell = NO;
-        }
-        NSLog(@"cell new");
+        NSLog(@"statuss cell new");
         NSArray *nibObjects = [nib instantiateWithOwner:nil options:nil];
         cell = [nibObjects objectAtIndex:0];
     }
@@ -344,7 +281,7 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger  row = indexPath.row;
-    StatusCell *cell = [self cellForTableView:table fromNib:self.statusCellNib];
+    StatusCell *cell = [self cellForTableView:tableView fromNib:self.statusCellNib];
     
     if (row >= [statuesArr count]) {
         NSLog(@"cellForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
@@ -352,11 +289,12 @@
     }
     
     NSData *imageData = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
+    NSData *avatarData = [headDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
     Status *status = [statuesArr objectAtIndex:row];
     cell.delegate = self;
     cell.cellIndexPath = indexPath;
     
-    [cell setupCell:status avatarImageData:UIImagePNGRepresentation(avatarImage) contentImageData:imageData];
+    [cell setupCell:status avatarImageData:avatarData contentImageData:imageData];
     
     //开始绘制第一个cell时，隐藏indecator.
     if (isFirstCell) {
@@ -414,15 +352,16 @@
     ZJTDetailStatusVC *detailVC = [[ZJTDetailStatusVC alloc] initWithNibName:@"ZJTDetailStatusVC" bundle:nil];
     Status *status  = [statuesArr objectAtIndex:row];
     detailVC.status = status;
-    detailVC.isFromProfileVC = YES;
-    detailVC.avatarImage = avatarImage;
+    
+    NSData *data = [headDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
+    detailVC.avatarImage = [UIImage imageWithData:data];
     
     NSData *imageData = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
     if (![imageData isEqual:[NSNull null]]) 
     {
         detailVC.contentImage = [UIImage imageWithData:imageData];
     }
-    
+    detailVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:detailVC animated:YES];
     [detailVC release];
 }
@@ -496,5 +435,68 @@
     else shouldShowIndicator = YES;
 }
 
+#pragma mark -
+#pragma mark  - Data Source Loading / Reloading Methods
 
+- (void)reloadTableViewDataSource{
+	
+	//  should be calling your tableviews data source model to reload
+	//  put here just for demo
+	_reloading = YES;
+	
+}
+
+//调用此方法来停止。
+- (void)doneLoadingTableViewData{
+	
+	//  model should call this when its done loading
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+	
+}
+
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{	
+    
+    if (scrollView.contentOffset.y < 200) {
+        [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    }
+    else
+        [super scrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
+    if (scrollView.contentOffset.y < 200)
+    {
+        [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    }
+    else
+        [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
+}
+
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+    _reloading = YES;
+	[manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	
+	return _reloading; // should return if data source model is reloading
+	
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	
+	return [NSDate date]; // should return date data source was last changed
+	
+}
 @end

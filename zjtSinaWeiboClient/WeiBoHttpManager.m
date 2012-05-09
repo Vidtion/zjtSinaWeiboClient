@@ -639,6 +639,45 @@
     [request release];
 }
 
+//按天返回热门微博评论榜的微博列表
+-(void)getHotCommnetDaily:(int)count
+{
+    //https://api.weibo.com/2/statuses/hot/comments_daily.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSString                *countString = [NSString stringWithFormat:@"%d",count];
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,   @"access_token",
+                                       countString, @"count",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/statuses/hot/comments_daily.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetHotCommentDaily];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
+//获取某个用户的各种消息未读数
+-(void)getUnreadCount:(NSString*)uid
+{
+    //http://rm.api.weibo.com/2/remind/unread_count.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,   @"access_token",
+                                       uid,         @"uid",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/remind/unread_count.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetUnreadCount];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
 #pragma mark - Operate queue
 - (BOOL)isRunning
 {
@@ -961,6 +1000,26 @@
             [delegate didGetHotRepostDaily:statuesArr];
         }
         [statuesArr release];
+    }
+    
+    //按天返回热门微博评论榜的微博列表
+    if (requestType == SinaGetHotCommentDaily) {
+        NSMutableArray  *statuesArr = [[NSMutableArray alloc]initWithCapacity:0];
+        for (id item in userArr) {
+            Status* sts = [Status statusWithJsonDictionary:item];
+            [statuesArr addObject:sts];
+        }
+        if ([delegate respondsToSelector:@selector(didGetHotCommentDaily:)]) {
+            [delegate didGetHotCommentDaily:statuesArr];
+        }
+        [statuesArr release];
+    }
+    
+    //获取某个用户的各种消息未读数
+    if (requestType == SinaGetUnreadCount) {
+        if ([delegate respondsToSelector:@selector(didGetUnreadCount:)]) {
+            [delegate didGetUnreadCount:userInfo];
+        }
     }
 }
 

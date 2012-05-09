@@ -72,5 +72,4 @@
 //- (void)startLoading;
 - (void)stopLoading;
 - (void)refresh;
-
 @end

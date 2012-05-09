@@ -7,29 +7,17 @@
 //
 
 #import "StatusViewContrillerBase.h"
-#import "WeiBoMessageManager.h"
-#import "Status.h"
-#import "User.h"
-#import "OAuthWebView.h"
-#import "ASIHTTPRequest.h"
-#import "HHNetDataCacheManager.h"
-#import "GifView.h"
-#import "SHKActivityIndicator.h"
-#import "ZJTDetailStatusVC.h"
-#import "TwitterVC.h"
+
 
 #define kTextViewPadding            16.0
 #define kLineBreakMode              UILineBreakModeWordWrap
 
-@interface FirstViewController() 
-- (void)getImages;
-- (void)doneLoadingTableViewData;
-- (void)twitter;
+@interface StatusViewContrillerBase() 
+-(void)setup;
 @end
 
-@implementation FirstViewController
+@implementation StatusViewContrillerBase
 @synthesize table;
-@synthesize userID;
 @synthesize statusCellNib;
 @synthesize statuesArr;
 @synthesize headDictionary;
@@ -42,33 +30,53 @@
     self.imageDictionary = nil;
     self.statusCellNib = nil;
     self.statuesArr = nil;
-    self.userID = nil;
     self.browserView = nil;
     _refreshHeaderView=nil;
     [table release];table = nil;
     [super dealloc];
 }
 
+-(void)setup
+{
+    self.title = @"主页";// NSLocalizedString(@"First", @"First");
+    self.tabBarItem.image = [UIImage imageNamed:@"first"];
+    
+    CGRect frame = table.frame;
+    frame.size.height = frame.size.height + REFRESH_FOOTER_HEIGHT;
+    table.frame = frame;
+    
+    //init data
+    isFirstCell = YES;
+    shouldLoad = NO;
+    shouldShowIndicator = YES;
+    manager = [WeiBoMessageManager getInstance];
+    defaultNotifCenter = [NSNotificationCenter defaultCenter];
+    headDictionary = [[NSMutableDictionary alloc] init];
+    imageDictionary = [[NSMutableDictionary alloc] init];
+}
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        [self setup];
+    }
+    return self;
+}
+
+- (id)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:style];
+    if (self != nil) {
+        [self setup];
+    }
+    return self;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = @"ZJT微博";// NSLocalizedString(@"First", @"First");
-        self.tabBarItem.image = [UIImage imageNamed:@"first"];
-        
-        CGRect frame = self.table.frame;
-        frame.size.height = frame.size.height + REFRESH_FOOTER_HEIGHT;
-        self.table.frame = frame;
-        
-        //init data
-        isFirstCell = YES;
-        shouldLoad = NO;
-        shouldLoadAvatar = NO;
-        shouldShowIndicator = YES;
-        manager = [WeiBoMessageManager getInstance];
-        defaultNotifCenter = [NSNotificationCenter defaultCenter];
-        headDictionary = [[NSMutableDictionary alloc] init];
-        imageDictionary = [[NSMutableDictionary alloc] init];
+        [self setup];
     }
     return self;
 }
@@ -77,7 +85,8 @@
 {
     if (statusCellNib == nil) 
     {
-        self.statusCellNib = [StatusCell nib];
+        [statusCellNib release];
+        statusCellNib = [[StatusCell nib] retain];
     }
     return statusCellNib;
 }
@@ -97,14 +106,6 @@
 	//  update the last update date
 	[_refreshHeaderView refreshLastUpdatedDate];
 }
-
-- (void)twitter
-{
-    TwitterVC *tv = [[TwitterVC alloc]initWithNibName:@"TwitterVC" bundle:nil];
-    [self.navigationController pushViewController:tv animated:YES];
-    [tv release];
-}
-
 							
 #pragma mark - View lifecycle
 - (void)viewDidLoad
@@ -114,42 +115,14 @@
     [self setUpRefreshView];
     self.tableView.contentInset = UIEdgeInsetsOriginal;
     
-    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发微博" style:UIBarButtonItemStylePlain target:self action:@selector(twitter)];
-    self.navigationItem.rightBarButtonItem = retwitterBtn;
-    [retwitterBtn release];
-    
-    //如果未授权，则调入授权页面。
-    NSString *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
-    NSLog([manager isNeedToRefreshTheToken] == YES ? @"need to login":@"will login");
-    if (authToken == nil || [manager isNeedToRefreshTheToken]) 
-    {
-        shouldLoad = YES;
-        OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
-        [self presentModalViewController:webV animated:NO];
-        [webV release];
-    }
-    else
-    {
-        [manager getUserID];
-        [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];        
-    }
-    [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID            object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine          object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(relogin)            name:NeedToReLogin              object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(mmRequestFailed:)   name:MMSinaRequestFailed object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(loginSucceed)       name:DID_GET_TOKEN_IN_WEB_VIEW object:nil];
 }
 
 -(void)viewDidUnload
 {
-    [defaultNotifCenter removeObserver:self name:MMSinaGotUserID            object:nil];
-    [defaultNotifCenter removeObserver:self name:MMSinaGotHomeLine          object:nil];
     [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
-    [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo          object:nil];
-    [defaultNotifCenter removeObserver:self name:NeedToReLogin              object:nil];
     [defaultNotifCenter removeObserver:self name:MMSinaRequestFailed        object:nil];
     [defaultNotifCenter removeObserver:self name:DID_GET_TOKEN_IN_WEB_VIEW  object:nil];
     
@@ -159,13 +132,6 @@
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
-    if (shouldLoad) 
-    {
-        shouldLoad = NO;
-        [manager getUserID];
-        [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
-    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -182,14 +148,6 @@
 -(void)loginSucceed
 {
     shouldLoad = YES;
-}
-
--(void)relogin
-{
-    shouldLoad = YES;
-    OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
-    [self presentModalViewController:webV animated:NO];
-    [webV release];
 }
 
 //异步加载图片
@@ -277,56 +235,7 @@
     NSIndexPath *indexPath  = [NSIndexPath indexPathForRow:index inSection:0];
     NSArray     *arr        = [NSArray arrayWithObject:indexPath];
     [table reloadRowsAtIndexPaths:arr withRowAnimation:NO];
-}
-
--(void)didGetUserID:(NSNotification*)sender
-{
-    self.userID = sender.object;
-    [[NSUserDefaults standardUserDefaults] setObject:userID forKey:USER_STORE_USER_ID];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [manager getUserInfoWithUserID:[userID longLongValue]];
-}
-
--(void)didGetUserInfo:(NSNotification*)sender
-{
-    User *user = sender.object;
-    self.title = user.screenName;
-    [[NSUserDefaults standardUserDefaults] setObject:user.screenName forKey:USER_STORE_USER_NAME];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
--(void)didGetHomeLine:(NSNotification*)sender
-{
-    if ([sender.object count] == 1) {
-        NSDictionary *dic = [sender.object objectAtIndex:0];
-        NSString *error = [dic objectForKey:@"error"];
-        if (error && ![error isEqual:[NSNull null]]) {
-            if ([error isEqualToString:@"expired_token"]) 
-            {
-                [[SHKActivityIndicator currentIndicator] hide];
-                shouldLoad = YES;
-                OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
-                [self presentModalViewController:webV animated:NO];
-                [webV release];
-            }
-            return;
-        }
-    }
-    
-    [self stopLoading];
-    [self doneLoadingTableViewData];
-    
-    shouldLoadAvatar = YES;
-    [statuesArr removeAllObjects];
-    self.statuesArr = sender.object;
-    [table reloadData];
-    [[SHKActivityIndicator currentIndicator] hide];
-    
-    [headDictionary  removeAllObjects];
-    [imageDictionary removeAllObjects];
-    
-    [self getImages];
+    [self.tableView reloadRowsAtIndexPaths:arr withRowAnimation:NO];
 }
 
 -(void)mmRequestFailed:(id)sender
@@ -353,10 +262,10 @@
 }
 
 - (id)cellForTableView:(UITableView *)tableView fromNib:(UINib *)nib {
-    NSString *cellID = NSStringFromClass([StatusCell class]);
+    static NSString *cellID = @"StatusCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
-        NSLog(@"cell new");
+        NSLog(@"statuss cell new");
         NSArray *nibObjects = [nib instantiateWithOwner:nil options:nil];
         cell = [nibObjects objectAtIndex:0];
     }
@@ -381,7 +290,7 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger  row = indexPath.row;
-    StatusCell *cell = [self cellForTableView:table fromNib:self.statusCellNib];
+    StatusCell *cell = [self cellForTableView:tableView fromNib:self.statusCellNib];
     
     if (row >= [statuesArr count]) {
         NSLog(@"cellForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);

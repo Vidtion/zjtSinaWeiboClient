@@ -103,8 +103,6 @@
     [self setViewsHeight];
     [self.table setTableHeaderView:headerView];
     
-    [manager getCommentListWithID:status.statusId];
-    
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(didGetComments:) name:MMSinaGotCommentList object:nil];
     [center addObserver:self selector:@selector(didFollowByUserID:) name:MMSinaFollowedByUserIDWithResult object:nil];
@@ -125,6 +123,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    if (self.commentArr == nil) {
+        [manager getCommentListWithID:status.statusId];
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
+    }
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated 
@@ -224,6 +227,7 @@
 
 - (void)refresh {
     [manager getCommentListWithID:status.statusId];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
 }
 
 -(void)follow
@@ -326,6 +330,7 @@
             NSNumber *count = [dic objectForKey:@"count"];
             countLB.text = [NSString stringWithFormat:@"评论:%d转发:%d",[count intValue],status.retweetsCount];
         }
+        [[SHKActivityIndicator currentIndicator]hide];
         [table reloadData];
         [self stopLoading];
     }

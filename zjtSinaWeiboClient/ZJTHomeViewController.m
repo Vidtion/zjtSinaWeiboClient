@@ -1,18 +1,15 @@
 //
-//  FirstViewController.m
+//  ZJTHomeViewController.m
 //  zjtSinaWeiboClient
 //
-//  Created by jtone z on 11-11-25.
-//  Copyright (c) 2011年 __MyCompanyName__. All rights reserved.
+//  Created by Jianting Zhu on 12-5-9.
+//  Copyright (c) 2012年 ZUST. All rights reserved.
 //
 
-#import "FirstViewController.h"
+#import "ZJTHomeViewController.h"
 #import "ZJTHelpler.h"
 
-@interface FirstViewController() 
-@end
-
-@implementation FirstViewController
+@implementation ZJTHomeViewController
 @synthesize userID;
 
 -(void)dealloc
@@ -28,12 +25,12 @@
     [tv release];
 }
 
-							
+
 #pragma mark - View lifecycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    NSLog(@"home vc table = %@",self.tableView);
     UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发微博" style:UIBarButtonItemStylePlain target:self action:@selector(twitter)];
     self.navigationItem.rightBarButtonItem = retwitterBtn;
     [retwitterBtn release];
@@ -142,9 +139,7 @@
     
     [statuesArr removeAllObjects];
     self.statuesArr = sender.object;
-    [table reloadData];
     [self.tableView reloadData];
-    
     [[SHKActivityIndicator currentIndicator] hide];
     
     [headDictionary  removeAllObjects];
@@ -153,4 +148,32 @@
     [self getImages];
 }
 
+
+
+#pragma mark - UITableViewDataSource
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [super numberOfSectionsInTableView:tableView];
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [super tableView:tableView numberOfRowsInSection:section];
+}
+
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [super tableView:tableView cellForRowAtIndexPath:indexPath];
+}
+
+#pragma mark - UITableViewDelegate
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  
+{
+    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+}
 @end

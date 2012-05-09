@@ -24,6 +24,7 @@
 #define USER_STORE_EXPIRATION_DATE  @"SinaExpirationDate"
 #define USER_STORE_USER_ID          @"SinaUserID"
 #define USER_STORE_USER_NAME        @"SinaUserName"
+#define USER_OBJECT                 @"USER_OBJECT"
 #define NeedToReLogin               @"NeedToReLogin"
 
 #define MMSinaRequestFailed         @"MMSinaRequestFailed"
@@ -55,6 +56,8 @@ typedef enum {
     SinaGetFollowingUserList,       //获取用户的关注列表
     SinaGetFollowedUserList,        //获取用户粉丝列表
     SinaGetHotRepostDaily,          //按天返回热门微博转发榜的微博列表
+    SinaGetHotCommentDaily,         //按天返回热门微博评论榜的微博列表
+    SinaGetUnreadCount,             //获取某个用户的各种消息未读数
 }RequestType;
 
 @class ASINetworkQueue;
@@ -119,6 +122,12 @@ typedef enum {
 
 //按天返回热门微博转发榜的微博列表
 -(void)didGetHotRepostDaily:(NSArray*)statusArr;
+
+//按天返回热门微博评论榜的微博列表
+-(void)didGetHotCommentDaily:(NSArray*)statusArr;
+
+//获取某个用户的各种消息未读数
+-(void)didGetUnreadCount:(NSDictionary*)dic;
 
 @end
 
@@ -215,4 +224,11 @@ typedef enum {
 
 //按天返回热门微博转发榜的微博列表
 -(void)getHotRepostDaily:(int)count;
+
+//按天返回热门微博评论榜的微博列表
+-(void)getHotCommnetDaily:(int)count;
+
+//获取某个用户的各种消息未读数
+-(void)getUnreadCount:(NSString*)uid;
+
 @end

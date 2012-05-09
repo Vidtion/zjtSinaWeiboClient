@@ -7,45 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "StatusCell.h"
-#import "PullRefreshTableViewController.h"
-#import "EGORefreshTableHeaderView.h"
-#import "ImageBrowser.h"
+#import "StatusViewContrillerBase.h"
+#import "TwitterVC.h"
+#import "OAuthWebView.h"
 
-@class WeiBoMessageManager;
-
-@interface FirstViewController : PullRefreshTableViewController<EGORefreshTableHeaderDelegate,UITableViewDelegate,UITableViewDataSource,StatusCellDelegate,ImageBrowserDelegate>{
-
-    WeiBoMessageManager *manager;
-    NSNotificationCenter *defaultNotifCenter;
-    
-    UITableView         *table;
-    NSString            *userID;
-    UINib               *statusCellNib;
-    NSMutableArray      *statuesArr;
-    NSMutableDictionary *headDictionary;
-    NSMutableDictionary *imageDictionary;
-    ImageBrowser        *browserView;
-    
-    BOOL                shouldShowIndicator;
-    BOOL                shouldLoad;
-    BOOL                shouldLoadAvatar;
-    
-    BOOL                isFirstCell;
-    
-	EGORefreshTableHeaderView *_refreshHeaderView;
-	
-	//  Reloading var should really be your tableviews datasource
-	//  Putting it here for demo purposes 
-	BOOL _reloading;
+@interface FirstViewController : StatusViewContrillerBase
+{
+    NSString *userID;
 }
 
-@property (retain, nonatomic)   IBOutlet UITableView    *table;
-@property (nonatomic, copy)     NSString                *userID;
-@property (nonatomic, retain)   UINib                   *statusCellNib;
-@property (nonatomic, retain)   NSMutableArray          *statuesArr;
-@property (nonatomic, retain)   NSMutableDictionary     *headDictionary;
-@property (nonatomic, retain)   NSMutableDictionary     *imageDictionary;
-@property (nonatomic, retain)   ImageBrowser            *browserView;
+@property (nonatomic, copy)     NSString *userID;
 
 @end

@@ -1,12 +1,12 @@
 //
-//  StatusViewContrillerBase.h
+//  ZJTStatusBaseVC.h
 //  zjtSinaWeiboClient
 //
-//  Created by jtone z on 11-11-25.
-//  Copyright (c) 2011年 __MyCompanyName__. All rights reserved.
+//  Created by Jianting Zhu on 12-5-9.
+//  Copyright (c) 2012年 ZUST. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "PullRefreshTableViewController.h"
 #import "StatusCell.h"
 #import "PullRefreshTableViewController.h"
 #import "EGORefreshTableHeaderView.h"
@@ -20,15 +20,11 @@
 #import "SHKActivityIndicator.h"
 #import "ZJTDetailStatusVC.h"
 
-
-@class WeiBoMessageManager;
-
-@interface StatusViewContrillerBase : PullRefreshTableViewController<EGORefreshTableHeaderDelegate,StatusCellDelegate,ImageBrowserDelegate>{
-
+@interface ZJTStatusBaseVC : PullRefreshTableViewController<EGORefreshTableHeaderDelegate,StatusCellDelegate,ImageBrowserDelegate>{
+    
     WeiBoMessageManager *manager;
     NSNotificationCenter *defaultNotifCenter;
     
-    UITableView         *table;
     UINib               *statusCellNib;
     NSMutableArray      *statuesArr;
     NSMutableDictionary *headDictionary;
@@ -45,7 +41,6 @@
 	BOOL _reloading;
 }
 
-@property (retain, nonatomic)   IBOutlet UITableView    *table;
 @property (nonatomic, retain)   UINib                   *statusCellNib;
 @property (nonatomic, retain)   NSMutableArray          *statuesArr;
 @property (nonatomic, retain)   NSMutableDictionary     *headDictionary;
@@ -54,5 +49,6 @@
 
 - (void)getImages;
 - (void)doneLoadingTableViewData;
+
 
 @end

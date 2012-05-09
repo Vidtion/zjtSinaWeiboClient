@@ -10,6 +10,8 @@
 #import "OAuthWebView.h"
 #import "WeiBoMessageManager.h"
 #import "User.h"
+#import "ZJTHotRepostViewController.h"
+#import "AboutViewController.h"
 
 //sections
 enum{
@@ -123,6 +125,7 @@ enum {
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     // Configure the cell...
     
@@ -143,11 +146,11 @@ enum {
     
     else if (section == kStatusSection) {
         if (row == kHotStatus) {
-            cell.textLabel.text = @"热门微博";
+            cell.textLabel.text = @"今日热门评论";
         }
         
         else if (row == kHotRetwitted) {
-            cell.textLabel.text = @"热门转发";
+            cell.textLabel.text = @"今日热门转发";
         }
     }
     return cell;
@@ -184,23 +187,41 @@ enum {
         }
         
         else if (row == kChangeAccount) {
-            [self logout];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"确定要更换账号吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"更换", nil];
+            [alert show];
+            [alert release];
         }
         
         else if (row == kAboutMe) {
-            
+            AboutViewController *a = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
+            a.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:a animated:YES];
+            [a release];
         }
     }
     
     else if (section == kStatusSection) {
         if (row == kHotStatus) {        
-        
+            ZJTHotRepostViewController *h = [[ZJTHotRepostViewController alloc] initWithType:kHotCommentDaily];
+            h.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:h animated:YES];
+            [h release];
         }
         
         else if (row == kHotRetwitted) {
-            [[WeiBoMessageManager getInstance]getHotRepostDaily:50];
+            ZJTHotRepostViewController *h = [[ZJTHotRepostViewController alloc] initWithType:kHotRepostDaily];
+            h.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:h animated:YES];
+            [h release];
         }
     }
 }
 
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        [self logout];
+    }
+}
 @end
