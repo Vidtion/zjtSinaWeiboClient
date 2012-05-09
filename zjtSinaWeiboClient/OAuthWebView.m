@@ -118,6 +118,9 @@
             window = win;
             window.windowLevel = UIWindowLevelNormal;
         }
+        if (win.tag == 0) {
+            [win makeKeyAndVisible];
+        }
     }
     
 	NSURL *url = [request URL];

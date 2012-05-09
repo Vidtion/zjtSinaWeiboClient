@@ -165,7 +165,7 @@ static ZJTStatusBarAlertWindow *instance = nil;
     for (UIWindow *win in app.windows) {
         if (win.tag == 0) {
             window = win;
-            [window makeKeyWindow];
+            [window makeKeyAndVisible];
         }
     }
     

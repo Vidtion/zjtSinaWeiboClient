@@ -76,6 +76,7 @@
     _haveRetwitterImage = status.haveRetwitterImage;
         
     twitterNameLB.text = user.screenName;
+    twitterNameLB.hidden = NO;
     contentTF.text = status.text;
     timeLB.text = status.timestamp;
     countLB.text = [NSString stringWithFormat:@"评论:%d转发:%d",status.commentsCount,status.retweetsCount];
