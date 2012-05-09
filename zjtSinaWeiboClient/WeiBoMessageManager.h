@@ -81,6 +81,11 @@
 //返回一个Status对象
 #define MMSinaGotRepost @"MMSinaGotRepost"
 
+//按天返回热门微博转发榜的微博列表
+//返回成员为Status的NSArray
+#define MMSinaGotHotRepostDaily @"MMSinaGotHotRepostDaily"
+
+
 @interface WeiBoMessageManager : NSObject <WeiBoHttpDelegate>
 {
     WeiBoHttpManager *httpManager;
@@ -158,5 +163,8 @@
 //转发一条微博
 //isComment(int):是否在转发的同时发表评论，0：否、1：评论给当前微博、2：评论给原微博、3：都评论，默认为0 。
 -(void)repost:(NSString*)weiboID content:(NSString*)content withComment:(int)isComment;
+
+//按天返回热门微博转发榜的微博列表
+-(void)getHotRepostDaily:(int)count;
 
 @end

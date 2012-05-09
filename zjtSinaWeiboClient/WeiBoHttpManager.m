@@ -619,6 +619,26 @@
     [item release];
 }
 
+//按天返回热门微博转发榜的微博列表
+-(void)getHotRepostDaily:(int)count
+{
+    //https://api.weibo.com/2/statuses/hot/repost_daily.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSString                *countString = [NSString stringWithFormat:@"%d",count];
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,   @"access_token",
+                                       countString, @"count",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/statuses/hot/repost_daily.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetHotRepostDaily];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
 #pragma mark - Operate queue
 - (BOOL)isRunning
 {
@@ -676,17 +696,27 @@
         }
     }
     
+    NSDictionary *userInfo = nil;
+    NSArray *userArr = nil;
+    if ([returnObject isKindOfClass:[NSDictionary class]]) {
+        userInfo = (NSDictionary*)returnObject;
+    }
+    else if ([returnObject isKindOfClass:[NSArray class]]) {
+        userArr = (NSArray*)returnObject;
+    }
+    else {
+        return;
+    }
+    
+    
     //获取最新的公共微博
     if (requestType == SinaGetPublicTimeline) {
-        SBJsonParser    *parser     = [[SBJsonParser alloc] init];    
-        NSDictionary    *info       = [parser objectWithString:responseString];
-        NSArray         *arr        = [info objectForKey:@"statuses"];
+        NSArray         *arr        = [userInfo objectForKey:@"statuses"];
         NSMutableArray  *statuesArr = [[NSMutableArray alloc]initWithCapacity:0];
         for (id item in arr) {
             Status* sts = [Status statusWithJsonDictionary:item];
             [statuesArr addObject:sts];
         }
-        [parser release];
         if ([delegate respondsToSelector:@selector(didGetPublicTimelineWithStatues:)]) {
             [delegate didGetPublicTimelineWithStatues:statuesArr];
         }
@@ -695,12 +725,9 @@
     
     //获取登陆用户ID
     if (requestType == SinaGetUserID) {
-        SBJsonParser *parser = [[SBJsonParser alloc] init];    
-        NSDictionary *info = [parser objectWithString:responseString];
-        NSNumber *userID = [info objectForKey:@"uid"];
+        NSNumber *userID = [userInfo objectForKey:@"uid"];
         self.userId = [NSString stringWithFormat:@"%@",userID];
         [[NSUserDefaults standardUserDefaults] setObject:userID forKey:USER_STORE_USER_ID];
-        [parser release];
         if ([delegate respondsToSelector:@selector(didGetUserID:)]) {
             [delegate didGetUserID:userId];
         }
@@ -708,10 +735,7 @@
     
     //获取任意一个用户的信息
     if (requestType == SinaGetUserInfo) {
-        SBJsonParser *parser = [[SBJsonParser alloc] init];    
-        NSDictionary *userInfo = [parser objectWithString:responseString];
         User *user = [[User alloc]initWithJsonDictionary:userInfo];
-        [parser release];
         if ([delegate respondsToSelector:@selector(didGetUserInfo:)]) {
             [delegate didGetUserInfo:user];
         }
@@ -719,13 +743,9 @@
     }
     
     //根据微博消息ID返回某条微博消息的评论列表
-    if (requestType == SinaGetComment) {
-        SBJsonParser    *parser     = [[SBJsonParser alloc] init];    
-        NSDictionary    *info       = [parser objectWithString:responseString];
-        [parser release];
-        
-        NSArray         *arr        = [info objectForKey:@"comments"];
-        NSNumber        *count      = [info objectForKey:@"total_number"];
+    if (requestType == SinaGetComment) {        
+        NSArray         *arr        = [userInfo objectForKey:@"comments"];
+        NSNumber        *count      = [userInfo objectForKey:@"total_number"];
         if (arr == nil || [arr isEqual:[NSNull null]]) {
             return;
         }
@@ -745,10 +765,7 @@
     
     //获取用户双向关注的用户ID列表，即互粉UID列表
     if (requestType == SinaGetBilateralIdList || requestType == SinaGetBilateralIdListAll) {
-        SBJsonParser *parser = [[SBJsonParser alloc] init];    
-        NSDictionary *userInfo = [parser objectWithString:responseString];
         NSArray *arr = [userInfo objectForKey:@"ids"];
-        [parser release];
         if ([delegate respondsToSelector:@selector(didGetBilateralIdList:)]) {
             [delegate didGetBilateralIdList:arr];
         }
@@ -756,8 +773,6 @@
     
     //获取用户的双向关注user列表，即互粉列表
     if (requestType == SinaGetBilateralUserList || requestType == SinaGetBilateralUserListAll) {
-        SBJsonParser *parser = [[SBJsonParser alloc] init];    
-        NSDictionary *userInfo = [parser objectWithString:responseString];
         NSArray *arr = [userInfo objectForKey:@"users"];
         NSMutableArray *userArr = [[NSMutableArray alloc]initWithCapacity:0];
         for (id item in arr) {
@@ -765,7 +780,6 @@
             [userArr addObject:user];
             [user release];
         }
-        [parser release];
         if ([delegate respondsToSelector:@selector(didGetBilateralUserList:)]) {
             [delegate didGetBilateralUserList:userArr];
         }
@@ -773,11 +787,7 @@
     }
     
     //获取用户的关注列表
-    if (requestType == SinaGetFollowingUserList) {
-        SBJsonParser *parser = [[SBJsonParser alloc] init];    
-        NSDictionary *userInfo = [parser objectWithString:responseString];
-        [parser release];
-        
+    if (requestType == SinaGetFollowingUserList) {        
         NSArray *arr = [userInfo objectForKey:@"users"];
         NSMutableArray *userArr = [[NSMutableArray alloc]initWithCapacity:0];
         for (id item in arr) {
@@ -792,11 +802,7 @@
     }
         
     //获取用户粉丝列表
-    if (requestType == SinaGetFollowedUserList) {
-        SBJsonParser *parser = [[SBJsonParser alloc] init];    
-        NSDictionary *userInfo = [parser objectWithString:responseString];
-        [parser release];
-        
+    if (requestType == SinaGetFollowedUserList) {        
         NSArray *arr = [userInfo objectForKey:@"users"];
         NSMutableArray *userArr = [[NSMutableArray alloc]initWithCapacity:0];
         for (id item in arr) {
@@ -813,8 +819,6 @@
     //关注一个用户 by User ID or Name
     if (requestType == SinaFollowByUserID || requestType == SinaFollowByUserName) {
         int result = 1;
-        SBJsonParser *parser = [[SBJsonParser alloc] init];    
-        NSDictionary *userInfo = [parser objectWithString:responseString];
         id ID = [userInfo objectForKey:@"id"];
         
         if (ID != nil && ID != [NSNull null]) {
@@ -824,7 +828,6 @@
         {
             result = 1; //failed
         }
-        [parser release];
         
         NSString *uid = [userInformation objectForKey:@"uid"];
         NSMutableDictionary *dic = [[[NSMutableDictionary alloc]initWithCapacity:0] autorelease];    
@@ -841,8 +844,6 @@
     //取消关注一个用户 by User ID or Name
     if (requestType == SinaUnfollowByUserID || requestType == SinaUnfollowByUserName) {
         int result = 1;
-        SBJsonParser *parser = [[SBJsonParser alloc] init];    
-        NSDictionary *userInfo = [parser objectWithString:responseString];
         id ID = [userInfo objectForKey:@"id"];
         
         if (ID != nil && ID != [NSNull null]) {
@@ -852,7 +853,6 @@
         {
             result = 1; //failed
         }
-        [parser release];
         
         NSString *uid = [userInformation objectForKey:@"uid"];
         NSMutableDictionary *dic = [[[NSMutableDictionary alloc]initWithCapacity:0] autorelease];    
@@ -867,14 +867,11 @@
     
     //
     if (requestType == SinaGetTrendStatues) {
-        SBJsonParser    *parser     = [[SBJsonParser alloc] init];   
-        NSArray         *arr        = [parser objectWithString:responseString];
         NSMutableArray  *statuesArr = [[NSMutableArray alloc]initWithCapacity:0];
-        for (id item in arr) {
+        for (id item in userArr) {
             Status* sts = [Status statusWithJsonDictionary:item];
             [statuesArr addObject:sts];
         }
-        [parser release];
         if ([delegate respondsToSelector:@selector(didGetTrendStatues:)]) {
             [delegate didGetTrendStatues:statuesArr];
         }
@@ -883,10 +880,7 @@
     
     //关注某话题
     if (requestType == SinaFollowTrend) {
-        SBJsonParser *parser = [[SBJsonParser alloc] init];    
-        NSDictionary *userInfo = [parser objectWithString:responseString];
         int64_t topicID = [[userInfo objectForKey:@"topicid"] longLongValue];
-        [parser release];
         if ([delegate respondsToSelector:@selector(didGetTrendIDAfterFollowed:)]) {
             [delegate didGetTrendIDAfterFollowed:topicID];
         }
@@ -894,10 +888,7 @@
     
     //取消对某话题的关注
     if (requestType == SinaUnfollowTrend) {
-        SBJsonParser *parser = [[SBJsonParser alloc] init];    
-        NSDictionary *userInfo = [parser objectWithString:responseString];
         BOOL isTrue = [[userInfo objectForKey:@"result"] boolValue];
-        [parser release];
         if ([delegate respondsToSelector:@selector(didGetTrendResultAfterUnfollowed:)]) {
             [delegate didGetTrendResultAfterUnfollowed:isTrue];
         }
@@ -905,10 +896,7 @@
     
     //发布文字微博 & 图文微博
     if (requestType ==SinaPostText || requestType == SinaPostTextAndImage) {
-        SBJsonParser *parser = [[SBJsonParser alloc] init];    
-        NSDictionary *userInfo = [parser objectWithString:responseString];
         Status* sts = [Status statusWithJsonDictionary:userInfo];
-        [parser release];
         if ([delegate respondsToSelector:@selector(didGetPostResult:)]) {
             [delegate didGetPostResult:sts];
         }
@@ -916,10 +904,7 @@
     
     //获取当前登录用户及其所关注用户的最新微博
     if (requestType == SinaGetHomeLine) {
-        SBJsonParser    *parser     = [[SBJsonParser alloc] init];    
-        NSDictionary    *info       = [parser objectWithString:responseString];
-        NSArray         *arr        = [info objectForKey:@"statuses"];
-        [parser release];
+        NSArray *arr = [userInfo objectForKey:@"statuses"];
         
         if (arr == nil || [arr isEqual:[NSNull null]]) 
         {
@@ -939,10 +924,7 @@
     
     //获取某个用户最新发表的微博列表
     if (requestType == SinaGetUserStatus) {
-        SBJsonParser    *parser     = [[SBJsonParser alloc] init];    
-        NSDictionary    *info       = [parser objectWithString:responseString];
-        NSArray         *arr        = [info objectForKey:@"statuses"];
-        [parser release];
+        NSArray *arr = [userInfo objectForKey:@"statuses"];
         
         if (arr == nil || [arr isEqual:[NSNull null]]) 
         {
@@ -962,13 +944,23 @@
     
     //转发一条微博
     if (requestType == SinaRepost) {
-        SBJsonParser *parser = [[SBJsonParser alloc] init];    
-        NSDictionary *userInfo = [parser objectWithString:responseString];
         Status* sts = [Status statusWithJsonDictionary:userInfo];
-        [parser release];
         if ([delegate respondsToSelector:@selector(didRepost:)]) {
             [delegate didRepost:sts];
         }
+    }
+    
+    //按天返回热门微博转发榜的微博列表
+    if (requestType == SinaGetHotRepostDaily) {
+        NSMutableArray  *statuesArr = [[NSMutableArray alloc]initWithCapacity:0];
+        for (id item in userArr) {
+            Status* sts = [Status statusWithJsonDictionary:item];
+            [statuesArr addObject:sts];
+        }
+        if ([delegate respondsToSelector:@selector(didGetHotRepostDaily:)]) {
+            [delegate didGetHotRepostDaily:statuesArr];
+        }
+        [statuesArr release];
     }
 }
 

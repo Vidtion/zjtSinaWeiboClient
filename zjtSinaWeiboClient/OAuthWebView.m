@@ -48,13 +48,15 @@
         NSLog(@"Oauth canceled");
     }
     
-    [[NSUserDefaults standardUserDefaults] setObject:token forKey:USER_STORE_ACCESS_TOKEN];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
     NSString *refreshToken  = [self getStringFromUrl:q needle:@"refresh_token="];
     NSString *expTime       = [self getStringFromUrl:q needle:@"expires_in="];
     NSString *uid           = [self getStringFromUrl:q needle:@"uid="];
     NSString *remindIn      = [self getStringFromUrl:q needle:@"remind_in="];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:token forKey:USER_STORE_ACCESS_TOKEN];
+    [[NSUserDefaults standardUserDefaults] setObject:uid forKey:USER_STORE_USER_ID];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     
     NSDate *expirationDate =nil;
     NSLog(@"jtone \n\ntoken=%@\nrefreshToken=%@\nexpTime=%@\nuid=%@\nremindIn=%@\n\n",token,refreshToken,expTime,uid,remindIn);
@@ -71,6 +73,8 @@
         } 
     } 
     if (token) {
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:DID_GET_TOKEN_IN_WEB_VIEW object:nil];
         [self dismissModalViewControllerAnimated:YES];
     }
 }

@@ -186,6 +186,13 @@ static WeiBoMessageManager * instance=nil;
     [httpManager repost:weiboID content:content withComment:isComment];
 }
 
+//按天返回热门微博转发榜的微博列表
+-(void)getHotRepostDaily:(int)count
+{
+    [httpManager getHotRepostDaily:count];
+}
+
+
 #pragma mark - WeiBoHttpDelegate
 //获取最新的公共微博
 -(void)didGetPublicTimelineWithStatues:(NSArray *)statusArr
@@ -319,4 +326,13 @@ static WeiBoMessageManager * instance=nil;
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotRepost object:sts];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
+
+//按天返回热门微博转发榜的微博列表
+-(void)didGetHotRepostDaily:(NSArray *)statusArr
+{
+    NSLog(@"hot repost :%@",[statusArr objectAtIndex:0]);
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotHotRepostDaily object:statusArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
 @end
