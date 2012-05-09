@@ -8,16 +8,23 @@
 
 #import "FirstViewController.h"
 #import "ZJTHelpler.h"
+#import "ZJTStatusBarAlertWindow.h"
 
 @interface FirstViewController() 
+-(void)timerOnActive;
 @end
 
 @implementation FirstViewController
 @synthesize userID;
+@synthesize timer;
 
 -(void)dealloc
 {
     self.userID = nil;
+    
+    [timer invalidate];
+    self.timer = nil;
+    
     [super dealloc];
 }
 
@@ -37,7 +44,7 @@
     UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发微博" style:UIBarButtonItemStylePlain target:self action:@selector(twitter)];
     self.navigationItem.rightBarButtonItem = retwitterBtn;
     [retwitterBtn release];
-    
+        
     //如果未授权，则调入授权页面。
     NSString *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
     NSLog([manager isNeedToRefreshTheToken] == YES ? @"need to login":@"will login");
@@ -52,12 +59,14 @@
     {
         [manager getUserID];
         [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];        
+//        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
+        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     }
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID            object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine          object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(relogin)            name:NeedToReLogin              object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(didGetUnreadCount:)                   name:MMSinaGotUnreadCount object:nil];
 }
 
 -(void)viewDidUnload
@@ -66,6 +75,7 @@
     [defaultNotifCenter removeObserver:self name:MMSinaGotHomeLine          object:nil];
     [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo          object:nil];
     [defaultNotifCenter removeObserver:self name:NeedToReLogin              object:nil];
+    [defaultNotifCenter removeObserver:self name:MMSinaGotUnreadCount       object:nil];
     
     [super viewDidUnload];
 }
@@ -78,7 +88,8 @@
         shouldLoad = NO;
         [manager getUserID];
         [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+//        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     }
 }
 
@@ -93,6 +104,11 @@
 }
 
 #pragma mark - Methods
+
+-(void)timerOnActive
+{
+    [manager getUnreadCount:userID];
+}
 
 -(void)relogin
 {
@@ -127,7 +143,8 @@
         if (error && ![error isEqual:[NSNull null]]) {
             if ([error isEqualToString:@"expired_token"]) 
             {
-                [[SHKActivityIndicator currentIndicator] hide];
+//                [[SHKActivityIndicator currentIndicator] hide];
+                [[ZJTStatusBarAlertWindow getInstance] hide];
                 shouldLoad = YES;
                 OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
                 [self presentModalViewController:webV animated:NO];
@@ -145,12 +162,31 @@
     [table reloadData];
     [self.tableView reloadData];
     
-    [[SHKActivityIndicator currentIndicator] hide];
+//    [[SHKActivityIndicator currentIndicator] hide];
+    [[ZJTStatusBarAlertWindow getInstance] hide];
     
     [headDictionary  removeAllObjects];
     [imageDictionary removeAllObjects];
     
     [self getImages];
+    
+    if (timer == nil) {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerOnActive) userInfo:nil repeats:YES];
+    }
+}
+
+-(void)didGetUnreadCount:(NSNotification*)sender
+{
+    NSDictionary *dic = sender.object;
+    NSNumber *num = [dic objectForKey:@"status"];
+    
+    NSLog(@"num = %@",num);
+    if ([num intValue] == 0) {
+        return;
+    }
+    
+    [[ZJTStatusBarAlertWindow getInstance] showWithString:[NSString stringWithFormat:@"有%@条新微博",num]];
+    [[ZJTStatusBarAlertWindow getInstance] performSelector:@selector(hide) withObject:nil afterDelay:10];
 }
 
 @end

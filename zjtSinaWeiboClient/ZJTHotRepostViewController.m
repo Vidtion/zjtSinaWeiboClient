@@ -88,7 +88,8 @@
         
     }
     
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
+//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
+    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
 }
 
 -(void)didGetHotStatus:(NSNotification*)sender
@@ -99,7 +100,8 @@
     [statuesArr removeAllObjects];
     self.statuesArr = sender.object;
     [self.tableView reloadData];
-    [[SHKActivityIndicator currentIndicator] hide];
+//    [[SHKActivityIndicator currentIndicator] hide];
+    [[ZJTStatusBarAlertWindow getInstance] hide];
     
     [headDictionary  removeAllObjects];
     [imageDictionary removeAllObjects];

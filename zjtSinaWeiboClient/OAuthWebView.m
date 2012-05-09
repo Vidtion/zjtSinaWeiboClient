@@ -9,6 +9,7 @@
 #import "OAuthWebView.h"
 #import "WeiBoHttpManager.h"
 #import "SHKActivityIndicator.h"
+#import "ZJTStatusBarAlertWindow.h"
 
 @implementation OAuthWebView
 @synthesize webV;
@@ -118,12 +119,14 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [[SHKActivityIndicator currentIndicator] hide];
+//    [[SHKActivityIndicator currentIndicator] hide];
+    [[ZJTStatusBarAlertWindow getInstance] hide];
 }
 
 @end

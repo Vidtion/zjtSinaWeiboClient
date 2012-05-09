@@ -32,6 +32,7 @@ static ZJTStatusBarAlertWindow *instance = nil;
 -(NSString*)displayString
 {
     if (_label == nil) {
+        NSLog(@"label == nil");
         return nil;
     }
     return _label.text;
@@ -39,12 +40,14 @@ static ZJTStatusBarAlertWindow *instance = nil;
 
 -(void)setDisplayString:(NSString *)displayString
 {
-    if (![displayString isEqualToString:_displayString]) {
+    if (![displayString isEqualToString:_displayString]) 
+    {
         [_displayString release];
         _displayString = [displayString copy];
         
         if (_label != nil) {
             _label.text = displayString;
+            [_window makeKeyAndVisible];
         }
     }
 }
@@ -88,6 +91,7 @@ static ZJTStatusBarAlertWindow *instance = nil;
     //windows
     [_window release];
     _window = [[UIWindow alloc]initWithFrame:CGRectMake(0, -20, 320, 20)];
+    _window.tag = 1;
     _window.windowLevel = UIWindowLevelAlert;
     _window.backgroundColor = [UIColor blackColor];
     
@@ -126,19 +130,20 @@ static ZJTStatusBarAlertWindow *instance = nil;
 
 -(void)showWithString:(NSString*)string
 {
-    if (_window && _window.frame.origin.y == 0) {
+    self.displayString = string;
+    if ((_window && _window.frame.origin.y == 0) ){//|| [string isEqualToString:_displayString]) {
         return;
     }
     
     if (!_window) {
         [self setupViewsAndDatas];
+        self.displayString = string;
     }
-    
-    self.displayString = string;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hide) object:nil];
     
     //animation
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:.3];
+    [UIView setAnimationDuration:.6];
     _window.frame = CGRectMake(0, 0, 320, 20);
     [UIView commitAnimations];
 }
@@ -146,11 +151,11 @@ static ZJTStatusBarAlertWindow *instance = nil;
 -(void)hide
 {
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:.3];
+    [UIView setAnimationDuration:.6];
     _window.frame = CGRectMake(0, -20, 320, 20);
     [UIView commitAnimations];
     
-    [self performSelector:@selector(removeViewsAndDatas) withObject:nil afterDelay:.3];
+//    [self performSelector:@selector(removeViewsAndDatas) withObject:nil afterDelay:.35];
 }
 
 @end

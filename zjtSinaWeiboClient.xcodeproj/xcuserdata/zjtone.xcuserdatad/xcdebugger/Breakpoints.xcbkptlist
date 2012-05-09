@@ -7,39 +7,26 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "zjtSinaWeiboClient/ZJTHomeViewController.m"
-         timestampString = "358248465.48252"
+         filePath = "zjtSinaWeiboClient/CustomScrollView.m"
+         timestampString = "358260413.690521"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "156"
-         endingLineNumber = "156"
-         landmarkName = "-numberOfSectionsInTableView:"
+         startingLineNumber = "19"
+         endingLineNumber = "19"
+         landmarkName = "-postTapNotif"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "zjtSinaWeiboClient/ZJTHomeViewController.m"
-         timestampString = "358248487.960794"
+         filePath = "zjtSinaWeiboClient/SHKActivityIndicator.m"
+         timestampString = "358262865.78452"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "161"
-         endingLineNumber = "161"
-         landmarkName = "-tableView:numberOfRowsInSection:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "zjtSinaWeiboClient/ZJTHomeViewController.m"
-         timestampString = "358248489.181697"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "166"
-         endingLineNumber = "166"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
+         startingLineNumber = "135"
+         endingLineNumber = "135"
+         landmarkName = "-show"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

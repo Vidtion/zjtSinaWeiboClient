@@ -125,7 +125,8 @@
     [super viewWillAppear:animated];
     if (self.commentArr == nil) {
         [manager getCommentListWithID:status.statusId];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
+//        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
+        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     }
 
 }
@@ -227,7 +228,8 @@
 
 - (void)refresh {
     [manager getCommentListWithID:status.statusId];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
+//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
+    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
 }
 
 -(void)follow
@@ -272,9 +274,17 @@
     [browserView loadImage];
     
     app.statusBarHidden = YES;
-    [app.keyWindow addSubview:browserView];
+    UIWindow *window = nil;
+    for (UIWindow *win in app.windows) {
+        if (win.tag == 0) {
+            [win addSubview:browserView];
+            window = win;
+            [window makeKeyAndVisible];
+        }
+    }
     if (shouldShowIndicator == YES && browserView) {
         [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:browserView];
+//        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     }
     else shouldShowIndicator = YES;
 }
@@ -297,7 +307,8 @@
 -(void)mmRequestFailed:(id)sender
 {
     [self stopLoading];
-    [[SHKActivityIndicator currentIndicator] hide];
+//    [[SHKActivityIndicator currentIndicator] hide];
+    [[ZJTStatusBarAlertWindow getInstance] hide];
 }
 
 - (IBAction)addComment:(id)sender {
@@ -330,7 +341,8 @@
             NSNumber *count = [dic objectForKey:@"count"];
             countLB.text = [NSString stringWithFormat:@"评论:%d转发:%d",[count intValue],status.retweetsCount];
         }
-        [[SHKActivityIndicator currentIndicator]hide];
+//        [[SHKActivityIndicator currentIndicator]hide];
+        [[ZJTStatusBarAlertWindow getInstance] hide];
         [table reloadData];
         [self stopLoading];
     }
@@ -377,7 +389,7 @@
     }
     else if (row >= [commentArr count] || [commentArr count] == 0)
     {
-        NSLog(@"cellForRowAtIndexPath error ,index = %d,count = %d",row,[commentArr count]);
+//        NSLog(@"cellForRowAtIndexPath error ,index = %d,count = %d",row,[commentArr count]);
         return cell;
     }
     
@@ -412,6 +424,7 @@
     if ([url isEqualToString:browserView.bigImageURL]) 
     {
         [[SHKActivityIndicator currentIndicator] hide];
+//        [[ZJTStatusBarAlertWindow getInstance] hide];
         shouldShowIndicator = NO;
         
         UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];

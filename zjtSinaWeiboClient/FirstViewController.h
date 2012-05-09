@@ -17,5 +17,6 @@
 }
 
 @property (nonatomic, copy)     NSString *userID;
+@property (nonatomic, retain) NSTimer *timer;
 
 @end

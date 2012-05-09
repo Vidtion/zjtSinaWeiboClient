@@ -119,7 +119,8 @@
     self.tableView.contentInset = UIEdgeInsetsOriginal;
     
     [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     
     [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotUserStatus        object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
@@ -143,7 +144,8 @@
     {
         shouldLoad = NO;
         [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+//        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     }
 }
 
@@ -234,7 +236,7 @@
     }
     
     if (index >= [statuesArr count]) {
-        NSLog(@"statues arr error ,index = %d,count = %d",index,[statuesArr count]);
+//        NSLog(@"statues arr error ,index = %d,count = %d",index,[statuesArr count]);
         return;
     }
     
@@ -283,7 +285,8 @@
     shouldLoadAvatar = YES;
     self.statuesArr = sender.object;
     [table reloadData];
-    [[SHKActivityIndicator currentIndicator] hide];
+//    [[SHKActivityIndicator currentIndicator] hide];
+    [[ZJTStatusBarAlertWindow getInstance] hide];
     
     [imageDictionary removeAllObjects];
     
@@ -293,13 +296,15 @@
 -(void)mmRequestFailed:(id)sender
 {
     [self stopLoading];
-    [[SHKActivityIndicator currentIndicator] hide];
+//    [[SHKActivityIndicator currentIndicator] hide];
+    [[ZJTStatusBarAlertWindow getInstance] hide];
 }
 
 -(void)refresh
 {
     [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
 }
 
 //计算text field 的高度。
@@ -316,7 +321,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
         if (isFirstCell) {
-            [[SHKActivityIndicator currentIndicator] hide];
+//            [[SHKActivityIndicator currentIndicator] hide];
+            [[ZJTStatusBarAlertWindow getInstance] hide];
             isFirstCell = NO;
         }
         NSLog(@"cell new");
@@ -347,7 +353,7 @@
     StatusCell *cell = [self cellForTableView:table fromNib:self.statusCellNib];
     
     if (row >= [statuesArr count]) {
-        NSLog(@"cellForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
+//        NSLog(@"cellForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
         return cell;
     }
     
@@ -360,7 +366,8 @@
     
     //开始绘制第一个cell时，隐藏indecator.
     if (isFirstCell) {
-        [[SHKActivityIndicator currentIndicator] hide];
+//        [[SHKActivityIndicator currentIndicator] hide];
+        [[ZJTStatusBarAlertWindow getInstance] hide];
         isFirstCell = NO;
     }
     return cell;
@@ -372,7 +379,7 @@
     NSInteger  row = indexPath.row;
     
     if (row >= [statuesArr count]) {
-        NSLog(@"heightForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
+//        NSLog(@"heightForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
         return 1;
     }
     
@@ -407,7 +414,7 @@
 {
     NSInteger  row = indexPath.row;
     if (row >= [statuesArr count]) {
-        NSLog(@"didSelectRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
+//        NSLog(@"didSelectRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
         return ;
     }
     
@@ -435,6 +442,7 @@
     if ([url isEqualToString:browserView.bigImageURL]) 
     {
         [[SHKActivityIndicator currentIndicator] hide];
+//        [[ZJTStatusBarAlertWindow getInstance] hide];
         shouldShowIndicator = NO;
         
         UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
@@ -464,7 +472,7 @@
     shouldShowIndicator = YES;
     
     if ([theCell.cellIndexPath row] > [statuesArr count]) {
-        NSLog(@"cellImageDidTaped error ,index = %d,count = %d",[theCell.cellIndexPath row],[statuesArr count]);
+//        NSLog(@"cellImageDidTaped error ,index = %d,count = %d",[theCell.cellIndexPath row],[statuesArr count]);
         return ;
     }
     
@@ -484,7 +492,14 @@
     [browserView loadImage];
     
     app.statusBarHidden = YES;
-    [app.keyWindow addSubview:browserView];
+    UIWindow *window = nil;
+    for (UIWindow *win in app.windows) {
+        if (win.tag == 0) {
+            [win addSubview:browserView];
+            window = win;
+            [window makeKeyAndVisible];
+        }
+    }
     
     //animation
     //    CAAnimation *anim = [ZJTHelpler animationWithOpacityFrom:0.0f To:1.0f Duration:0.3f BeginTime:0.0f];
@@ -492,6 +507,7 @@
     
     if (shouldShowIndicator == YES && browserView) {
         [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:browserView];
+//        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     }
     else shouldShowIndicator = YES;
 }
