@@ -88,6 +88,8 @@
 		AB37A39D14F921D80077774E /* ImageProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = AB37A39C14F921D80077774E /* ImageProcess.m */; };
 		AB55551014B7069200B27BCE /* HHNetDataCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AB55550F14B7069200B27BCE /* HHNetDataCacheManager.m */; };
 		AB57E8B61523517000363B7C /* AddCommentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB57E8B41523517000363B7C /* AddCommentVC.m */; };
+		ABA04DBD155CD19300188DDE /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA94F4E147FA7F70010C283 /* first.png */; };
+		ABA04DBE155CD19300188DDE /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA94F50147FA7F70010C283 /* first@2x.png */; };
 		ABA658F4155A2E6C00BFD728 /* StatusViewContrillerBase.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA658F1155A2E6C00BFD728 /* StatusViewContrillerBase.m */; };
 		ABA658F7155A37E300BFD728 /* ZJTHotRepostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA658F6155A37E300BFD728 /* ZJTHotRepostViewController.m */; };
 		ABA94F3A147FA7F70010C283 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABA94F39147FA7F70010C283 /* UIKit.framework */; };
@@ -784,6 +786,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABA04DBD155CD19300188DDE /* first.png in Resources */,
+				ABA04DBE155CD19300188DDE /* first@2x.png in Resources */,
 				AB2FD371155ABBDF00465A00 /* OAuthWebView.xib in Resources */,
 				AB2FD372155ABBDF00465A00 /* ImageBrowser.xib in Resources */,
 				AB2FD373155ABBDF00465A00 /* ProfileVC.xib in Resources */,

@@ -89,6 +89,11 @@
     self.title = @"登陆";
     self.navigationItem.hidesBackButton = YES;
     
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_STORE_ACCESS_TOKEN];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_STORE_USER_ID];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:USER_STORE_EXPIRATION_DATE];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     webV.delegate = self;
     WeiBoHttpManager *weiboHttpManager = [[WeiBoHttpManager alloc]initWithDelegate:self];
     NSURL *url = [weiboHttpManager getOauthCodeUrl];
@@ -102,6 +107,12 @@
 {
     [self setWebV:nil];
     [super viewDidUnload];
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    self.tabBarController.selectedIndex = 0;
 }
 
 - (void)dealloc {
