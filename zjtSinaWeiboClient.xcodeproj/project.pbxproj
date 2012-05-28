@@ -13,6 +13,7 @@
 		452065761510872500CF3A01 /* TwitterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 452065741510872500CF3A01 /* TwitterVC.m */; };
 		4547F20B1508A8CE0082FD13 /* ZJTHelpler.m in Sources */ = {isa = PBXBuildFile; fileRef = 4547F20A1508A8CE0082FD13 /* ZJTHelpler.m */; };
 		4571CD0C14FD049E00CBEF46 /* ZJTDetailStatusVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 4571CD0A14FD049D00CBEF46 /* ZJTDetailStatusVC.m */; };
+		45A09838157364090026B18A /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 45A09837157364080026B18A /* icon.jpg */; };
 		45C3EE9D1500D42C004A282E /* GifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C3EE9C1500D42C004A282E /* GifView.m */; };
 		45C3EEA81500DD7A004A282E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45C3EEA71500DD7A004A282E /* ImageIO.framework */; };
 		AB0D19AD1547ED15005EE454 /* FollowerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0D19AB1547ED15005EE454 /* FollowerVC.m */; };
@@ -150,6 +151,7 @@
 		4571CD0914FD049D00CBEF46 /* ZJTDetailStatusVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTDetailStatusVC.h; sourceTree = "<group>"; };
 		4571CD0A14FD049D00CBEF46 /* ZJTDetailStatusVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJTDetailStatusVC.m; sourceTree = "<group>"; };
 		4571CD0B14FD049D00CBEF46 /* ZJTDetailStatusVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZJTDetailStatusVC.xib; sourceTree = "<group>"; };
+		45A09837157364080026B18A /* icon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = icon.jpg; sourceTree = "<group>"; };
 		45C3EE9B1500D42C004A282E /* GifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GifView.h; sourceTree = "<group>"; };
 		45C3EE9C1500D42C004A282E /* GifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GifView.m; sourceTree = "<group>"; };
 		45C3EEA71500DD7A004A282E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -714,6 +716,7 @@
 		ABFDE20114B5A25100B57C9F /* WeiboImages */ = {
 			isa = PBXGroup;
 			children = (
+				45A09837157364080026B18A /* icon.jpg */,
 				AB50963C14B5CCE200DE0438 /* Icon-Small.png */,
 				AB50963D14B5CCE200DE0438 /* Icon-Small@2x.png */,
 				ABFDE20514B5A25100B57C9F /* 24x24.png */,
@@ -842,6 +845,7 @@
 				AB2FD36D155ABBCE00465A00 /* loadingImage_50x118@2x.png in Resources */,
 				AB2FD36E155ABBCE00465A00 /* noImage50x118.png in Resources */,
 				AB2FD36F155ABBCE00465A00 /* noImage50x118@2x.png in Resources */,
+				45A09838157364090026B18A /* icon.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -988,8 +992,8 @@
 					"\"$(SRCROOT)/zjtSinaWeiboClient/WeiboEngine\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "09038182-35A1-4BC7-A1DB-57C1CA900A71";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "09038182-35A1-4BC7-A1DB-57C1CA900A71";
+				PROVISIONING_PROFILE = "28D40E0A-5FBD-4D06-80D8-D461AFEE3743";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "28D40E0A-5FBD-4D06-80D8-D461AFEE3743";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
