@@ -18,8 +18,8 @@
 //我刚提交给新浪审核，通过审核估计得5个工作日。
 //所以需要把这里的app key 和 app secret 换成你在新浪上注册的app key 和 app secret 
 //然后给你注册的应用添加几个测试账号，用测试账号登陆。
-#define SINA_APP_KEY                @"1640483091"
-#define SINA_APP_SECRET             @"fee48e2b0a89ec731d5cde52bc1398ee"
+#define SINA_APP_KEY                @"3601604349"
+#define SINA_APP_SECRET             @"7894dfdd1fc2ce7cc6e9e9ca620082fb"
 
 #define USER_INFO_KEY_TYPE          @"requestType"
 
