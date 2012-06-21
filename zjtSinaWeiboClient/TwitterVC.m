@@ -113,6 +113,8 @@
     TVBackView.image = [[UIImage imageNamed:@"input_window.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:15];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPost:) name:MMSinaGotPostResult object:nil];
+    
+    [manager getMetionsStatuses];
 }
 
 -(void)viewWillAppear:(BOOL)animated

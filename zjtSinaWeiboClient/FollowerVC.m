@@ -279,8 +279,8 @@
         [_manager getFollowedUserList:[userID longLongValue] count:50 cursor:0];
     }
     if (self.userArr == nil) {
-//        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
-        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+//        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     }
 }
 

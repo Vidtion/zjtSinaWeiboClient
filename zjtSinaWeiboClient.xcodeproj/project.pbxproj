@@ -87,6 +87,7 @@
 		AB37A39614F91D280077774E /* CustomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB37A39214F91D280077774E /* CustomScrollView.m */; };
 		AB37A39714F91D280077774E /* ImageBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = AB37A39414F91D280077774E /* ImageBrowser.m */; };
 		AB37A39D14F921D80077774E /* ImageProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = AB37A39C14F921D80077774E /* ImageProcess.m */; };
+		AB3CCCB915930838002F39ED /* MetionsStatusesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3CCCB815930837002F39ED /* MetionsStatusesVC.m */; };
 		AB55551014B7069200B27BCE /* HHNetDataCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AB55550F14B7069200B27BCE /* HHNetDataCacheManager.m */; };
 		AB57E8B61523517000363B7C /* AddCommentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB57E8B41523517000363B7C /* AddCommentVC.m */; };
 		ABA04DBD155CD19300188DDE /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA94F4E147FA7F70010C283 /* first.png */; };
@@ -191,6 +192,8 @@
 		AB37A39514F91D280077774E /* ImageBrowser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageBrowser.xib; sourceTree = "<group>"; };
 		AB37A39B14F921D80077774E /* ImageProcess.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageProcess.h; sourceTree = "<group>"; };
 		AB37A39C14F921D80077774E /* ImageProcess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageProcess.m; sourceTree = "<group>"; };
+		AB3CCCB715930837002F39ED /* MetionsStatusesVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetionsStatusesVC.h; sourceTree = "<group>"; };
+		AB3CCCB815930837002F39ED /* MetionsStatusesVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetionsStatusesVC.m; sourceTree = "<group>"; };
 		AB50963C14B5CCE200DE0438 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
 		AB50963D14B5CCE200DE0438 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
 		AB5554FD14B6F63200B27BCE /* table_header_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_header_bg.png; sourceTree = "<group>"; };
@@ -393,6 +396,8 @@
 				AB0D19B41547ED50005EE454 /* SettingVC.h */,
 				AB0D19B51547ED50005EE454 /* SettingVC.m */,
 				AB0D19B61547ED50005EE454 /* SettingVC.xib */,
+				AB3CCCB715930837002F39ED /* MetionsStatusesVC.h */,
+				AB3CCCB815930837002F39ED /* MetionsStatusesVC.m */,
 			);
 			name = TabsVCs;
 			sourceTree = "<group>";
@@ -910,6 +915,7 @@
 				ABA658F4155A2E6C00BFD728 /* StatusViewContrillerBase.m in Sources */,
 				ABA658F7155A37E300BFD728 /* ZJTHotRepostViewController.m in Sources */,
 				AB29A23F155A5B1F0014CC7D /* AboutViewController.m in Sources */,
+				AB3CCCB915930838002F39ED /* MetionsStatusesVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

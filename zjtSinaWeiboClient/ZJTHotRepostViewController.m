@@ -88,8 +88,8 @@
         
     }
     
-//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
-    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
+//    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
 }
 
 -(void)didGetHotStatus:(NSNotification*)sender

@@ -250,8 +250,8 @@
 -(void)refresh
 {
     [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
-    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+//    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
 }
 
 //计算text field 的高度。
@@ -498,8 +498,8 @@
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
     _reloading = YES;
 	[manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
-    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+//    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{

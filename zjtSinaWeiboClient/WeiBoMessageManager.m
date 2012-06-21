@@ -204,6 +204,12 @@ static WeiBoMessageManager * instance=nil;
     [httpManager getUnreadCount:uid];
 }
 
+//获取最新的提到登录用户的微博列表，即@我的微博
+-(void)getMetionsStatuses
+{
+    [httpManager getMetionsStatuses];
+}
+
 #pragma mark - WeiBoHttpDelegate
 //获取最新的公共微博
 -(void)didGetPublicTimelineWithStatues:(NSArray *)statusArr
@@ -359,4 +365,11 @@ static WeiBoMessageManager * instance=nil;
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotUnreadCount object:dic];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
+
+-(void)didGetMetionsStatused:(NSArray *)statusArr
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotMetionsStatuses object:statusArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
 @end
