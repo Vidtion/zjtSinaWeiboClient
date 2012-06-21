@@ -84,6 +84,10 @@
 		AB2FD37B155ABBDF00465A00 /* LPFriendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB0D19C2154820A0005EE454 /* LPFriendCell.xib */; };
 		AB2FD37C155ABBDF00465A00 /* StatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABFDE1FA14B5A0EC00B57C9F /* StatusCell.xib */; };
 		AB2FD37D155ABBDF00465A00 /* ZJTCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450CE5A014FD09D50078052E /* ZJTCommentCell.xib */; };
+		AB35225F15937DE3001885BE /* ImageCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AB35225D15937DE3001885BE /* ImageCache.xcdatamodeld */; };
+		AB35226315937E9A001885BE /* Images.m in Sources */ = {isa = PBXBuildFile; fileRef = AB35226215937E9A001885BE /* Images.m */; };
+		AB35226915937F92001885BE /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB35226815937F92001885BE /* CoreData.framework */; };
+		AB35226C1593806A001885BE /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AB35226B1593806A001885BE /* CoreDataManager.m */; };
 		AB37A39614F91D280077774E /* CustomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB37A39214F91D280077774E /* CustomScrollView.m */; };
 		AB37A39714F91D280077774E /* ImageBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = AB37A39414F91D280077774E /* ImageBrowser.m */; };
 		AB37A39D14F921D80077774E /* ImageProcess.m in Sources */ = {isa = PBXBuildFile; fileRef = AB37A39C14F921D80077774E /* ImageProcess.m */; };
@@ -185,6 +189,12 @@
 		AB2D5BD31483B41700987DE7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		AB2D5BD51483B42500987DE7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		AB2D5BD71483B43100987DE7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		AB35225E15937DE3001885BE /* ImageCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ImageCache.xcdatamodel; sourceTree = "<group>"; };
+		AB35226115937E9A001885BE /* Images.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Images.h; sourceTree = "<group>"; };
+		AB35226215937E9A001885BE /* Images.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Images.m; sourceTree = "<group>"; };
+		AB35226815937F92001885BE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		AB35226A1593806A001885BE /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
+		AB35226B1593806A001885BE /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
 		AB37A39114F91D280077774E /* CustomScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomScrollView.h; sourceTree = "<group>"; };
 		AB37A39214F91D280077774E /* CustomScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomScrollView.m; sourceTree = "<group>"; };
 		AB37A39314F91D280077774E /* ImageBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowser.h; sourceTree = "<group>"; };
@@ -334,6 +344,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB35226915937F92001885BE /* CoreData.framework in Frameworks */,
 				45C3EEA81500DD7A004A282E /* ImageIO.framework in Frameworks */,
 				AB2D5BD81483B43100987DE7 /* QuartzCore.framework in Frameworks */,
 				AB2D5BD61483B42500987DE7 /* MessageUI.framework in Frameworks */,
@@ -467,6 +478,7 @@
 		ABA94F2A147FA7F70010C283 = {
 			isa = PBXGroup;
 			children = (
+				AB35226815937F92001885BE /* CoreData.framework */,
 				45C3EEA71500DD7A004A282E /* ImageIO.framework */,
 				ABA94F3F147FA7F70010C283 /* zjtSinaWeiboClient */,
 				ABA94F38147FA7F70010C283 /* Frameworks */,
@@ -529,6 +541,7 @@
 				ABA94F42147FA7F70010C283 /* InfoPlist.strings */,
 				ABA94F45147FA7F70010C283 /* main.m */,
 				ABC7C6F61559668500445C09 /* ZJTGloble.h */,
+				AB35225D15937DE3001885BE /* ImageCache.xcdatamodeld */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -551,6 +564,8 @@
 				ABF23F8614B5976900AEEB5C /* SBJson */,
 				ABF23F5B14B5971A00AEEB5C /* StringUtil.h */,
 				ABF23F5C14B5971A00AEEB5C /* StringUtil.m */,
+				AB35226A1593806A001885BE /* CoreDataManager.h */,
+				AB35226B1593806A001885BE /* CoreDataManager.m */,
 			);
 			name = WeiboEngine;
 			sourceTree = "<group>";
@@ -609,6 +624,8 @@
 				ABF23F8014B5976900AEEB5C /* Status.m */,
 				ABF23F8114B5976900AEEB5C /* User.h */,
 				ABF23F8214B5976900AEEB5C /* User.m */,
+				AB35226115937E9A001885BE /* Images.h */,
+				AB35226215937E9A001885BE /* Images.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -916,6 +933,9 @@
 				ABA658F7155A37E300BFD728 /* ZJTHotRepostViewController.m in Sources */,
 				AB29A23F155A5B1F0014CC7D /* AboutViewController.m in Sources */,
 				AB3CCCB915930838002F39ED /* MetionsStatusesVC.m in Sources */,
+				AB35225F15937DE3001885BE /* ImageCache.xcdatamodeld in Sources */,
+				AB35226315937E9A001885BE /* Images.m in Sources */,
+				AB35226C1593806A001885BE /* CoreDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1045,6 +1065,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		AB35225D15937DE3001885BE /* ImageCache.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				AB35225E15937DE3001885BE /* ImageCache.xcdatamodel */,
+			);
+			currentVersion = AB35225E15937DE3001885BE /* ImageCache.xcdatamodel */;
+			path = ImageCache.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = ABA94F2C147FA7F70010C283 /* Project object */;
 }

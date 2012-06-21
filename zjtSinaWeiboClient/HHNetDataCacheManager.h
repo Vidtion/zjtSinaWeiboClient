@@ -16,10 +16,15 @@
 #define HHNetDataCacheData @"HHNetDataCacheData"
 #define HHNetDataCacheIndex @"HHNetDataCacheIndex"
 
+@class CoreDataManager;
+
 @interface HHNetDataCacheManager : NSObject<ASIHTTPRequestDelegate,ASIProgressDelegate>{
     NSMutableDictionary * cacheDic;
     NSMutableArray * cacheArray;
+    CoreDataManager *_CDManager;
 }
+
+@property (nonatomic,retain)CoreDataManager *CDManager;
 
 -(id) init;
 

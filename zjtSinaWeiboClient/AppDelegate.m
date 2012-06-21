@@ -16,6 +16,9 @@
 
 @synthesize window = _window;
 @synthesize tabBarController = _tabBarController;
+@synthesize managedObjContext = _managedObjContext;
+@synthesize managedObjModel = _managedObjModel;
+@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 - (void)dealloc
 {

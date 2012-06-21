@@ -7,16 +7,19 @@
 //
 
 #import "HHNetDataCacheManager.h"
+#import "CoreDataManager.h"
 
 static HHNetDataCacheManager * instance;
 
 @implementation HHNetDataCacheManager
+@synthesize CDManager = _CDManager;
 
 -(id) init{
     self = [super init];
     if (self) {
         cacheDic=[[NSMutableDictionary alloc] init];
         cacheArray=[[NSMutableArray alloc] init]; 
+        self.CDManager = [CoreDataManager getInstance];
     }
     return self;
 }
