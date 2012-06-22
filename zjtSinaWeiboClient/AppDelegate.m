@@ -16,6 +16,9 @@
 
 @synthesize window = _window;
 @synthesize tabBarController = _tabBarController;
+@synthesize managedObjContext = _managedObjContext;
+@synthesize managedObjModel = _managedObjModel;
+@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 - (void)dealloc
 {
@@ -51,7 +54,7 @@
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:nav1, nav2,nav5,nav3,nav4,nil];
 //    self.tabBarController.selectedIndex = 2;
     self.window.rootViewController = self.tabBarController;
-    [self.window makeKeyAndVisible];
+    [self.window makeKeyAndVisible]; 
 
     return YES;
 }

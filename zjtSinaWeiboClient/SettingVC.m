@@ -12,6 +12,8 @@
 #import "User.h"
 #import "ZJTHotRepostViewController.h"
 #import "AboutViewController.h"
+#import "MetionsStatusesVC.h"
+
 
 //sections
 enum{
@@ -26,6 +28,7 @@ enum{
 enum{
     kHotStatus = 0,
     kHotRetwitted,
+    kMetionsStatuses,
     kStatusRowsCount,
 };
 
@@ -152,6 +155,10 @@ enum {
         else if (row == kHotRetwitted) {
             cell.textLabel.text = @"今日热门转发";
         }
+        
+        else if (row == kMetionsStatuses) {
+            cell.textLabel.text = @"@我";
+        }
     }
     return cell;
 }
@@ -214,6 +221,13 @@ enum {
             h.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:h animated:YES];
             [h release];
+        }
+        
+        else if (row == kMetionsStatuses) {
+            MetionsStatusesVC *m = [[MetionsStatusesVC alloc]init];
+            m.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:m animated:YES];
+            [m release];
         }
     }
 }

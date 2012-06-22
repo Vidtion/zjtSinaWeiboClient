@@ -93,6 +93,9 @@
 //获取某个用户的各种消息未读数
 #define MMSinaGotUnreadCount @"MMSinaGotUnreadCount"
 
+//获取最新的提到登录用户的微博列表，即@我的微博
+#define MMSinaGotMetionsStatuses @"MMSinaGotMetionsStatuses"
+
 @interface WeiBoMessageManager : NSObject <WeiBoHttpDelegate>
 {
     WeiBoHttpManager *httpManager;
@@ -179,5 +182,8 @@
 
 //获取某个用户的各种消息未读数
 -(void)getUnreadCount:(NSString*)uid;
+
+//获取最新的提到登录用户的微博列表，即@我的微博
+-(void)getMetionsStatuses;
 
 @end

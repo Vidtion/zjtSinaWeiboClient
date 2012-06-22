@@ -167,18 +167,15 @@
         {
             [[HHNetDataCacheManager getInstance] getDataWithURL:member.thumbnailPic withIndex:i];
         }
-        else
-        {
-            [imageDictionary setObject:[NSNull null] forKey:indexNumber];
-        }
         
         //下载转发的图片
-        if (member.retweetedStatus.thumbnailPic && [member.retweetedStatus.thumbnailPic length] != 0) 
+        else if (member.retweetedStatus.thumbnailPic && [member.retweetedStatus.thumbnailPic length] != 0) 
         {
             [[HHNetDataCacheManager getInstance] getDataWithURL:member.retweetedStatus.thumbnailPic withIndex:i];
         }
         else
         {
+            NSLog(@"repost user name = %@",member.user.screenName);
             [imageDictionary setObject:[NSNull null] forKey:indexNumber];
         }
     }
@@ -192,7 +189,9 @@
     NSNumber *indexNumber   = [dic objectForKey:HHNetDataCacheIndex];
     NSInteger index         = [indexNumber intValue];
     NSData *data            = [dic objectForKey:HHNetDataCacheData];
-    
+    if (data == nil) {
+        NSLog(@"data == nil");
+    }
     //当下载大图过程中，后退，又返回，如果此时收到大图的返回数据，会引起crash，在此做预防。
     if (indexNumber == nil || index == -1) {
         NSLog(@"indexNumber = nil");
@@ -242,16 +241,16 @@
 {
     [self stopLoading];
     [self doneLoadingTableViewData];
-//    [[SHKActivityIndicator currentIndicator] hide];
-    [[ZJTStatusBarAlertWindow getInstance] hide];
+    [[SHKActivityIndicator currentIndicator] hide];
+//    [[ZJTStatusBarAlertWindow getInstance] hide];
 }
 
 //上拉刷新
 -(void)refresh
 {
     [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
-    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+//    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
 }
 
 //计算text field 的高度。
@@ -309,8 +308,8 @@
     
     //开始绘制第一个cell时，隐藏indecator.
     if (isFirstCell) {
-//        [[SHKActivityIndicator currentIndicator] hide];
-        [[ZJTStatusBarAlertWindow getInstance] hide];
+        [[SHKActivityIndicator currentIndicator] hide];
+//        [[ZJTStatusBarAlertWindow getInstance] hide];
         isFirstCell = NO;
     }
     return cell;
@@ -498,8 +497,8 @@
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
     _reloading = YES;
 	[manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
-    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+//    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
