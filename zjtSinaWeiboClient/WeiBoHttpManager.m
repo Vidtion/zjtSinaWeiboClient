@@ -678,6 +678,24 @@
     [request release];
 }
 
+//获取最新的提到登录用户的微博列表，即@我的微博
+-(void)getMetionsStatuses
+{
+    //https://api.weibo.com/2/statuses/mentions.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,   @"access_token",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/statuses/mentions.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SINAGetMetionsStatuses];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
 #pragma mark - Operate queue
 - (BOOL)isRunning
 {
@@ -716,7 +734,7 @@
     NSDictionary *userInformation = [request userInfo];
     RequestType requestType = [[userInformation objectForKey:USER_INFO_KEY_TYPE] intValue];
     NSString * responseString = [request responseString];
-//    NSLog(@"responseString = %@",responseString);
+    NSLog(@"responseString = %@",responseString);
     
     //认证失败
     //{"error":"auth faild!","error_code":21301,"request":"/2/statuses/home_timeline.json"}
@@ -1019,6 +1037,25 @@
     if (requestType == SinaGetUnreadCount) {
         if ([delegate respondsToSelector:@selector(didGetUnreadCount:)]) {
             [delegate didGetUnreadCount:userInfo];
+        }
+    }
+    
+    //获取最新的提到登录用户的微博列表，即@我的微博
+    if (requestType == SINAGetMetionsStatuses) {
+        NSArray *arr = [userInfo objectForKey:@"statuses"];
+        
+        if (arr == nil || [arr isEqual:[NSNull null]]) 
+        {
+            return;
+        }
+        
+        NSMutableArray  *statuesArr = [[NSMutableArray alloc]initWithCapacity:0];
+        for (id item in arr) {
+            Status* sts = [Status statusWithJsonDictionary:item];
+            [statuesArr addObject:sts];
+        }
+        if ([delegate respondsToSelector:@selector(didGetMetionsStatused:)]) {
+            [delegate didGetMetionsStatused:statuesArr];
         }
     }
 }

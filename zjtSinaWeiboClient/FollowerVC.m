@@ -142,8 +142,8 @@
     }
     [self getAvatars];
     [self stopLoading];
-//    [[SHKActivityIndicator currentIndicator] hide];
-    [[ZJTStatusBarAlertWindow getInstance] hide];
+    [[SHKActivityIndicator currentIndicator] hide];
+//    [[ZJTStatusBarAlertWindow getInstance] hide];
 }
 
 -(void)gotFollowResult:(NSNotification*)sender
@@ -242,8 +242,8 @@
 -(void)mmRequestFailed:(id)sender
 {
     [self stopLoading];
-//    [[SHKActivityIndicator currentIndicator] hide];
-    [[ZJTStatusBarAlertWindow getInstance] hide];
+    [[SHKActivityIndicator currentIndicator] hide];
+//    [[ZJTStatusBarAlertWindow getInstance] hide];
 }
 
 -(void)getAvatars
@@ -279,8 +279,8 @@
         [_manager getFollowedUserList:[userID longLongValue] count:50 cursor:0];
     }
     if (self.userArr == nil) {
-//        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
-        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+//        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     }
 }
 

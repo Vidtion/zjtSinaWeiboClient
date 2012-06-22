@@ -1,26 +1,24 @@
 //
-//  AppDelegate.h
+//  CoreDataManager.h
 //  zjtSinaWeiboClient
 //
-//  Created by jtone z on 11-11-25.
-//  Copyright (c) 2011年 __MyCompanyName__. All rights reserved.
+//  Created by Jianting Zhu on 12-6-22.
+//  Copyright (c) 2012年 ZUST. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
+@interface CoreDataManager : NSObject
 {
     NSManagedObjectContext         *_managedObjContext;
     NSManagedObjectModel           *_managedObjModel;
     NSPersistentStoreCoordinator   *_persistentStoreCoordinator;
 }
 
-@property (strong, nonatomic) UIWindow *window;
-
-@property (strong, nonatomic) UITabBarController *tabBarController;
-
 @property (nonatomic,retain,readonly) NSManagedObjectContext         *managedObjContext;
 @property (nonatomic,retain,readonly) NSManagedObjectModel           *managedObjModel;
 @property (nonatomic,retain,readonly) NSPersistentStoreCoordinator   *persistentStoreCoordinator;
+
++(CoreDataManager *) getInstance;
 
 @end
