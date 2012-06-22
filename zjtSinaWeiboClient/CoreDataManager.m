@@ -50,7 +50,7 @@ static CoreDataManager * instance;
         return _managedObjContext;
     }
 	
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    NSPersistentStoreCoordinator *coordinator = self.persistentStoreCoordinator;
     if (coordinator != nil) {
         _managedObjContext = [[NSManagedObjectContext alloc] init];
         [_managedObjContext setPersistentStoreCoordinator: coordinator];
@@ -78,7 +78,7 @@ static CoreDataManager * instance;
 	NSLog(@"sql path = %@",storeUrl);
     
 	NSError *error;
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjModel]];
+    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjModel];
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) {
         // Handle the error.
     }    

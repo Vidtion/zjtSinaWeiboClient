@@ -100,8 +100,8 @@
     [statuesArr removeAllObjects];
     self.statuesArr = sender.object;
     [self.tableView reloadData];
-//    [[SHKActivityIndicator currentIndicator] hide];
-    [[ZJTStatusBarAlertWindow getInstance] hide];
+    [[SHKActivityIndicator currentIndicator] hide];
+//    [[ZJTStatusBarAlertWindow getInstance] hide];
     
     [headDictionary  removeAllObjects];
     [imageDictionary removeAllObjects];

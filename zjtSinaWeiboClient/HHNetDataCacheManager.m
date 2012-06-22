@@ -8,6 +8,12 @@
 
 #import "HHNetDataCacheManager.h"
 #import "CoreDataManager.h"
+#import "Images.h"
+
+@interface HHNetDataCacheManager()
+- (Images*)readImageFromCD:(NSString*)url;
+- (void)insertImageToCD:(NSData*)data url:(NSString*)url;
+@end
 
 static HHNetDataCacheManager * instance;
 
@@ -49,6 +55,45 @@ static HHNetDataCacheManager * instance;
     [super dealloc];
 }
 
+- (void)insertImageToCD:(NSData*)data url:(NSString*)url
+{
+    if ([self readImageFromCD:url] != nil) {
+        return;
+    }
+    Images *image = (Images *)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:_CDManager.managedObjContext];
+    image.createDate = [NSDate date];
+    image.url = url;
+    image.data = data;
+    
+    NSError *error;
+	if (![_CDManager.managedObjContext save:&error]) {
+		// Handle the error.
+	}
+}
+
+- (Images*)readImageFromCD:(NSString*)url 
+{
+    NSFetchRequest *fetch = [[NSFetchRequest alloc]init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Images" inManagedObjectContext:_CDManager.managedObjContext];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"url==%@",url];
+    [fetch setPredicate:pred];
+    [fetch setEntity:entity];
+    
+    NSError *error = nil;
+	NSMutableArray *resultsArr = [[[_CDManager.managedObjContext executeFetchRequest:fetch error:&error] mutableCopy] retain];
+	if (resultsArr == nil || [resultsArr count] == 0) {
+		return nil;
+	}
+    
+    Images *image = [[resultsArr objectAtIndex:0] retain];
+    
+    [resultsArr release];
+    [fetch release];
+    
+    return [image autorelease];
+}
+
+
 -(void) getDataWithURL:(NSString *) url withIndex:(NSInteger)index
 {
     if (url==nil||[url length]==0) {
@@ -56,30 +101,15 @@ static HHNetDataCacheManager * instance;
     }
     @synchronized(self) 
     {
-        int i=0;
-        for (i=0; i<[cacheArray count]; i++) {
-            NSString * str=[cacheArray objectAtIndex:i];
-            if (str!=nil) {
-                if ([[cacheArray objectAtIndex:i] isEqualToString:url]) {
-                    break;
-                }
-            }
-        }
-        if (i<[cacheArray count]) 
-        {//match
-//            NSLog(@"match url = %@",url);
-            NSData * result=[cacheDic objectForKey:[cacheArray objectAtIndex:i]];
+        Images *image= [self readImageFromCD:url];
+        if (image != nil && ![image isEqual:[NSNull null]]) 
+        {
             NSNumber *indexNumber = [NSNumber numberWithInt:index];
-            [self sendNotificationWithKey:url Data:result index:indexNumber];
-            //调整位置
-            //            NSString * key=[cacheArray objectAtIndex:i];
-            //            [cacheArray removeObjectAtIndex:i];
-            //            [cacheArray insertObject:key atIndex:0];
+            [self sendNotificationWithKey:url Data:image.data index:indexNumber];
         }
-        else
-        {//unmatch
-//            NSLog(@"unmatch url = %@",url);
-            ASIHTTPRequest * request=[ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+        else 
+        {
+            ASIHTTPRequest * request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
             [request setDelegate:self];
             request.downloadProgressDelegate = self;
             request.uploadProgressDelegate = self;
@@ -114,6 +144,7 @@ static HHNetDataCacheManager * instance;
     NSNumber *indexNumber = [request.userInfo objectForKey:@"index"];
     
     NSData * data=[request responseData];
+    [self insertImageToCD:data url:url];
     [self sendNotificationWithKey:url Data:data index:indexNumber];
     //add to cache
     @synchronized(self) {

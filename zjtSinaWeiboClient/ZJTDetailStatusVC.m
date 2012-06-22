@@ -308,8 +308,8 @@
 -(void)mmRequestFailed:(id)sender
 {
     [self stopLoading];
-//    [[SHKActivityIndicator currentIndicator] hide];
-    [[ZJTStatusBarAlertWindow getInstance] hide];
+    [[SHKActivityIndicator currentIndicator] hide];
+//    [[ZJTStatusBarAlertWindow getInstance] hide];
 }
 
 - (IBAction)addComment:(id)sender {

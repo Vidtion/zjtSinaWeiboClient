@@ -142,8 +142,8 @@
     }
     [self getAvatars];
     [self stopLoading];
-//    [[SHKActivityIndicator currentIndicator] hide];
-    [[ZJTStatusBarAlertWindow getInstance] hide];
+    [[SHKActivityIndicator currentIndicator] hide];
+//    [[ZJTStatusBarAlertWindow getInstance] hide];
 }
 
 -(void)gotFollowResult:(NSNotification*)sender
@@ -242,8 +242,8 @@
 -(void)mmRequestFailed:(id)sender
 {
     [self stopLoading];
-//    [[SHKActivityIndicator currentIndicator] hide];
-    [[ZJTStatusBarAlertWindow getInstance] hide];
+    [[SHKActivityIndicator currentIndicator] hide];
+//    [[ZJTStatusBarAlertWindow getInstance] hide];
 }
 
 -(void)getAvatars

@@ -197,13 +197,9 @@
         {
             [[HHNetDataCacheManager getInstance] getDataWithURL:member.thumbnailPic withIndex:i];
         }
-        else
-        {
-            [imageDictionary setObject:[NSNull null] forKey:indexNumber];
-        }
         
         //下载转发的图片
-        if (member.retweetedStatus.thumbnailPic && [member.retweetedStatus.thumbnailPic length] != 0) 
+        else if (member.retweetedStatus.thumbnailPic && [member.retweetedStatus.thumbnailPic length] != 0) 
         {
             [[HHNetDataCacheManager getInstance] getDataWithURL:member.retweetedStatus.thumbnailPic withIndex:i];
         }
@@ -285,8 +281,8 @@
     shouldLoadAvatar = YES;
     self.statuesArr = sender.object;
     [table reloadData];
-//    [[SHKActivityIndicator currentIndicator] hide];
-    [[ZJTStatusBarAlertWindow getInstance] hide];
+    [[SHKActivityIndicator currentIndicator] hide];
+//    [[ZJTStatusBarAlertWindow getInstance] hide];
     
     [imageDictionary removeAllObjects];
     
@@ -296,8 +292,8 @@
 -(void)mmRequestFailed:(id)sender
 {
     [self stopLoading];
-//    [[SHKActivityIndicator currentIndicator] hide];
-    [[ZJTStatusBarAlertWindow getInstance] hide];
+    [[SHKActivityIndicator currentIndicator] hide];
+//    [[ZJTStatusBarAlertWindow getInstance] hide];
 }
 
 -(void)refresh
@@ -321,8 +317,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
         if (isFirstCell) {
-//            [[SHKActivityIndicator currentIndicator] hide];
-            [[ZJTStatusBarAlertWindow getInstance] hide];
+            [[SHKActivityIndicator currentIndicator] hide];
+//            [[ZJTStatusBarAlertWindow getInstance] hide];
             isFirstCell = NO;
         }
         NSLog(@"cell new");
@@ -366,8 +362,8 @@
     
     //开始绘制第一个cell时，隐藏indecator.
     if (isFirstCell) {
-//        [[SHKActivityIndicator currentIndicator] hide];
-        [[ZJTStatusBarAlertWindow getInstance] hide];
+        [[SHKActivityIndicator currentIndicator] hide];
+//        [[ZJTStatusBarAlertWindow getInstance] hide];
         isFirstCell = NO;
     }
     return cell;
