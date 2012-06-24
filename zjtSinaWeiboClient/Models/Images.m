@@ -2,7 +2,7 @@
 //  Images.m
 //  zjtSinaWeiboClient
 //
-//  Created by Jianting Zhu on 12-6-22.
+//  Created by Jianting Zhu on 12-6-23.
 //  Copyright (c) 2012年 ZUST. All rights reserved.
 //
 
@@ -11,8 +11,8 @@
 
 @implementation Images
 
-@dynamic url;
-@dynamic data;
 @dynamic createDate;
+@dynamic data;
+@dynamic url;
 
 @end

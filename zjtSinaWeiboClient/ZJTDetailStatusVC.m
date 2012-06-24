@@ -342,8 +342,8 @@
             NSNumber *count = [dic objectForKey:@"count"];
             countLB.text = [NSString stringWithFormat:@"评论:%d转发:%d",[count intValue],status.retweetsCount];
         }
-//        [[SHKActivityIndicator currentIndicator]hide];
-        [[ZJTStatusBarAlertWindow getInstance] hide];
+        [[SHKActivityIndicator currentIndicator]hide];
+//        [[ZJTStatusBarAlertWindow getInstance] hide];
         [table reloadData];
         [self stopLoading];
     }

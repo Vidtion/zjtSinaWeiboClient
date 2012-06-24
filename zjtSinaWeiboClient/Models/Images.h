@@ -2,7 +2,7 @@
 //  Images.h
 //  zjtSinaWeiboClient
 //
-//  Created by Jianting Zhu on 12-6-22.
+//  Created by Jianting Zhu on 12-6-23.
 //  Copyright (c) 2012年 ZUST. All rights reserved.
 //
 
@@ -12,8 +12,8 @@
 
 @interface Images : NSManagedObject
 
-@property (nonatomic, retain) NSString * url;
-@property (nonatomic, retain) NSData * data;
 @property (nonatomic, retain) NSDate * createDate;
+@property (nonatomic, retain) NSData * data;
+@property (nonatomic, retain) NSString * url;
 
 @end

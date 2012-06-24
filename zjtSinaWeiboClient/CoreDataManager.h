@@ -7,6 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Images.h"
+#import "Users.h"
+#import "Statuses.h"
+#import "Status.h"
 
 @interface CoreDataManager : NSObject
 {
@@ -19,6 +23,9 @@
 @property (nonatomic,retain,readonly) NSManagedObjectModel           *managedObjModel;
 @property (nonatomic,retain,readonly) NSPersistentStoreCoordinator   *persistentStoreCoordinator;
 
-+(CoreDataManager *) getInstance;
-
++ (CoreDataManager *) getInstance;
+- (void)insertImageToCD:(NSData*)data url:(NSString*)url;
+- (Images*)readImageFromCD:(NSString*)url;
+- (void)insertStatusesToCD:(Status*)sts index:(int)theIndex isHomeLine:(BOOL) isHome;
+- (NSArray*)readStatusesFromCD;
 @end

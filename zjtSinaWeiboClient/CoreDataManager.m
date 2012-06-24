@@ -36,6 +36,78 @@ static CoreDataManager * instance;
     return instance;
 }
 
+- (void)insertImageToCD:(NSData*)data url:(NSString*)url
+{
+    if ([self readImageFromCD:url] != nil) {
+        return;
+    }
+    Images *image = (Images *)[NSEntityDescription insertNewObjectForEntityForName:@"Images" inManagedObjectContext:_managedObjContext];
+    image.createDate = [NSDate date];
+    image.url = url;
+    image.data = data;
+    
+    NSError *error;
+	if (![_managedObjContext save:&error]) {
+		// Handle the error.
+	}
+}
+
+- (Images*)readImageFromCD:(NSString*)url 
+{
+    NSFetchRequest *fetch = [[NSFetchRequest alloc]init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Images" inManagedObjectContext:_managedObjContext];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"url==%@",url];
+    [fetch setPredicate:pred];
+    [fetch setEntity:entity];
+    
+    NSError *error = nil;
+	NSMutableArray *resultsArr = [[[_managedObjContext executeFetchRequest:fetch error:&error] mutableCopy] retain];
+	if (resultsArr == nil || [resultsArr count] == 0) {
+		return nil;
+	}
+    
+    Images *image = [[resultsArr objectAtIndex:0] retain];
+    
+    [resultsArr release];
+    [fetch release];
+    
+    return [image autorelease];
+}
+
+- (void)insertStatusesToCD:(Status*)sts index:(int)theIndex isHomeLine:(BOOL) isHome
+{
+    Statuses *statuses = (Statuses *)[NSEntityDescription insertNewObjectForEntityForName:@"Statuses" inManagedObjectContext:_managedObjContext];
+    
+    statuses = [sts updateStatuses:statuses index:theIndex isHomeLine:isHome];
+    
+    NSError *error;
+	if (![_managedObjContext save:&error]) {
+		// Handle the error.
+	}
+}
+
+-(NSArray*)readStatusesFromCD
+{
+    NSFetchRequest *fetch = [[NSFetchRequest alloc]init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Statuses" inManagedObjectContext:_managedObjContext];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"isHomeLine==Yes"];
+    [fetch setPredicate:pred];
+    [fetch setEntity:entity];
+    
+    NSError *error = nil;
+	NSMutableArray *resultsArr = [[[_managedObjContext executeFetchRequest:fetch error:&error] mutableCopy] retain];
+	if (resultsArr == nil || [resultsArr count] == 0) {
+		return nil;
+	}
+    
+    [resultsArr autorelease];
+    [fetch release];
+    
+    return resultsArr;
+}
+
+
+
 - (NSString *)applicationDocumentsDirectory {
 	
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

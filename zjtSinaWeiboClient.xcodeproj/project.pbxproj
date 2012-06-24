@@ -85,7 +85,6 @@
 		AB2FD37C155ABBDF00465A00 /* StatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABFDE1FA14B5A0EC00B57C9F /* StatusCell.xib */; };
 		AB2FD37D155ABBDF00465A00 /* ZJTCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 450CE5A014FD09D50078052E /* ZJTCommentCell.xib */; };
 		AB35225F15937DE3001885BE /* ImageCache.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AB35225D15937DE3001885BE /* ImageCache.xcdatamodeld */; };
-		AB35226315937E9A001885BE /* Images.m in Sources */ = {isa = PBXBuildFile; fileRef = AB35226215937E9A001885BE /* Images.m */; };
 		AB35226915937F92001885BE /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB35226815937F92001885BE /* CoreData.framework */; };
 		AB35226C1593806A001885BE /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AB35226B1593806A001885BE /* CoreDataManager.m */; };
 		AB37A39614F91D280077774E /* CustomScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB37A39214F91D280077774E /* CustomScrollView.m */; };
@@ -135,6 +134,11 @@
 		ABF23FB214B5999C00AEEB5C /* WeiBoHttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF23FAD14B5999C00AEEB5C /* WeiBoHttpManager.m */; };
 		ABF23FB314B5999C00AEEB5C /* WeiBoMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF23FAF14B5999C00AEEB5C /* WeiBoMessageManager.m */; };
 		ABF23FC014B59FAE00AEEB5C /* LPBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF23FBF14B59FAE00AEEB5C /* LPBaseCell.m */; };
+		ABFBB6E51595A02300F3B265 /* Statuses.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFBB6E41595A02300F3B265 /* Statuses.m */; };
+		ABFBB6E91595A0D800F3B265 /* Users.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFBB6E81595A0D800F3B265 /* Users.m */; };
+		ABFBB6EF1595A13B00F3B265 /* Images.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFBB6EE1595A13B00F3B265 /* Images.m */; };
+		ABFBB6F21595A13B00F3B265 /* UserCDItem.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFBB6F11595A13B00F3B265 /* UserCDItem.m */; };
+		ABFBB6F51595A13C00F3B265 /* StatusCDItem.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFBB6F41595A13C00F3B265 /* StatusCDItem.m */; };
 		ABFDE1FB14B5A0EC00B57C9F /* StatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFDE1F914B5A0EC00B57C9F /* StatusCell.m */; };
 /* End PBXBuildFile section */
 
@@ -190,8 +194,6 @@
 		AB2D5BD51483B42500987DE7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		AB2D5BD71483B43100987DE7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		AB35225E15937DE3001885BE /* ImageCache.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ImageCache.xcdatamodel; sourceTree = "<group>"; };
-		AB35226115937E9A001885BE /* Images.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Images.h; sourceTree = "<group>"; };
-		AB35226215937E9A001885BE /* Images.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Images.m; sourceTree = "<group>"; };
 		AB35226815937F92001885BE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AB35226A1593806A001885BE /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		AB35226B1593806A001885BE /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
@@ -318,6 +320,16 @@
 		ABF23FBF14B59FAE00AEEB5C /* LPBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LPBaseCell.m; sourceTree = "<group>"; };
 		ABF411F815458F2E00226BC1 /* noImage50x118.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noImage50x118.png; sourceTree = "<group>"; };
 		ABF411F915458F2E00226BC1 /* noImage50x118@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "noImage50x118@2x.png"; sourceTree = "<group>"; };
+		ABFBB6E31595A02300F3B265 /* Statuses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Statuses.h; sourceTree = "<group>"; };
+		ABFBB6E41595A02300F3B265 /* Statuses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Statuses.m; sourceTree = "<group>"; };
+		ABFBB6E71595A0D800F3B265 /* Users.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Users.h; sourceTree = "<group>"; };
+		ABFBB6E81595A0D800F3B265 /* Users.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Users.m; sourceTree = "<group>"; };
+		ABFBB6ED1595A13B00F3B265 /* Images.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Images.h; sourceTree = "<group>"; };
+		ABFBB6EE1595A13B00F3B265 /* Images.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Images.m; sourceTree = "<group>"; };
+		ABFBB6F01595A13B00F3B265 /* UserCDItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCDItem.h; sourceTree = "<group>"; };
+		ABFBB6F11595A13B00F3B265 /* UserCDItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCDItem.m; sourceTree = "<group>"; };
+		ABFBB6F31595A13C00F3B265 /* StatusCDItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusCDItem.h; sourceTree = "<group>"; };
+		ABFBB6F41595A13C00F3B265 /* StatusCDItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusCDItem.m; sourceTree = "<group>"; };
 		ABFDE1F814B5A0EC00B57C9F /* StatusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StatusCell.h; path = TableCells/StatusCell.h; sourceTree = "<group>"; };
 		ABFDE1F914B5A0EC00B57C9F /* StatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StatusCell.m; path = TableCells/StatusCell.m; sourceTree = "<group>"; };
 		ABFDE1FA14B5A0EC00B57C9F /* StatusCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = StatusCell.xib; path = TableCells/StatusCell.xib; sourceTree = "<group>"; };
@@ -624,8 +636,16 @@
 				ABF23F8014B5976900AEEB5C /* Status.m */,
 				ABF23F8114B5976900AEEB5C /* User.h */,
 				ABF23F8214B5976900AEEB5C /* User.m */,
-				AB35226115937E9A001885BE /* Images.h */,
-				AB35226215937E9A001885BE /* Images.m */,
+				ABFBB6E31595A02300F3B265 /* Statuses.h */,
+				ABFBB6E41595A02300F3B265 /* Statuses.m */,
+				ABFBB6E71595A0D800F3B265 /* Users.h */,
+				ABFBB6E81595A0D800F3B265 /* Users.m */,
+				ABFBB6ED1595A13B00F3B265 /* Images.h */,
+				ABFBB6EE1595A13B00F3B265 /* Images.m */,
+				ABFBB6F01595A13B00F3B265 /* UserCDItem.h */,
+				ABFBB6F11595A13B00F3B265 /* UserCDItem.m */,
+				ABFBB6F31595A13C00F3B265 /* StatusCDItem.h */,
+				ABFBB6F41595A13C00F3B265 /* StatusCDItem.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -934,8 +954,12 @@
 				AB29A23F155A5B1F0014CC7D /* AboutViewController.m in Sources */,
 				AB3CCCB915930838002F39ED /* MetionsStatusesVC.m in Sources */,
 				AB35225F15937DE3001885BE /* ImageCache.xcdatamodeld in Sources */,
-				AB35226315937E9A001885BE /* Images.m in Sources */,
 				AB35226C1593806A001885BE /* CoreDataManager.m in Sources */,
+				ABFBB6E51595A02300F3B265 /* Statuses.m in Sources */,
+				ABFBB6E91595A0D800F3B265 /* Users.m in Sources */,
+				ABFBB6EF1595A13B00F3B265 /* Images.m in Sources */,
+				ABFBB6F21595A13B00F3B265 /* UserCDItem.m in Sources */,
+				ABFBB6F51595A13C00F3B265 /* StatusCDItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

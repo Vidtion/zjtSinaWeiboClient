@@ -1,4 +1,9 @@
+
+
+
 #import <UIKit/UIKit.h>
+#import "Users.h"
+#import "Statuses.h"
 
 typedef enum {
     GenderUnknow = 0,
@@ -40,7 +45,7 @@ typedef enum {
 @property (nonatomic, retain) NSString* province;
 @property (nonatomic, retain) NSString* city;
 @property (nonatomic, retain) NSString* location;
-@property (nonatomic, retain) NSString* description;
+@property (nonatomic, retain) NSString* description;//theDescription
 @property (nonatomic, retain) NSString* url;
 @property (nonatomic, retain) NSString* profileImageUrl;
 @property (nonatomic, retain) NSString* profileLargeImageUrl;
@@ -55,9 +60,13 @@ typedef enum {
 @property (nonatomic, assign) BOOL		verified;
 @property (nonatomic, assign) BOOL		allowAllActMsg;
 @property (nonatomic, assign) BOOL		geoEnabled;
-@property (nonatomic, retain) UIImage*    avatarImage;
+@property (nonatomic, retain) UIImage*    avatarImage;//NSData
+
+
 
 - (User*)initWithJsonDictionary:(NSDictionary*)dic;
 - (void)updateWithJSonDictionary:(NSDictionary*)dic;
 + (User*)userWithJsonDictionary:(NSDictionary*)dic;
+- (Users*)updateUsers:(Users*)us;
+-(User*)updateWithUsers:(Users*)us;
 @end
