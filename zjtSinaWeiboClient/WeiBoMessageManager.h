@@ -90,6 +90,14 @@
 //返回成员为Status的NSArray
 #define MMSinaGotHotCommentDaily @"MMSinaGotHotCommentDaily"
 
+//返回最近一天内的热门话题
+//返回成员为NSDictionary： 
+//{
+//    "name": "曼联",
+//    "query": "曼联"
+//}
+#define MMSinaGotHotCommentDaily @"MMSinaGotHotCommentDaily"
+
 //获取某个用户的各种消息未读数
 #define MMSinaGotUnreadCount @"MMSinaGotUnreadCount"
 
@@ -179,6 +187,9 @@
 
 //按天返回热门微博评论榜的微博列表
 -(void)getHotCommnetDaily:(int)count;
+
+//返回最近一天内的热门话题
+-(void)getHOtTrendsDaily;
 
 //获取某个用户的各种消息未读数
 -(void)getUnreadCount:(NSString*)uid;

@@ -131,45 +131,44 @@ static ZJTStatusBarAlertWindow *instance = nil;
 
 -(void)showWithString:(NSString*)string
 {
-    self.displayString = string;
-    if (_window) {
-        _window.windowLevel = UIWindowLevelAlert;
-    }
-    
-    if ((_window && _window.frame.origin.y == 0) ){//|| [string isEqualToString:_displayString]) {
-        return;
-    }
-    
-    if (!_window) {
-        [self setupViewsAndDatas];
-        self.displayString = string;
-    }
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hide) object:nil];
-    
-    //animation
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:.6];
-    _window.frame = CGRectMake(0, 0, 320, 20);
-    [UIView commitAnimations];
+//    self.displayString = string;
+//    if (_window) {
+//        _window.windowLevel = UIWindowLevelAlert;
+//    }
+//    
+//    if ((_window && _window.frame.origin.y == 0) ){//|| [string isEqualToString:_displayString]) {
+//        return;
+//    }
+//    
+//    if (!_window) {
+//        [self setupViewsAndDatas];
+//        self.displayString = string;
+//    }
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hide) object:nil];
+//    
+//    //animation
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:.6];
+//    _window.frame = CGRectMake(0, 0, 320, 20);
+//    [UIView commitAnimations];
 }
 
 -(void)hide
 {
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:.6];
-    _window.frame = CGRectMake(0, -20, 320, 20);
-    [UIView commitAnimations];
+//    [UIView beginAnimations:nil context:nil];
+//    [UIView setAnimationDuration:.6];
+//    _window.frame = CGRectMake(0, -20, 320, 20);
+//    [UIView commitAnimations];
+//    
+//    UIApplication *app = [UIApplication sharedApplication];
+//    UIWindow *window = nil;
+//    for (UIWindow *win in app.windows) {
+//        if (win.tag == 0) {
+//            window = win;
+//            [window makeKeyAndVisible];
+//        }
+//    }
     
-    UIApplication *app = [UIApplication sharedApplication];
-    UIWindow *window = nil;
-    for (UIWindow *win in app.windows) {
-        if (win.tag == 0) {
-            window = win;
-            [window makeKeyAndVisible];
-        }
-    }
-    
-//    [self performSelector:@selector(removeViewsAndDatas) withObject:nil afterDelay:.7];
 }
 
 @end

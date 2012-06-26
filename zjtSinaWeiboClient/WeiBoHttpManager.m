@@ -659,6 +659,24 @@
     [request release];
 }
 
+//返回最近一天内的热门话题
+-(void)getHOtTrendsDaily
+{
+    //https://api.weibo.com/2/trends/daily.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,   @"access_token",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/trends/daily.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetHotTrendDaily];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
 //获取某个用户的各种消息未读数
 -(void)getUnreadCount:(NSString*)uid
 {
@@ -1033,6 +1051,18 @@
         [statuesArr release];
     }
     
+    if (requestType == SinaGetHotTrendDaily) {
+        NSArray *trendsArr = nil;
+        NSDictionary *dic = [userInfo objectForKey:@"trends"];
+        NSArray *arr = [dic allValues];
+        if (arr && arr.count != 0) {
+            trendsArr = [arr objectAtIndex:0];
+            if ([delegate respondsToSelector:@selector(didGetHotTrendDaily:)]) {
+                [delegate didGetHotTrendDaily:trendsArr];
+            }
+        }
+    }
+    
     //获取某个用户的各种消息未读数
     if (requestType == SinaGetUnreadCount) {
         if ([delegate respondsToSelector:@selector(didGetUnreadCount:)]) {
@@ -1057,6 +1087,7 @@
         if ([delegate respondsToSelector:@selector(didGetMetionsStatused:)]) {
             [delegate didGetMetionsStatused:statuesArr];
         }
+        [statuesArr release];
     }
 }
 

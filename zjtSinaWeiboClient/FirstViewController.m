@@ -47,12 +47,15 @@
             {
                 StatusCDItem *s = [arr objectAtIndex:i];
                 Status *sts = [[Status alloc]init];
-                sts = [sts updataStatusFromStatusCDItem:s];
+                [sts updataStatusFromStatusCDItem:s];
                 
                 [statuesArr insertObject:sts atIndex:s.index.intValue];
+                [sts release];
             }
         }
     }
+    [[CoreDataManager getInstance] cleanEntityRecords:@"StatusCDItem"];
+    [[CoreDataManager getInstance] cleanEntityRecords:@"UserCDItem"];
     [table reloadData];
     [self getImages];
 }
@@ -67,28 +70,6 @@
     self.navigationItem.rightBarButtonItem = retwitterBtn;
     [retwitterBtn release];
         
-    //如果未授权，则调入授权页面。
-    NSString *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
-    NSLog([manager isNeedToRefreshTheToken] == YES ? @"need to login":@"will login");
-    if (authToken == nil || [manager isNeedToRefreshTheToken]) 
-    {
-        shouldLoad = YES;
-        OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
-        webV.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:webV animated:NO];
-        [webV release];
-    }
-    else
-    {
-        [self getDataFromCD];
-        
-        if (!statuesArr || statuesArr.count == 0) {
-            [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-            [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
-        }
-        
-        [manager getUserID];
-    }
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID            object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine          object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
@@ -129,6 +110,29 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    //如果未授权，则调入授权页面。
+    NSString *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSLog([manager isNeedToRefreshTheToken] == YES ? @"need to login":@"will login");
+    if (authToken == nil || [manager isNeedToRefreshTheToken]) 
+    {
+        shouldLoad = YES;
+        OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
+        webV.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:webV animated:NO];
+        [webV release];
+    }
+    else
+    {
+        [self getDataFromCD];
+        
+        if (!statuesArr || statuesArr.count == 0) {
+            [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+            [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+        }
+        
+        [manager getUserID];
+        [manager getHOtTrendsDaily];
+    }
 }
 
 #pragma mark - Methods

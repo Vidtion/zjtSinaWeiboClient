@@ -16,6 +16,7 @@
 		45A09838157364090026B18A /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 45A09837157364080026B18A /* icon.jpg */; };
 		45C3EE9D1500D42C004A282E /* GifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C3EE9C1500D42C004A282E /* GifView.m */; };
 		45C3EEA81500DD7A004A282E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45C3EEA71500DD7A004A282E /* ImageIO.framework */; };
+		AB01D19E159A0F5D00F15885 /* HotTrendsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB01D19C159A0F5D00F15885 /* HotTrendsVC.m */; };
 		AB0D19AD1547ED15005EE454 /* FollowerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0D19AB1547ED15005EE454 /* FollowerVC.m */; };
 		AB0D19B71547ED51005EE454 /* SettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0D19B51547ED50005EE454 /* SettingVC.m */; };
 		AB0D19C3154820A0005EE454 /* LPFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0D19C1154820A0005EE454 /* LPFriendCell.m */; };
@@ -162,6 +163,8 @@
 		45C3EE9B1500D42C004A282E /* GifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GifView.h; sourceTree = "<group>"; };
 		45C3EE9C1500D42C004A282E /* GifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GifView.m; sourceTree = "<group>"; };
 		45C3EEA71500DD7A004A282E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		AB01D19B159A0F5D00F15885 /* HotTrendsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotTrendsVC.h; sourceTree = "<group>"; };
+		AB01D19C159A0F5D00F15885 /* HotTrendsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotTrendsVC.m; sourceTree = "<group>"; };
 		AB0D19AA1547ED15005EE454 /* FollowerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowerVC.h; sourceTree = "<group>"; };
 		AB0D19AB1547ED15005EE454 /* FollowerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowerVC.m; sourceTree = "<group>"; };
 		AB0D19AC1547ED15005EE454 /* FollowerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FollowerVC.xib; sourceTree = "<group>"; };
@@ -441,6 +444,8 @@
 				AB29A23C155A5B1F0014CC7D /* AboutViewController.h */,
 				AB29A23D155A5B1F0014CC7D /* AboutViewController.m */,
 				AB29A23E155A5B1F0014CC7D /* AboutViewController.xib */,
+				AB01D19B159A0F5D00F15885 /* HotTrendsVC.h */,
+				AB01D19C159A0F5D00F15885 /* HotTrendsVC.m */,
 			);
 			name = OtherVCs;
 			sourceTree = "<group>";
@@ -956,6 +961,7 @@
 				ABFBB6EF1595A13B00F3B265 /* Images.m in Sources */,
 				ABFBB6F21595A13B00F3B265 /* UserCDItem.m in Sources */,
 				ABFBB6F51595A13C00F3B265 /* StatusCDItem.m in Sources */,
+				AB01D19E159A0F5D00F15885 /* HotTrendsVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1057,8 +1063,8 @@
 					"\"$(SRCROOT)/zjtSinaWeiboClient/WeiboEngine\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "28D40E0A-5FBD-4D06-80D8-D461AFEE3743";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "28D40E0A-5FBD-4D06-80D8-D461AFEE3743";
+				PROVISIONING_PROFILE = "09038182-35A1-4BC7-A1DB-57C1CA900A71";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "09038182-35A1-4BC7-A1DB-57C1CA900A71";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

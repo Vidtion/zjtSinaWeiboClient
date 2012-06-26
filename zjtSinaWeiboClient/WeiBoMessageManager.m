@@ -198,6 +198,12 @@ static WeiBoMessageManager * instance=nil;
     [httpManager getHotCommnetDaily:count];
 }
 
+//返回最近一天内的热门话题
+-(void)getHOtTrendsDaily
+{
+    [httpManager getHOtTrendsDaily];
+}
+
 //获取某个用户的各种消息未读数
 -(void)getUnreadCount:(NSString*)uid
 {
@@ -356,6 +362,13 @@ static WeiBoMessageManager * instance=nil;
 -(void)didGetHotCommentDaily:(NSArray *)statusArr
 {
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotHotCommentDaily object:statusArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+//返回最近一天内的热门话题
+-(void)didGetHotTrendDaily:(NSArray*)trendsArr
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotHotCommentDaily object:trendsArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 

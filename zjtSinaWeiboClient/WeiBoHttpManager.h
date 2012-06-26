@@ -57,6 +57,7 @@ typedef enum {
     SinaGetFollowedUserList,        //获取用户粉丝列表
     SinaGetHotRepostDaily,          //按天返回热门微博转发榜的微博列表
     SinaGetHotCommentDaily,         //按天返回热门微博评论榜的微博列表
+    SinaGetHotTrendDaily,
     SinaGetUnreadCount,             //获取某个用户的各种消息未读数
     SINAGetMetionsStatuses,         //获取最新的提到登录用户的微博列表，即@我的微博
 }RequestType;
@@ -126,6 +127,9 @@ typedef enum {
 
 //按天返回热门微博评论榜的微博列表
 -(void)didGetHotCommentDaily:(NSArray*)statusArr;
+
+//返回最近一天内的热门话题
+-(void)didGetHotTrendDaily:(NSArray*)trendsArr;
 
 //获取某个用户的各种消息未读数
 -(void)didGetUnreadCount:(NSDictionary*)dic;
@@ -231,6 +235,9 @@ typedef enum {
 
 //按天返回热门微博评论榜的微博列表
 -(void)getHotCommnetDaily:(int)count;
+
+//返回最近一天内的热门话题
+-(void)getHOtTrendsDaily;
 
 //获取某个用户的各种消息未读数
 -(void)getUnreadCount:(NSString*)uid;

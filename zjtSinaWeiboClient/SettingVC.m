@@ -14,6 +14,7 @@
 #import "AboutViewController.h"
 #import "MetionsStatusesVC.h"
 #import "CoreDataManager.h"
+#import "HotTrendsVC.h"
 
 //sections
 enum{
@@ -28,6 +29,7 @@ enum{
 enum{
     kHotStatus = 0,
     kHotRetwitted,
+    kHotTrends,
     kMetionsStatuses,
     kStatusRowsCount,
 };
@@ -127,7 +129,7 @@ enum {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
@@ -159,6 +161,10 @@ enum {
         
         else if (row == kHotRetwitted) {
             cell.textLabel.text = @"今日热门转发";
+        }
+        
+        else if (row == kHotTrends) {
+            cell.textLabel.text = @"今日热门话题";
         }
         
         else if (row == kMetionsStatuses) {
@@ -231,6 +237,13 @@ enum {
         
         else if (row == kHotRetwitted) {
             ZJTHotRepostViewController *h = [[ZJTHotRepostViewController alloc] initWithType:kHotRepostDaily];
+            h.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:h animated:YES];
+            [h release];
+        }
+        
+        else if (row == kHotTrends) {
+            HotTrendsVC *h = [[HotTrendsVC alloc] initWithStyle:UITableViewStylePlain];
             h.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:h animated:YES];
             [h release];
