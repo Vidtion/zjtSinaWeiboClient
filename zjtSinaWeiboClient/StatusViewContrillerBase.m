@@ -175,7 +175,6 @@
         }
         else
         {
-            NSLog(@"repost user name = %@",member.user.screenName);
             [imageDictionary setObject:[NSNull null] forKey:indexNumber];
         }
     }

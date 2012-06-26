@@ -134,8 +134,6 @@
 		ABF23FB214B5999C00AEEB5C /* WeiBoHttpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF23FAD14B5999C00AEEB5C /* WeiBoHttpManager.m */; };
 		ABF23FB314B5999C00AEEB5C /* WeiBoMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF23FAF14B5999C00AEEB5C /* WeiBoMessageManager.m */; };
 		ABF23FC014B59FAE00AEEB5C /* LPBaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF23FBF14B59FAE00AEEB5C /* LPBaseCell.m */; };
-		ABFBB6E51595A02300F3B265 /* Statuses.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFBB6E41595A02300F3B265 /* Statuses.m */; };
-		ABFBB6E91595A0D800F3B265 /* Users.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFBB6E81595A0D800F3B265 /* Users.m */; };
 		ABFBB6EF1595A13B00F3B265 /* Images.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFBB6EE1595A13B00F3B265 /* Images.m */; };
 		ABFBB6F21595A13B00F3B265 /* UserCDItem.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFBB6F11595A13B00F3B265 /* UserCDItem.m */; };
 		ABFBB6F51595A13C00F3B265 /* StatusCDItem.m in Sources */ = {isa = PBXBuildFile; fileRef = ABFBB6F41595A13C00F3B265 /* StatusCDItem.m */; };
@@ -320,10 +318,6 @@
 		ABF23FBF14B59FAE00AEEB5C /* LPBaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LPBaseCell.m; sourceTree = "<group>"; };
 		ABF411F815458F2E00226BC1 /* noImage50x118.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noImage50x118.png; sourceTree = "<group>"; };
 		ABF411F915458F2E00226BC1 /* noImage50x118@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "noImage50x118@2x.png"; sourceTree = "<group>"; };
-		ABFBB6E31595A02300F3B265 /* Statuses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Statuses.h; sourceTree = "<group>"; };
-		ABFBB6E41595A02300F3B265 /* Statuses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Statuses.m; sourceTree = "<group>"; };
-		ABFBB6E71595A0D800F3B265 /* Users.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Users.h; sourceTree = "<group>"; };
-		ABFBB6E81595A0D800F3B265 /* Users.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Users.m; sourceTree = "<group>"; };
 		ABFBB6ED1595A13B00F3B265 /* Images.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Images.h; sourceTree = "<group>"; };
 		ABFBB6EE1595A13B00F3B265 /* Images.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Images.m; sourceTree = "<group>"; };
 		ABFBB6F01595A13B00F3B265 /* UserCDItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCDItem.h; sourceTree = "<group>"; };
@@ -472,6 +466,19 @@
 				AB37A39514F91D280077774E /* ImageBrowser.xib */,
 			);
 			name = ImageBrowser;
+			sourceTree = "<group>";
+		};
+		AB45B4181599DDF800895201 /* CDModels */ = {
+			isa = PBXGroup;
+			children = (
+				ABFBB6F01595A13B00F3B265 /* UserCDItem.h */,
+				ABFBB6F11595A13B00F3B265 /* UserCDItem.m */,
+				ABFBB6F31595A13C00F3B265 /* StatusCDItem.h */,
+				ABFBB6F41595A13C00F3B265 /* StatusCDItem.m */,
+				ABFBB6ED1595A13B00F3B265 /* Images.h */,
+				ABFBB6EE1595A13B00F3B265 /* Images.m */,
+			);
+			name = CDModels;
 			sourceTree = "<group>";
 		};
 		AB968C3314FE849500A17AFE /* timelineBG */ = {
@@ -626,6 +633,7 @@
 		ABF23F7314B5976900AEEB5C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				AB45B4181599DDF800895201 /* CDModels */,
 				ABF23F7414B5976900AEEB5C /* Comment.h */,
 				ABF23F7514B5976900AEEB5C /* Comment.m */,
 				ABF23F7B14B5976900AEEB5C /* Draft.h */,
@@ -636,16 +644,6 @@
 				ABF23F8014B5976900AEEB5C /* Status.m */,
 				ABF23F8114B5976900AEEB5C /* User.h */,
 				ABF23F8214B5976900AEEB5C /* User.m */,
-				ABFBB6E31595A02300F3B265 /* Statuses.h */,
-				ABFBB6E41595A02300F3B265 /* Statuses.m */,
-				ABFBB6E71595A0D800F3B265 /* Users.h */,
-				ABFBB6E81595A0D800F3B265 /* Users.m */,
-				ABFBB6ED1595A13B00F3B265 /* Images.h */,
-				ABFBB6EE1595A13B00F3B265 /* Images.m */,
-				ABFBB6F01595A13B00F3B265 /* UserCDItem.h */,
-				ABFBB6F11595A13B00F3B265 /* UserCDItem.m */,
-				ABFBB6F31595A13C00F3B265 /* StatusCDItem.h */,
-				ABFBB6F41595A13C00F3B265 /* StatusCDItem.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -955,8 +953,6 @@
 				AB3CCCB915930838002F39ED /* MetionsStatusesVC.m in Sources */,
 				AB35225F15937DE3001885BE /* ImageCache.xcdatamodeld in Sources */,
 				AB35226C1593806A001885BE /* CoreDataManager.m in Sources */,
-				ABFBB6E51595A02300F3B265 /* Statuses.m in Sources */,
-				ABFBB6E91595A0D800F3B265 /* Users.m in Sources */,
 				ABFBB6EF1595A13B00F3B265 /* Images.m in Sources */,
 				ABFBB6F21595A13B00F3B265 /* UserCDItem.m in Sources */,
 				ABFBB6F51595A13C00F3B265 /* StatusCDItem.m in Sources */,

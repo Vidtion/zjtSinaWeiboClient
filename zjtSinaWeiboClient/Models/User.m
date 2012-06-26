@@ -26,7 +26,7 @@
 @synthesize userKey;
 @synthesize avatarImage;
 
-- (Users*)updateUsers:(Users*)us
+- (UserCDItem*)updateUserCDItem:(UserCDItem*)us
 {
     us.allowAllActMsg       = [NSNumber numberWithBool:self.allowAllActMsg];
     us.avatarImage          = UIImageJPEGRepresentation(self.avatarImage, 1);
@@ -55,7 +55,7 @@
     return us;
 }
 
--(User*)updateWithUsers:(Users*)us
+-(User*)updateUserFromUserCDItem:(UserCDItem*)us
 {
     self.allowAllActMsg = us.allowAllActMsg.boolValue;
     

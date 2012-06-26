@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "Images.h"
-#import "Users.h"
-#import "Statuses.h"
+#import "UserCDItem.h"
+#import "StatusCDItem.h"
 #import "Status.h"
 
 @interface CoreDataManager : NSObject
@@ -28,4 +28,5 @@
 - (Images*)readImageFromCD:(NSString*)url;
 - (void)insertStatusesToCD:(Status*)sts index:(int)theIndex isHomeLine:(BOOL) isHome;
 - (NSArray*)readStatusesFromCD;
+-(void)cleanEntityRecords:(NSString*)entityName;
 @end

@@ -18,9 +18,8 @@
 @synthesize haveRetwitterImage;
 @synthesize hasImage;
 
--(Statuses*)updateStatuses:(Statuses*)sts index:(int)theIndex isHomeLine:(BOOL) isHome
+-(StatusCDItem*)updateStatusCDItem:(StatusCDItem*)sts index:(int)theIndex isHomeLine:(BOOL) isHome
 {
-    NSLog(@"the index = %d",theIndex);
     sts.bmiddlePic          = self.bmiddlePic;
     sts.commentsCount       = [NSNumber numberWithInt:self.commentsCount];
     sts.createdAt           = [NSNumber numberWithLong:self.createdAt];
@@ -47,25 +46,15 @@
     sts.unread              = [NSNumber numberWithBool:self.unread];
     sts.index               = [NSNumber numberWithInt:theIndex];
     sts.isHomeLine          = [NSNumber numberWithBool:isHome];
-    if (self.retweetedStatus) {
-        if (sts.retweetedStatus == nil) {
-            sts.retweetedStatus = (Statuses *)[NSEntityDescription insertNewObjectForEntityForName:@"Statuses" inManagedObjectContext:[CoreDataManager getInstance].managedObjContext];
-        }
-        sts.retweetedStatus     = [self.retweetedStatus updateStatuses:sts.retweetedStatus index:-1 isHomeLine:NO];
-    }
     
-//    NSError *error = nil;
-//    if (![[CoreDataManager getInstance].managedObjContext save:&error]) {
-//		// Handle the error.
-//	}
-    sts.user                = [self.user updateUsers:sts.user];
+    sts.user = (UserCDItem *)[NSEntityDescription insertNewObjectForEntityForName:@"UserCDItem" inManagedObjectContext:[CoreDataManager getInstance].managedObjContext];
+    sts.user                    = [self.user updateUserCDItem:sts.user];
     
     return sts;
 }
 
-- (Status*)updataWithStatuses:(Statuses*)sts
+- (Status*)updataStatusFromStatusCDItem:(StatusCDItem*)sts
 {
-    NSLog(@"index = %@",sts.index);
     self.bmiddlePic         = sts.bmiddlePic;       
     self.commentsCount      = sts.commentsCount.intValue;
     self.createdAt          = sts.createdAt.longValue;
@@ -91,11 +80,11 @@
     self.truncated          = sts.truncated.boolValue;
     self.unread             = sts.unread.boolValue;
     if (sts.retweetedStatus) {
-        self.retweetedStatus = [self updataWithStatuses:sts.retweetedStatus];
+        self.retweetedStatus = [self updataStatusFromStatusCDItem:sts.retweetedStatus];
     }
     
     User *us = [[User alloc] init];
-    self.user = [us updateWithUsers:sts.user];
+    self.user = [us updateUserFromUserCDItem:sts.user];
     [us release];
     
     return self;

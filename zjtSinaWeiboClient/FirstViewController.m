@@ -13,6 +13,7 @@
 
 @interface FirstViewController() 
 -(void)timerOnActive;
+-(void)getDataFromCD;
 @end
 
 @implementation FirstViewController
@@ -34,6 +35,26 @@
     TwitterVC *tv = [[TwitterVC alloc]initWithNibName:@"TwitterVC" bundle:nil];
     [self.navigationController pushViewController:tv animated:YES];
     [tv release];
+}
+
+-(void)getDataFromCD
+{
+    if (!statuesArr || statuesArr.count == 0) {
+        statuesArr = [[NSMutableArray alloc] initWithCapacity:70];
+        NSArray *arr = [[CoreDataManager getInstance] readStatusesFromCD];
+        if (arr && arr.count != 0) {
+            for (int i = 0; i < arr.count; i++) 
+            {
+                StatusCDItem *s = [arr objectAtIndex:i];
+                Status *sts = [[Status alloc]init];
+                sts = [sts updataStatusFromStatusCDItem:s];
+                
+                [statuesArr insertObject:sts atIndex:s.index.intValue];
+            }
+        }
+    }
+    [table reloadData];
+    [self getImages];
 }
 
 							
@@ -59,31 +80,21 @@
     }
     else
     {
+        [self getDataFromCD];
+        
         if (!statuesArr || statuesArr.count == 0) {
-            statuesArr = [[NSMutableArray alloc] initWithCapacity:70];
-            NSArray *arr = [[CoreDataManager getInstance] readStatusesFromCD];
-            if (arr && arr.count != 0) {
-                for (int i = 0; i < arr.count; i++) 
-                {
-                    Statuses *s = [arr objectAtIndex:i];
-                    Status *sts = [[Status alloc]init];
-                    sts = [sts updataWithStatuses:s];
-                    
-                    [statuesArr insertObject:sts atIndex:s.index.intValue];
-                }
-            }
+            [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+            [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
         }
         
         [manager getUserID];
-//        [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
-//        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     }
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID            object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine          object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(relogin)            name:NeedToReLogin              object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(didGetUnreadCount:)                   name:MMSinaGotUnreadCount object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(didGetUnreadCount:) name:MMSinaGotUnreadCount       object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(appWillResign:)            name:UIApplicationWillResignActiveNotification             object:nil];
 }
 
 -(void)viewDidUnload
@@ -112,12 +123,6 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    for (int i = 0; i < statuesArr.count; i++) {
-        NSLog(@"i = %d",i);
-        [[CoreDataManager getInstance] insertStatusesToCD:[statuesArr objectAtIndex:i] index:i isHomeLine:YES];
-    }
-    
-    
     [super viewWillDisappear:animated];
 }
 
@@ -127,6 +132,14 @@
 }
 
 #pragma mark - Methods
+
+-(void)appWillResign:(id)sender
+{
+    for (int i = 0; i < statuesArr.count; i++) {
+        NSLog(@"i = %d",i);
+        [[CoreDataManager getInstance] insertStatusesToCD:[statuesArr objectAtIndex:i] index:i isHomeLine:YES];
+    }
+}
 
 -(void)timerOnActive
 {

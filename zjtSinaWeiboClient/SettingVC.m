@@ -13,7 +13,7 @@
 #import "ZJTHotRepostViewController.h"
 #import "AboutViewController.h"
 #import "MetionsStatusesVC.h"
-
+#import "CoreDataManager.h"
 
 //sections
 enum{
@@ -36,6 +36,7 @@ enum{
 enum {
     kCurrentUser = 0,
     kChangeAccount,  
+    kCleanCache,
     kAboutMe,
     kAccountRowsCount,
 };
@@ -142,6 +143,10 @@ enum {
             cell.textLabel.text = @"更换账号";
         }
         
+        else if (row == kCleanCache) {
+            cell.textLabel.text = @"清空缓存";
+        }
+        
         else if (row == kAboutMe) {
             cell.textLabel.text = @"关于";
         }
@@ -196,6 +201,14 @@ enum {
         
         else if (row == kChangeAccount) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"确定要更换账号吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"更换", nil];
+            alert.tag = 0;
+            [alert show];
+            [alert release];
+        }
+        
+        else if (row == kCleanCache) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"确定要清空缓存吗？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"清空", nil];
+            alert.tag = 1;
             [alert show];
             [alert release];
         }
@@ -235,8 +248,20 @@ enum {
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1) {
-        [self logout];
+    if (alertView.tag == 0) {
+        if (buttonIndex == 1) {
+            [self logout];
+        }
     }
+    
+    else if (alertView.tag == 1)
+    {
+        if (buttonIndex == 1) {
+            [[CoreDataManager getInstance]cleanEntityRecords:@"Images"];
+            [[CoreDataManager getInstance]cleanEntityRecords:@"UserCDItem"];
+            [[CoreDataManager getInstance]cleanEntityRecords:@"StatusCDItem"];
+        }
+    }
+
 }
 @end

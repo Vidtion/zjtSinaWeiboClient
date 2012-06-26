@@ -76,9 +76,14 @@ static CoreDataManager * instance;
 
 - (void)insertStatusesToCD:(Status*)sts index:(int)theIndex isHomeLine:(BOOL) isHome
 {
-    Statuses *statuses = (Statuses *)[NSEntityDescription insertNewObjectForEntityForName:@"Statuses" inManagedObjectContext:_managedObjContext];
+    StatusCDItem *statusItem = (StatusCDItem *)[NSEntityDescription insertNewObjectForEntityForName:@"StatusCDItem" inManagedObjectContext:_managedObjContext];
     
-    statuses = [sts updateStatuses:statuses index:theIndex isHomeLine:isHome];
+    if (sts.retweetedStatus) {
+        statusItem.retweetedStatus = (StatusCDItem *)[NSEntityDescription insertNewObjectForEntityForName:@"StatusCDItem" inManagedObjectContext:_managedObjContext];
+        
+        statusItem.retweetedStatus = [sts.retweetedStatus updateStatusCDItem:statusItem.retweetedStatus index:-1 isHomeLine:NO];
+    }
+    statusItem = [sts updateStatusCDItem:statusItem index:theIndex isHomeLine:isHome];
     
     NSError *error;
 	if (![_managedObjContext save:&error]) {
@@ -89,8 +94,8 @@ static CoreDataManager * instance;
 -(NSArray*)readStatusesFromCD
 {
     NSFetchRequest *fetch = [[NSFetchRequest alloc]init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Statuses" inManagedObjectContext:_managedObjContext];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"isHomeLine==Yes"];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"StatusCDItem" inManagedObjectContext:_managedObjContext];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"isHomeLine==YES"];
     [fetch setPredicate:pred];
     [fetch setEntity:entity];
     
@@ -106,7 +111,31 @@ static CoreDataManager * instance;
     return resultsArr;
 }
 
-
+-(void)cleanEntityRecords:(NSString*)entityName
+{
+    NSFetchRequest *fetch = [[NSFetchRequest alloc]init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:_managedObjContext];
+    [fetch setEntity:entity];
+    
+    NSError *error = nil;
+	NSMutableArray *resultsArr = [[[_managedObjContext executeFetchRequest:fetch error:&error] mutableCopy] retain];
+	if (resultsArr == nil || [resultsArr count] == 0) {
+		return ;
+	}
+    
+    // Delete the managed object
+    for (NSManagedObject *imageToDelete in resultsArr)
+    {
+        [_managedObjContext deleteObject:imageToDelete];
+    }
+    
+    if (![_managedObjContext save:&error]) {
+        // Handle the error.
+    }
+    
+    [resultsArr release];
+    [fetch release];
+}
 
 - (NSString *)applicationDocumentsDirectory {
 	

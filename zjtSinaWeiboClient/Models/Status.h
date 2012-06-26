@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "User.h"
 #import "NSDictionaryAdditions.h"
-#import "Statuses.h"
-#import "Users.h"
+#import "StatusCDItem.h"
+#import "UserCDItem.h"
 
 @interface Status : NSObject {
     long long		statusId; //微博ID
@@ -82,7 +82,8 @@
 
 + (Status*)statusWithJsonDictionary:(NSDictionary*)dic;
 
--(Statuses*)updateStatuses:(Statuses*)sts index:(int)theIndex isHomeLine:(BOOL) isHome;
-- (Status*)updataWithStatuses:(Statuses*)sts;
+- (StatusCDItem*)updateStatusCDItem:(StatusCDItem*)sts index:(int)theIndex isHomeLine:(BOOL) isHome;
+
+- (Status*)updataStatusFromStatusCDItem:(StatusCDItem*)sts;
 
 @end

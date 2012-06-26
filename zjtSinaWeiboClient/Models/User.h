@@ -2,8 +2,8 @@
 
 
 #import <UIKit/UIKit.h>
-#import "Users.h"
-#import "Statuses.h"
+#import "UserCDItem.h"
+#import "StatusCDItem.h"
 
 typedef enum {
     GenderUnknow = 0,
@@ -67,6 +67,7 @@ typedef enum {
 - (User*)initWithJsonDictionary:(NSDictionary*)dic;
 - (void)updateWithJSonDictionary:(NSDictionary*)dic;
 + (User*)userWithJsonDictionary:(NSDictionary*)dic;
-- (Users*)updateUsers:(Users*)us;
--(User*)updateWithUsers:(Users*)us;
+- (UserCDItem*)updateUserCDItem:(UserCDItem*)us;
+- (User*)updateUserFromUserCDItem:(UserCDItem*)us;
+
 @end
