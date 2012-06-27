@@ -40,9 +40,11 @@
 @synthesize followingCount;
 @synthesize user;
 @synthesize avatarImage;
+@synthesize screenName;
 
 -(void)dealloc
 {
+    self.screenName = nil;
     self.avatarImage = nil;
     self.user = nil;
     self.imageDictionary = nil;
@@ -487,15 +489,15 @@
     browserView.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
     [browserView loadImage];
     
-    app.statusBarHidden = YES;
-    UIWindow *window = nil;
-    for (UIWindow *win in app.windows) {
-        if (win.tag == 0) {
-            [win addSubview:browserView];
-            window = win;
-            [window makeKeyAndVisible];
-        }
-    }
+//    app.statusBarHidden = YES;
+//    UIWindow *window = nil;
+//    for (UIWindow *win in app.windows) {
+//        if (win.tag == 0) {
+//            [win addSubview:browserView];
+//            window = win;
+//            [window makeKeyAndVisible];
+//        }
+//    }
     
     //animation
     //    CAAnimation *anim = [ZJTHelpler animationWithOpacityFrom:0.0f To:1.0f Duration:0.3f BeginTime:0.0f];
@@ -508,5 +510,18 @@
     else shouldShowIndicator = YES;
 }
 
+-(void)cellLinkDidTaped:(StatusCell *)theCell link:(NSString*)link
+{
+    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+    profile.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:profile animated:YES];
+    [profile release];
+}
+
+-(void)cellTextDidTaped:(StatusCell *)theCell
+{
+    NSIndexPath *index = [self.table indexPathForCell:theCell];
+    [self tableView:self.table didSelectRowAtIndexPath:index];
+}
 
 @end

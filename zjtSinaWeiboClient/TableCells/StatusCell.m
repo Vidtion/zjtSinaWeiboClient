@@ -7,8 +7,13 @@
 //
 
 #import "StatusCell.h"
+#import "AHMarkedHyperlink.h"
 
 #define IMAGE_VIEW_HEIGHT 80.0f
+#define PADDING_TOP 8.0
+#define PADDING_LEFT 8.0
+#define FONT_SIZE 15.0
+#define FONT @"Helvetica"
 
 @implementation StatusCell
 @synthesize retwitterBgImage;
@@ -25,11 +30,78 @@
 @synthesize cellIndexPath;
 @synthesize fromLB;
 @synthesize timeLB;
+@synthesize JSContentTF = _JSContentTF;
+@synthesize JSRetitterContentTF = _JSRetitterContentTF;
+
+-(JSTwitterCoreTextView*)JSContentTF
+{
+    
+    if (_JSContentTF == nil) {
+        _JSContentTF = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(0, 29, 320, 80)];
+        [_JSContentTF setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+        [_JSContentTF setDelegate:self];
+        [_JSContentTF setFontName:FONT];
+        [_JSContentTF setFontSize:FONT_SIZE];
+        [_JSContentTF setHighlightColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]];
+        [_JSContentTF setBackgroundColor:[UIColor clearColor]];
+        [_JSContentTF setPaddingTop:PADDING_TOP];
+        [_JSContentTF setPaddingLeft:PADDING_LEFT];
+//        _JSContentTF.userInteractionEnabled = NO;
+        _JSContentTF.backgroundColor = [UIColor clearColor];
+        _JSContentTF.textColor = [UIColor colorWithRed:120/255.0 green:120/255.0 blue:120/255.0 alpha:1];
+        _JSContentTF.linkColor = [UIColor colorWithRed:96/255.0 green:138/255.0 blue:176/255.0 alpha:1];
+        [self.contentView addSubview:_JSContentTF];
+    }
+    
+    return _JSContentTF;
+}
+
+-(JSTwitterCoreTextView*)JSRetitterContentTF
+{    
+    if (_JSRetitterContentTF == nil) {
+        _JSRetitterContentTF = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(10, 0, 300, 80)];
+        [_JSRetitterContentTF setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+        [_JSRetitterContentTF setDelegate:self];
+        [_JSRetitterContentTF setFontName:FONT];
+        [_JSRetitterContentTF setFontSize:FONT_SIZE];
+        [_JSRetitterContentTF setHighlightColor:[UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0]];
+        [_JSRetitterContentTF setBackgroundColor:[UIColor clearColor]];
+        [_JSRetitterContentTF setPaddingTop:PADDING_TOP];
+        [_JSRetitterContentTF setPaddingLeft:PADDING_LEFT];
+//        _JSRetitterContentTF.userInteractionEnabled = NO;
+        _JSRetitterContentTF.backgroundColor = [UIColor clearColor];
+        _JSRetitterContentTF.textColor = [UIColor colorWithRed:120/255.0 green:120/255.0 blue:120/255.0 alpha:1];
+        _JSRetitterContentTF.linkColor = [UIColor colorWithRed:96/255.0 green:138/255.0 blue:176/255.0 alpha:1];
+        [self.retwitterMainV addSubview:_JSRetitterContentTF];
+    }
+    
+    return _JSRetitterContentTF;
+}
+
++(CGFloat)getJSHeight:(NSString*)text jsViewWith:(CGFloat)with
+{
+    CGFloat height = [JSCoreTextView measureFrameHeightForText:text
+                                                      fontName:FONT 
+                                                      fontSize:FONT_SIZE 
+                                            constrainedToWidth:with - (PADDING_LEFT * 2)
+                                                    paddingTop:PADDING_TOP 
+                                                   paddingLeft:PADDING_LEFT];
+    return height;
+}
+
+-(void)adjustTheHeightOf:(JSTwitterCoreTextView *)jsView withText:(NSString*)text
+{
+    CGFloat height = [StatusCell getJSHeight:text jsViewWith:jsView.frame.size.width];
+    CGRect textFrame = [jsView frame];
+    textFrame.size.height = height;
+    [jsView setFrame:textFrame];
+}
 
 //
 -(void)setupCell:(Status *)status avatarImageData:(NSData *)avatarData contentImageData:(NSData *)imageData
 {
     self.contentTF.text = status.text;
+    self.JSContentTF.text = status.text;
     self.userNameLB.text = status.user.screenName;
     self.avatarImage.image = [UIImage imageWithData:avatarData];
     countLB.text = [NSString stringWithFormat:@"评论:%d 转发:%d",status.commentsCount,status.retweetsCount];
@@ -42,7 +114,7 @@
     if (retwitterStatus && ![retwitterStatus isEqual:[NSNull null]]) 
     {
         self.retwitterMainV.hidden = NO;
-        self.retwitterContentTF.text = [NSString stringWithFormat:@"%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text];
+        self.JSRetitterContentTF.text = [NSString stringWithFormat:@"@%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text];
         self.contentImage.hidden = YES;
         
         if (![imageData isEqual:[NSNull null]]) 
@@ -74,40 +146,40 @@
 //计算cell的高度，以及背景图的处理
 -(CGFloat)setTFHeightWithImage:(BOOL)hasImage haveRetwitterImage:(BOOL)haveRetwitterImage
 {
-    [contentTF layoutIfNeeded];
     
     //博文Text
-    CGRect frame = contentTF.frame;
-    frame.size = contentTF.contentSize;
-    contentTF.frame = frame;
+    CGRect frame;
+    [self adjustTheHeightOf:self.JSContentTF withText:self.JSContentTF.text];
     
     //转发博文Text
-    frame = retwitterContentTF.frame;
-    frame.size = retwitterContentTF.contentSize;
-    retwitterContentTF.frame = frame;
+    [self adjustTheHeightOf:self.JSRetitterContentTF withText:self.JSRetitterContentTF.text];
     
     
     //转发的主View
     frame = retwitterMainV.frame;
     
-    if (haveRetwitterImage) frame.size.height = retwitterContentTF.frame.size.height + IMAGE_VIEW_HEIGHT + 15;
-    else frame.size.height = retwitterContentTF.frame.size.height + 15;
+    if (haveRetwitterImage) 
+        frame.size.height = self.JSRetitterContentTF.frame.size.height + IMAGE_VIEW_HEIGHT + 15;
+    else 
+        frame.size.height = self.JSRetitterContentTF.frame.size.height + 5;
     
-    if(hasImage) frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y + IMAGE_VIEW_HEIGHT;
-    else frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y;
+    if(hasImage) 
+        frame.origin.y = self.JSContentTF.frame.size.height + self.JSContentTF.frame.origin.y + IMAGE_VIEW_HEIGHT;
+    else 
+        frame.origin.y = self.JSContentTF.frame.size.height + self.JSContentTF.frame.origin.y;
     
     retwitterMainV.frame = frame;
     
     
     //转发的图片
     frame = retwitterContentImage.frame;
-    frame.origin.y = retwitterContentTF.frame.size.height;
+    frame.origin.y = self.JSRetitterContentTF.frame.size.height;
     frame.size.height = IMAGE_VIEW_HEIGHT;
     retwitterContentImage.frame = frame;
     
     //正文的图片
     frame = contentImage.frame;
-    frame.origin.y = contentTF.frame.size.height + contentTF.frame.origin.y - 5.0f;
+    frame.origin.y = self.JSContentTF.frame.size.height + self.JSContentTF.frame.origin.y - 5.0f;
     frame.size.height = IMAGE_VIEW_HEIGHT;
     contentImage.frame = frame;
     
@@ -115,7 +187,7 @@
     bgImage.image = [[UIImage imageNamed:@"table_header_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
     retwitterBgImage.image = [[UIImage imageNamed:@"timeline_rt_border_t.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:7];
     
-    return contentTF.contentSize.height;
+    return self.JSContentTF.frame.size.height;
 }
 
 -(IBAction)tapDetected:(id)sender
@@ -138,7 +210,24 @@
     }
 }
 
+- (void)textView:(JSCoreTextView *)textView linkTapped:(AHMarkedHyperlink *)link
+{
+    NSLog(@"%@",link.URL.absoluteString);
+    if ([self.delegate respondsToSelector:@selector(cellLinkDidTaped:link:)]) {
+        [self.delegate cellLinkDidTaped:self link:link.URL.absoluteString];
+    }
+}
+
+- (void)textViewTextTapped:(JSCoreTextView *)textView
+{
+    if ([self.delegate respondsToSelector:@selector(cellTextDidTaped:)]) {
+        [self.delegate cellTextDidTaped:self];
+    }
+}
+
 - (void)dealloc {
+    self.JSRetitterContentTF = nil;
+    self.JSContentTF = nil;
     [avatarImage release];
     [contentTF release];
     [userNameLB release];

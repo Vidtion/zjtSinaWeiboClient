@@ -33,26 +33,39 @@
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "zjtSinaWeiboClient/FirstViewController.m"
-         timestampString = "362419847.891237"
+         filePath = "zjtSinaWeiboClient/TableCells/StatusCell.m"
+         timestampString = "362507461.557024"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "59"
-         endingLineNumber = "59"
-         landmarkName = "-getDataFromCD"
+         startingLineNumber = "215"
+         endingLineNumber = "215"
+         landmarkName = "-textView:linkTapped:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "zjtSinaWeiboClient/FirstViewController.m"
-         timestampString = "362419358.920411"
+         filePath = "zjtSinaWeiboClient/JSCoreTextView.m"
+         timestampString = "362507480.565401"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "42"
-         endingLineNumber = "42"
-         landmarkName = "-getDataFromCD"
+         startingLineNumber = "402"
+         endingLineNumber = "402"
+         landmarkName = "-touchesEnded:withEvent:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "zjtSinaWeiboClient/CoreTextHyperlinkViewViewController.m"
+         timestampString = "362507612.466403"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "139"
+         endingLineNumber = "139"
+         landmarkName = "-textView:linkTapped:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

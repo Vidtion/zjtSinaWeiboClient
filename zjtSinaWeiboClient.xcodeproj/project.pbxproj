@@ -94,6 +94,13 @@
 		AB3CCCB915930838002F39ED /* MetionsStatusesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3CCCB815930837002F39ED /* MetionsStatusesVC.m */; };
 		AB55551014B7069200B27BCE /* HHNetDataCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AB55550F14B7069200B27BCE /* HHNetDataCacheManager.m */; };
 		AB57E8B61523517000363B7C /* AddCommentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB57E8B41523517000363B7C /* AddCommentVC.m */; };
+		AB783D55159B4C2B00C3E688 /* AHHyperlinkScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = AB783D47159B4C2B00C3E688 /* AHHyperlinkScanner.m */; };
+		AB783D56159B4C2B00C3E688 /* AHLinkLexer.l in Sources */ = {isa = PBXBuildFile; fileRef = AB783D49159B4C2B00C3E688 /* AHLinkLexer.l */; };
+		AB783D57159B4C2B00C3E688 /* AHMarkedHyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = AB783D4B159B4C2B00C3E688 /* AHMarkedHyperlink.m */; };
+		AB783D5A159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB783D50159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.m */; };
+		AB783D5B159B4C2B00C3E688 /* JSCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB783D52159B4C2B00C3E688 /* JSCoreTextView.m */; };
+		AB783D5C159B4C2B00C3E688 /* JSTwitterCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB783D54159B4C2B00C3E688 /* JSTwitterCoreTextView.m */; };
+		AB783D5E159B4C5500C3E688 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB783D5D159B4C5500C3E688 /* CoreText.framework */; };
 		ABA04DBD155CD19300188DDE /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA94F4E147FA7F70010C283 /* first.png */; };
 		ABA04DBE155CD19300188DDE /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA94F50147FA7F70010C283 /* first@2x.png */; };
 		ABA658F4155A2E6C00BFD728 /* StatusViewContrillerBase.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA658F1155A2E6C00BFD728 /* StatusViewContrillerBase.m */; };
@@ -218,6 +225,20 @@
 		AB57E8B51523517000363B7C /* AddCommentVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCommentVC.xib; sourceTree = "<group>"; };
 		AB57E8BC1523541900363B7C /* input_window.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = input_window.png; sourceTree = "<group>"; };
 		AB57E8BD1523541900363B7C /* input_window@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "input_window@2x.png"; sourceTree = "<group>"; };
+		AB783D46159B4C2B00C3E688 /* AHHyperlinkScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHHyperlinkScanner.h; sourceTree = "<group>"; };
+		AB783D47159B4C2B00C3E688 /* AHHyperlinkScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHHyperlinkScanner.m; sourceTree = "<group>"; };
+		AB783D48159B4C2B00C3E688 /* AHLinkLexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHLinkLexer.h; sourceTree = "<group>"; };
+		AB783D49159B4C2B00C3E688 /* AHLinkLexer.l */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.lex; path = AHLinkLexer.l; sourceTree = "<group>"; };
+		AB783D4A159B4C2B00C3E688 /* AHMarkedHyperlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHMarkedHyperlink.h; sourceTree = "<group>"; };
+		AB783D4B159B4C2B00C3E688 /* AHMarkedHyperlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHMarkedHyperlink.m; sourceTree = "<group>"; };
+		AB783D4C159B4C2B00C3E688 /* AutoHyperlinks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoHyperlinks.h; sourceTree = "<group>"; };
+		AB783D4F159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTextHyperlinkViewViewController.h; sourceTree = "<group>"; };
+		AB783D50159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreTextHyperlinkViewViewController.m; sourceTree = "<group>"; };
+		AB783D51159B4C2B00C3E688 /* JSCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSCoreTextView.h; sourceTree = "<group>"; };
+		AB783D52159B4C2B00C3E688 /* JSCoreTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSCoreTextView.m; sourceTree = "<group>"; };
+		AB783D53159B4C2B00C3E688 /* JSTwitterCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTwitterCoreTextView.h; sourceTree = "<group>"; };
+		AB783D54159B4C2B00C3E688 /* JSTwitterCoreTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTwitterCoreTextView.m; sourceTree = "<group>"; };
+		AB783D5D159B4C5500C3E688 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		AB87BA4A1524B44E0096C029 /* loadingImage_50x118.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = loadingImage_50x118.png; path = WeiboImages/loadingImage_50x118.png; sourceTree = "<group>"; };
 		AB87BA4B1524B44E0096C029 /* loadingImage_50x118@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "loadingImage_50x118@2x.png"; path = "WeiboImages/loadingImage_50x118@2x.png"; sourceTree = "<group>"; };
 		AB968C3514FE84AD00A17AFE /* timeline_rt_border_b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timeline_rt_border_b.png; sourceTree = "<group>"; };
@@ -353,6 +374,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB783D5E159B4C5500C3E688 /* CoreText.framework in Frameworks */,
 				AB35226915937F92001885BE /* CoreData.framework in Frameworks */,
 				45C3EEA81500DD7A004A282E /* ImageIO.framework in Frameworks */,
 				AB2D5BD81483B43100987DE7 /* QuartzCore.framework in Frameworks */,
@@ -486,6 +508,34 @@
 			name = CDModels;
 			sourceTree = "<group>";
 		};
+		AB783D43159B4BFC00C3E688 /* LinkTextView */ = {
+			isa = PBXGroup;
+			children = (
+				AB783D45159B4C2B00C3E688 /* AutoHyperlinks */,
+				AB783D4F159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.h */,
+				AB783D50159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.m */,
+				AB783D51159B4C2B00C3E688 /* JSCoreTextView.h */,
+				AB783D52159B4C2B00C3E688 /* JSCoreTextView.m */,
+				AB783D53159B4C2B00C3E688 /* JSTwitterCoreTextView.h */,
+				AB783D54159B4C2B00C3E688 /* JSTwitterCoreTextView.m */,
+			);
+			name = LinkTextView;
+			sourceTree = "<group>";
+		};
+		AB783D45159B4C2B00C3E688 /* AutoHyperlinks */ = {
+			isa = PBXGroup;
+			children = (
+				AB783D46159B4C2B00C3E688 /* AHHyperlinkScanner.h */,
+				AB783D47159B4C2B00C3E688 /* AHHyperlinkScanner.m */,
+				AB783D48159B4C2B00C3E688 /* AHLinkLexer.h */,
+				AB783D49159B4C2B00C3E688 /* AHLinkLexer.l */,
+				AB783D4A159B4C2B00C3E688 /* AHMarkedHyperlink.h */,
+				AB783D4B159B4C2B00C3E688 /* AHMarkedHyperlink.m */,
+				AB783D4C159B4C2B00C3E688 /* AutoHyperlinks.h */,
+			);
+			path = AutoHyperlinks;
+			sourceTree = "<group>";
+		};
 		AB968C3314FE849500A17AFE /* timelineBG */ = {
 			isa = PBXGroup;
 			children = (
@@ -502,6 +552,7 @@
 		ABA94F2A147FA7F70010C283 = {
 			isa = PBXGroup;
 			children = (
+				AB783D5D159B4C5500C3E688 /* CoreText.framework */,
 				AB35226815937F92001885BE /* CoreData.framework */,
 				45C3EEA71500DD7A004A282E /* ImageIO.framework */,
 				ABA94F3F147FA7F70010C283 /* zjtSinaWeiboClient */,
@@ -700,6 +751,7 @@
 		ABF23FBC14B59F3B00AEEB5C /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				AB783D43159B4BFC00C3E688 /* LinkTextView */,
 				4506A7C11509D9A600C47A93 /* PullToRefresh */,
 				ABE295B514F8C98000FDABA3 /* VCs */,
 				ABF23FBD14B59F6F00AEEB5C /* TableCells */,
@@ -962,6 +1014,12 @@
 				ABFBB6F21595A13B00F3B265 /* UserCDItem.m in Sources */,
 				ABFBB6F51595A13C00F3B265 /* StatusCDItem.m in Sources */,
 				AB01D19E159A0F5D00F15885 /* HotTrendsVC.m in Sources */,
+				AB783D55159B4C2B00C3E688 /* AHHyperlinkScanner.m in Sources */,
+				AB783D56159B4C2B00C3E688 /* AHLinkLexer.l in Sources */,
+				AB783D57159B4C2B00C3E688 /* AHMarkedHyperlink.m in Sources */,
+				AB783D5A159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.m in Sources */,
+				AB783D5B159B4C2B00C3E688 /* JSCoreTextView.m in Sources */,
+				AB783D5C159B4C2B00C3E688 /* JSTwitterCoreTextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

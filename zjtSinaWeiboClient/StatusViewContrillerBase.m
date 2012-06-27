@@ -7,7 +7,7 @@
 //
 
 #import "StatusViewContrillerBase.h"
-
+#import "ProfileVC.h"
 
 #define kTextViewPadding            16.0
 #define kLineBreakMode              UILineBreakModeWordWrap
@@ -255,9 +255,10 @@
 //计算text field 的高度。
 -(CGFloat)cellHeight:(NSString*)contentText with:(CGFloat)with
 {
-    UIFont * font=[UIFont  systemFontOfSize:14];
-    CGSize size=[contentText sizeWithFont:font constrainedToSize:CGSizeMake(with - kTextViewPadding, 300000.0f) lineBreakMode:kLineBreakMode];
-    CGFloat height = size.height + 44;
+//    UIFont * font=[UIFont  systemFontOfSize:15];
+//    CGSize size=[contentText sizeWithFont:font constrainedToSize:CGSizeMake(with - kTextViewPadding, 300000.0f) lineBreakMode:kLineBreakMode];
+//    CGFloat height = size.height + 44;
+    CGFloat height = [StatusCell getJSHeight:contentText jsViewWith:with];
     return height;
 }
 
@@ -334,7 +335,7 @@
     //有转发的博文
     if (retwitterStatus && ![retwitterStatus isEqual:[NSNull null]])
     {
-        height = [self cellHeight:status.text with:320.0f] + [self cellHeight:[NSString stringWithFormat:@"%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text] with:300.0f] - 22.0f;
+        height = [self cellHeight:status.text with:320.0f] + [self cellHeight:[NSString stringWithFormat:@"@%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text] with:300.0f] + 20;
     }
     
     //无转发的博文
@@ -343,12 +344,31 @@
         height = [self cellHeight:status.text with:320.0f];
     }
     
-    //
+    //有转发图
+    if (url && [url length] != 0)
+    {
+        height = height + 100;
+    }
+    else {
+        height = height +40;
+    }
+    
+    //有原图
+    if (url2 && [url2 length] != 0) {
+        height = height + 100;
+    }
+    else {
+        height = height + 40;
+    }
+    
     if ((url && [url length] != 0) || (url2 && [url2 length] != 0))
     {
-        height = height + 80;
+        
     }
-    return height + 30;
+    else {
+        height = height - 23;
+    }
+    return height;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -433,21 +453,35 @@
     browserView.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
     [browserView loadImage];
 
-    app.statusBarHidden = YES;
-    UIWindow *window = nil;
-    for (UIWindow *win in app.windows) {
-        if (win.tag == 0) {
-            [win addSubview:browserView];
-            window = win;
-            [window makeKeyAndVisible];
-        }
-    }
+//    app.statusBarHidden = YES;
+//    UIWindow *window = nil;
+//    for (UIWindow *win in app.windows) {
+//        if (win.tag == 0) {
+//            [win addSubview:browserView];
+//            window = win;
+//            [window makeKeyAndVisible];
+//        }
+//    }
     
     if (shouldShowIndicator == YES && browserView) {
         [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:browserView];
 //        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     }
     else shouldShowIndicator = YES;
+}
+
+-(void)cellLinkDidTaped:(StatusCell *)theCell link:(NSString*)link
+{
+    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+    profile.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:profile animated:YES];
+    [profile release];
+}
+
+-(void)cellTextDidTaped:(StatusCell *)theCell
+{
+    NSIndexPath *index = [self.table indexPathForCell:theCell];
+    [self tableView:self.table didSelectRowAtIndexPath:index];
 }
 
 #pragma mark -

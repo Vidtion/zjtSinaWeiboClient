@@ -70,7 +70,7 @@ static ZJTStatusBarAlertWindow *instance = nil;
 {
     self = [super init];
     if (self) {
-        [self setupViewsAndDatas];
+//        [self setupViewsAndDatas];
     }
     return self;
 }

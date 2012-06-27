@@ -752,7 +752,7 @@
     NSDictionary *userInformation = [request userInfo];
     RequestType requestType = [[userInformation objectForKey:USER_INFO_KEY_TYPE] intValue];
     NSString * responseString = [request responseString];
-    NSLog(@"responseString = %@",responseString);
+//    NSLog(@"responseString = %@",responseString);
     
     //认证失败
     //{"error":"auth faild!","error_code":21301,"request":"/2/statuses/home_timeline.json"}

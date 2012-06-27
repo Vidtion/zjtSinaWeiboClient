@@ -51,5 +51,5 @@
 @property (retain, nonatomic) IBOutlet UILabel *weiboCount;
 @property (retain, nonatomic) IBOutlet UILabel *followerCount;
 @property (retain, nonatomic) IBOutlet UILabel *followingCount;
-
+@property (retain, nonatomic) NSString *screenName;
 @end

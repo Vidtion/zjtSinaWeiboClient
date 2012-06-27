@@ -9,20 +9,24 @@
 #import "LPBaseCell.h"
 #import "Status.h"
 #import "User.h"
+#import "JSTwitterCoreTextView.h"
 
 @class StatusCell;
 
 @protocol StatusCellDelegate <NSObject>
 
 -(void)cellImageDidTaped:(StatusCell *)theCell image:(UIImage*)image;
+-(void)cellLinkDidTaped:(StatusCell *)theCell link:(NSString*)link;
+-(void)cellTextDidTaped:(StatusCell *)theCell;
 
 @end
 
-@interface StatusCell : LPBaseCell
+@interface StatusCell : LPBaseCell <JSCoreTextViewDelegate>
 {
     id<StatusCellDelegate> delegate;
     
     UIImageView *avatarImage;
+    JSTwitterCoreTextView *_JSContentTF;
     UITextView *contentTF;
     UILabel *userNameLB;
     UIImageView *bgImage;
@@ -30,6 +34,7 @@
     UIView *retwitterMainV;
     UIImageView *retwitterBgImage;
     UITextView *retwitterContentTF;
+    JSTwitterCoreTextView *_JSRetitterContentTF;
     UIImageView *retwitterContentImage;
     NSIndexPath *cellIndexPath;
 }
@@ -48,6 +53,10 @@
 @property (retain, nonatomic) IBOutlet UILabel *fromLB;
 @property (retain, nonatomic) IBOutlet UILabel *timeLB;
 
+@property (nonatomic,retain)JSTwitterCoreTextView *JSContentTF;
+@property (nonatomic,retain)JSTwitterCoreTextView *JSRetitterContentTF;
+
 -(CGFloat)setTFHeightWithImage:(BOOL)hasImage haveRetwitterImage:(BOOL)haveRetwitterImage;
 -(void)setupCell:(Status*)status avatarImageData:(NSData*)avatarData contentImageData:(NSData*)imageData;
++(CGFloat)getJSHeight:(NSString*)text jsViewWith:(CGFloat)with;
 @end

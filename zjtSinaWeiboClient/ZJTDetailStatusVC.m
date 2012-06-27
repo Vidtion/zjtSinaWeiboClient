@@ -274,15 +274,15 @@
     browserView.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
     [browserView loadImage];
     
-    app.statusBarHidden = YES;
-    UIWindow *window = nil;
-    for (UIWindow *win in app.windows) {
-        if (win.tag == 0) {
-            [win addSubview:browserView];
-            window = win;
-            [window makeKeyAndVisible];
-        }
-    }
+//    app.statusBarHidden = YES;
+//    UIWindow *window = nil;
+//    for (UIWindow *win in app.windows) {
+//        if (win.tag == 0) {
+//            [win addSubview:browserView];
+//            window = win;
+//            [window makeKeyAndVisible];
+//        }
+//    }
     if (shouldShowIndicator == YES && browserView) {
         [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:browserView];
 //        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];

@@ -111,6 +111,9 @@
 {
     [super viewDidAppear:animated];
     //如果未授权，则调入授权页面。
+    if (statuesArr != nil && statuesArr.count != 0) {
+        return;
+    }
     NSString *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
     NSLog([manager isNeedToRefreshTheToken] == YES ? @"need to login":@"will login");
     if (authToken == nil || [manager isNeedToRefreshTheToken]) 
