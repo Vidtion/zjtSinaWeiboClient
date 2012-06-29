@@ -25,6 +25,7 @@
     
     UITableView         *table;
     NSString            *userID;
+    NSString            *screenName;
     UINib               *statusCellNib;
     NSMutableArray      *statuesArr;
     NSMutableDictionary *imageDictionary;

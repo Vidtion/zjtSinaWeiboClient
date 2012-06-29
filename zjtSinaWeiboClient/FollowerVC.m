@@ -87,6 +87,11 @@
 {
     [super viewDidLoad];
     
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     NSNotificationCenter *notifCenter = [NSNotificationCenter defaultCenter];
     if (_isFollowingViewController) {
         [notifCenter addObserver:self selector:@selector(gotFollowUserList:) name:MMSinaGotFollowingUserList object:nil];
@@ -98,21 +103,12 @@
     [notifCenter addObserver:self selector:@selector(gotFollowResult:) name:MMSinaFollowedByUserIDWithResult object:nil];
     [notifCenter addObserver:self selector:@selector(gotUnfollowResult:) name:MMSinaUnfollowedByUserIDWithResult object:nil];
     [notifCenter addObserver:self selector:@selector(mmRequestFailed:) name:MMSinaRequestFailed object:nil];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
     [self loadData];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-}
-
-- (void)viewDidUnload
-{
     NSNotificationCenter *notifCenter = [NSNotificationCenter defaultCenter];
     if (_isFollowingViewController) {
         [notifCenter removeObserver:MMSinaGotFollowingUserList];
@@ -124,6 +120,10 @@
     [notifCenter removeObserver:self name:MMSinaFollowedByUserIDWithResult object:nil];
     [notifCenter removeObserver:self name:MMSinaUnfollowedByUserIDWithResult object:nil];
     [notifCenter removeObserver:self name:MMSinaRequestFailed object:nil];
+}
+
+- (void)viewDidUnload
+{
     
     [super viewDidUnload];
 }

@@ -73,6 +73,11 @@ static WeiBoMessageManager * instance=nil;
     [httpManager getUserInfoWithUserID:uid];
 }
 
+-(void)getUserInfoWithScreenName:(NSString*)sn
+{
+    [httpManager getUserInfoWithScreenName:sn];
+}
+
 //根据微博消息ID返回某条微博消息的评论列表
 -(void)getCommentListWithID:(long long)weiboID
 {

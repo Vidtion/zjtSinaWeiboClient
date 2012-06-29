@@ -9,12 +9,6 @@
 #import "StatusCell.h"
 #import "AHMarkedHyperlink.h"
 
-#define IMAGE_VIEW_HEIGHT 80.0f
-#define PADDING_TOP 8.0
-#define PADDING_LEFT 8.0
-#define FONT_SIZE 15.0
-#define FONT @"Helvetica"
-
 @implementation StatusCell
 @synthesize retwitterBgImage;
 @synthesize retwitterContentTF;

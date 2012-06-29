@@ -22,6 +22,7 @@
 @interface ProfileVC ()
 
 - (void)getImages;
+-(void)loadDataFromUser:(User*)theUser;
 
 @end
 
@@ -90,62 +91,87 @@
     return statusCellNib;
 }
 
-#pragma mark - View lifecycle
-- (void)viewDidLoad
+-(void)refreshData
 {
-    [super viewDidLoad];
-    [table setTableHeaderView:headerView];
-    
+    [self loadDataFromUser:user];
     if (avatarImage) {
         self.headerVImageV.image = avatarImage;
     }
     else {
         [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileLargeImageUrl];
     }
-    
-    if (userID == nil) {
-        userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
-    }
-    if (!user) {
-        self.user = [ZJTHelpler getInstance].user;
+    if (![self.title isEqualToString:@"我的微博"]) {
+        self.title = user.screenName;
     }
     self.headerVNameLB.text = user.screenName;
     self.weiboCount.text = [NSString stringWithFormat:@"%d",user.statusesCount];
     self.followerCount.text = [NSString stringWithFormat:@"%d",user.followersCount];
     self.followingCount.text = [NSString stringWithFormat:@"%d",user.friendsCount];
     
-    if (![self.title isEqualToString:@"我的微博"]) {
-        self.title = user.screenName;
+    if (!user) {
+        return;
+    }
+    
+    [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:8 page:-1 baseApp:-1 feature:-1];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
+//    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+}
+
+-(void)loadDataFromUser:(User*)theUser
+{
+    if (theUser) {
+        self.userID = [NSString stringWithFormat:@"%lld",theUser.userId];
+        self.screenName = theUser.screenName;
+    }
+}
+
+#pragma mark - View lifecycle
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [table setTableHeaderView:headerView];
+    
+//    if (userID == nil) {
+//        userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
+//    }
+//    if (!user) {
+//        self.user = [ZJTHelpler getInstance].user;
+//    }
+    
+    if ([self.title isEqualToString:@"我的微博"]) {
+        self.user = [ZJTHelpler getInstance].user;
+    }
+
+    if (self.user) {
+        [self refreshData];
+    }
+    else if(screenName){
+        [manager getUserInfoWithScreenName:self.screenName];
     }
     
     self.tableView.contentInset = UIEdgeInsetsOriginal;
     
-    [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
-//    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
-    
-    [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotUserStatus        object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
-//    [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
-    [defaultNotifCenter addObserver:self selector:@selector(mmRequestFailed:) name:MMSinaRequestFailed object:nil];
 }
 
 -(void)viewDidUnload
 {
-    [defaultNotifCenter removeObserver:self name:MMSinaGotUserStatus        object:nil];
-    [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
-//    [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo          object:nil];
-    [defaultNotifCenter removeObserver:self name:MMSinaRequestFailed object:nil];
     [super viewDidUnload];
 }
 
 - (void)viewWillAppear:(BOOL)animated 
 {
     [super viewWillAppear:animated];
+    
+    [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotUserStatus        object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
+    //    [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(mmRequestFailed:) name:MMSinaRequestFailed object:nil];
+    [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
+    
     if (shouldLoad) 
     {
         shouldLoad = NO;
-        [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+        [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:8 page:-1 baseApp:-1 feature:-1];
         [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
 //        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     }
@@ -154,6 +180,11 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [defaultNotifCenter removeObserver:self name:MMSinaGotUserStatus        object:nil];
+    [defaultNotifCenter removeObserver:self name:HHNetDataCacheNotification object:nil];
+    //    [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo          object:nil];
+    [defaultNotifCenter removeObserver:self name:MMSinaRequestFailed object:nil];
+    [defaultNotifCenter removeObserver:self name:MMSinaGotUserInfo          object:nil];
 }
 
 - (IBAction)gotoFollowedVC:(id)sender {
@@ -225,6 +256,7 @@
         UIImage * image     = [UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
         self.avatarImage = image;
         headerVImageV.image = image;
+        [self.table reloadData];
     }
     
     //当下载大图过程中，后退，又返回，如果此时收到大图的返回数据，会引起crash，在此做预防。
@@ -261,11 +293,32 @@
     [table reloadRowsAtIndexPaths:arr withRowAnimation:NO];
 }
 
+-(void)didGetUserInfo:(NSNotification*)sender
+{
+    NSString *uid = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
+    
+    if (uid.longLongValue == user.userId) {
+        User *theUser = sender.object;
+        self.user = theUser;
+        [self loadDataFromUser:user];
+        [self refreshData];
+    }
+    
+    if ([self.title isEqualToString:@"我的微博"]) {
+        return;
+    }
+
+    User *theUser = sender.object;
+    self.user = theUser;
+    [self loadDataFromUser:user];
+    [self refreshData];
+}
+
 -(void)didGetUserID:(NSNotification*)sender
 {
-    self.userID = sender.object;
-    [[NSUserDefaults standardUserDefaults] setObject:userID forKey:USER_STORE_USER_ID];
-    [manager getUserInfoWithUserID:[userID longLongValue]];
+//    self.userID = sender.object;
+//    [[NSUserDefaults standardUserDefaults] setObject:userID forKey:USER_STORE_USER_ID];
+//    [manager getUserInfoWithUserID:[userID longLongValue]];
 }
 
 //-(void)didGetUserInfo:(NSNotification*)sender
@@ -300,7 +353,7 @@
 
 -(void)refresh
 {
-    [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+    [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:8 page:-1 baseApp:-1 feature:-1];
     [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
 //    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
 }
@@ -488,7 +541,8 @@
     browserView.theDelegate = self;
     browserView.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
     [browserView loadImage];
-    
+    [app.keyWindow addSubview:browserView];
+    app.statusBarHidden = YES;
 //    app.statusBarHidden = YES;
 //    UIWindow *window = nil;
 //    for (UIWindow *win in app.windows) {

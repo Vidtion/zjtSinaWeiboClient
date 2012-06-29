@@ -452,7 +452,8 @@
     browserView.theDelegate = self;
     browserView.bigImageURL = isRetwitter ? sts.retweetedStatus.originalPic : sts.originalPic;
     [browserView loadImage];
-
+    [app.keyWindow addSubview:browserView];
+    app.statusBarHidden = YES;
 //    app.statusBarHidden = YES;
 //    UIWindow *window = nil;
 //    for (UIWindow *win in app.windows) {
@@ -472,10 +473,16 @@
 
 -(void)cellLinkDidTaped:(StatusCell *)theCell link:(NSString*)link
 {
-    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
-    profile.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:profile animated:YES];
-    [profile release];
+    if ([link hasPrefix:@"@"]) 
+    {
+        NSString *sn = [[link substringFromIndex:1] decodeFromURL];
+        NSLog(@"sn = %@",sn);
+        ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+        profile.screenName = sn;
+        profile.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:profile animated:YES];
+        [profile release];
+    }
 }
 
 -(void)cellTextDidTaped:(StatusCell *)theCell

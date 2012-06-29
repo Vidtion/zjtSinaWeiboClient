@@ -73,7 +73,7 @@
         return;
     }
     if (_type == kHotRepostDaily) {
-        [manager getHotRepostDaily:50];
+        [manager getHotRepostDaily:20];
     }
     
     else if (_type == kHotRepostWeekly) {
@@ -81,7 +81,7 @@
     }
     
     else if (_type == kHotCommentDaily) {
-        [manager getHotCommnetDaily:50];
+        [manager getHotCommnetDaily:20];
     }
     
     else if (_type == kHotCommentWeekly) {

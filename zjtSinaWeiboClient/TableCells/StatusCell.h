@@ -11,6 +11,12 @@
 #import "User.h"
 #import "JSTwitterCoreTextView.h"
 
+#define IMAGE_VIEW_HEIGHT 80.0f
+#define PADDING_TOP 8.0
+#define PADDING_LEFT 8.0
+#define FONT_SIZE 15.0
+#define FONT @"Helvetica"
+
 @class StatusCell;
 
 @protocol StatusCellDelegate <NSObject>

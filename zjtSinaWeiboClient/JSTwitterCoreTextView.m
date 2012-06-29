@@ -70,7 +70,7 @@
 			
 			if ([matchedString hasPrefix:@"@"]) // usernames
 			{
-				NSString *username = [matchedString	substringFromIndex:1];
+				NSString *username = matchedString;//[matchedString	substringFromIndex:1];
 				
 				AHMarkedHyperlink *hyperlink = [[[AHMarkedHyperlink alloc] initWithString:username
 																	 withValidationStatus:AH_URL_VALID
@@ -80,7 +80,7 @@
 			}
 			else if ([matchedString hasPrefix:@"#"]) // hash tag
 			{
-				NSString *searchTerm = [[[matchedString substringFromIndex:1] substringToIndex:matchedString.length-2]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+				NSString *searchTerm = [[matchedString substringToIndex:matchedString.length - 1]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 				
 				AHMarkedHyperlink *hyperlink = [[[AHMarkedHyperlink alloc] initWithString:searchTerm
 																	 withValidationStatus:AH_URL_VALID

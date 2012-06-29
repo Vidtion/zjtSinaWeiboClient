@@ -169,7 +169,7 @@
 }
 
 //获取任意一个用户的信息
--(void)getUserInfoWithUserID:(long long)uid
+-(void)getUserInfoWithUserID:(long long)uid 
 {
     //https://api.weibo.com/2/users/show.json
     
@@ -179,6 +179,27 @@
     NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                        authToken,                                   @"access_token",
                                        [NSString stringWithFormat:@"%lld",uid],     @"uid",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/users/show.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetUserInfo];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
+-(void)getUserInfoWithScreenName:(NSString*)sn
+{
+    //https://api.weibo.com/2/users/show.json
+    sn = [sn URLEncodedString];
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    self.userId = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
+    
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,   @"access_token",
+                                       sn,          @"screen_name",
                                        nil];
     NSString                *baseUrl =[NSString  stringWithFormat:@"%@/users/show.json",SINA_V2_DOMAIN];
     NSURL                   *url = [self generateURL:baseUrl params:params];

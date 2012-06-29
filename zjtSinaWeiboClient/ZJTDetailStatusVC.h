@@ -11,12 +11,14 @@
 #import "Status.h"
 #import "User.h"
 #import "ImageBrowser.h"
+#import "StatusCell.h"
+#import "JSTwitterCoreTextView.h"
 
-#define IMAGE_VIEW_HEIGHT 100.0f
+#define IMAGES_VIEW_HEIGHT 100.0f
 
 @class WeiBoMessageManager;
 
-@interface ZJTDetailStatusVC : PullRefreshTableViewController<UITableViewDelegate,UITableViewDataSource,ImageBrowserDelegate>
+@interface ZJTDetailStatusVC : PullRefreshTableViewController<UITableViewDelegate,UITableViewDataSource,JSCoreTextViewDelegate,ImageBrowserDelegate>
 {
     UIView      *headerView;
     UITableView *table;
@@ -31,6 +33,8 @@
     UILabel     *countLB;
     
     UINib       *commentCellNib;
+    JSTwitterCoreTextView *_JSContentTF;
+    JSTwitterCoreTextView *_JSRetitterContentTF;
     
     WeiBoMessageManager *manager;
     
@@ -69,5 +73,7 @@
 @property (retain, nonatomic) NSMutableArray        *commentArr;
 @property (assign, nonatomic) BOOL                  isFromProfileVC;
 @property (retain, nonatomic) ImageBrowser          *browserView;
+@property (nonatomic,retain)JSTwitterCoreTextView *JSContentTF;
+@property (nonatomic,retain)JSTwitterCoreTextView *JSRetitterContentTF;
 
 @end
