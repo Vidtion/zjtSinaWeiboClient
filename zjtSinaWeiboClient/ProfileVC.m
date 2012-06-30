@@ -516,7 +516,7 @@
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
 {
-    [self refreshVisibleCellsImages];
+//    [self refreshVisibleCellsImages];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{

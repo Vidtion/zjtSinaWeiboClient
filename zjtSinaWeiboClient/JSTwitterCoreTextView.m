@@ -51,6 +51,8 @@
 	
 	NSArray *expressions = [[[NSArray alloc] initWithObjects:@"(@[\u4e00-\u9fa5a-zA-Z0-9_]+)", // screen names
 															 @"(#[\u4e00-\u9fa5a-zA-Z0-9_-]+)#", // hash tags
+//                                                             @"([a-zA-z]+://[^\\s]*)",
+                                                             @"(https?|ftp|file)://[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|]",
 															 nil] autorelease];
 	//get #hashtags and @usernames
 	for (NSString *expression in expressions)
@@ -81,6 +83,16 @@
 			else if ([matchedString hasPrefix:@"#"]) // hash tag
 			{
 				NSString *searchTerm = [[matchedString substringToIndex:matchedString.length - 1]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+				
+				AHMarkedHyperlink *hyperlink = [[[AHMarkedHyperlink alloc] initWithString:searchTerm
+																	 withValidationStatus:AH_URL_VALID
+																			 parentString:[self text]
+																				 andRange:[match range]] autorelease];
+				[tempLinks addObject:hyperlink];
+			}
+            else if ([matchedString hasPrefix:@"http"]) // hash tag
+			{
+				NSString *searchTerm = [matchedString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 				
 				AHMarkedHyperlink *hyperlink = [[[AHMarkedHyperlink alloc] initWithString:searchTerm
 																	 withValidationStatus:AH_URL_VALID
