@@ -50,11 +50,7 @@
     [self.tableView reloadData];
     [[SHKActivityIndicator currentIndicator] hide];
 //    [[ZJTStatusBarAlertWindow getInstance] hide];
-    
-    [headDictionary  removeAllObjects];
-    [imageDictionary removeAllObjects];
-    
-    [self getImages];
+    [self refreshVisibleCellsImages];
 }
 
 @end

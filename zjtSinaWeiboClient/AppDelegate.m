@@ -34,6 +34,7 @@
 //    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackTranslucent;
     
     FirstViewController *firstViewController = [[[FirstViewController alloc] initWithNibName:@"FirstViewController" bundle:nil] autorelease];
+//    FirstViewController *firstViewController = [[[FirstViewController alloc] init] autorelease];
     FollowerVC  *followerVC     = [[[FollowerVC alloc]initWithNibName:@"FollowerVC" bundle:nil] autorelease];
     ProfileVC   *profile        = [[[ProfileVC alloc] initWithNibName:@"ProfileVC" bundle:nil] autorelease ];
     FollowerVC *followingVC    = [[[FollowerVC alloc] initWithNibName:@"FollowerVC" bundle:nil] autorelease];

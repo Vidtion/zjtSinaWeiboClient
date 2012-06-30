@@ -107,6 +107,7 @@ ignoreable      (b\.sc|m\.in)
 file:\/\/\/.*           {return AH_FILE_VALID;}
 
 https?:\/\/             |
+http?:\/\/              |
 s?ftp:\/\/              |
 feed:\/\/               |
 ssh:\/\/                |

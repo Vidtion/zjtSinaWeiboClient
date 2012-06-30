@@ -56,8 +56,8 @@
     }
     [[CoreDataManager getInstance] cleanEntityRecords:@"StatusCDItem"];
     [[CoreDataManager getInstance] cleanEntityRecords:@"UserCDItem"];
-    [table reloadData];
-    [self getImages];
+//    [table reloadData];
+    [self.tableView reloadData];
 }
 
 							
@@ -204,7 +204,7 @@
     
     [statuesArr removeAllObjects];
     self.statuesArr = sender.object;
-    [table reloadData];
+//    [table reloadData];
     [self.tableView reloadData];
     
     [[SHKActivityIndicator currentIndicator] hide];
@@ -213,7 +213,7 @@
     [headDictionary  removeAllObjects];
     [imageDictionary removeAllObjects];
     
-    [self getImages];
+    [self refreshVisibleCellsImages];
     
     if (timer == nil) {
         self.timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerOnActive) userInfo:nil repeats:YES];

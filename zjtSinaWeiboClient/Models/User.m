@@ -25,6 +25,7 @@
 @synthesize geoEnabled;
 @synthesize userKey;
 @synthesize avatarImage;
+@synthesize cellIndexPath;
 
 - (UserCDItem*)updateUserCDItem:(UserCDItem*)us
 {
@@ -189,6 +190,7 @@
 
 - (void)dealloc
 {
+    [cellIndexPath release];
 	[userKey release];
     [screenName release];
     [name release];

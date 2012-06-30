@@ -42,6 +42,8 @@
     BOOL            hasImage;
     
 	NSString*		_formmatedText;
+    
+    UIImage *statusImage;
 }
 
 @property (nonatomic, assign) long long     statusId;
@@ -73,7 +75,8 @@
 @property (nonatomic, assign) BOOL          hasRetwitter;
 @property (nonatomic, assign) BOOL          haveRetwitterImage;
 @property (nonatomic, assign) BOOL          hasImage;
-
+@property (nonatomic,retain) UIImage *statusImage;
+@property (nonatomic,retain) NSIndexPath *cellIndexPath;
 
 
 - (NSString*)timestamp;

@@ -20,6 +20,10 @@
 		AB0D19AD1547ED15005EE454 /* FollowerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0D19AB1547ED15005EE454 /* FollowerVC.m */; };
 		AB0D19B71547ED51005EE454 /* SettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0D19B51547ED50005EE454 /* SettingVC.m */; };
 		AB0D19C3154820A0005EE454 /* LPFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0D19C1154820A0005EE454 /* LPFriendCell.m */; };
+		AB19AB46159ED97100BE7052 /* SVModalWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB19AB42159ED97100BE7052 /* SVModalWebViewController.m */; };
+		AB19AB47159ED97100BE7052 /* SVWebViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AB19AB43159ED97100BE7052 /* SVWebViewController.bundle */; };
+		AB19AB48159ED97100BE7052 /* SVWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB19AB45159ED97100BE7052 /* SVWebViewController.m */; };
+		AB19AB7D159EF09600BE7052 /* FirstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB29A242155A62190014CC7D /* FirstViewController.xib */; };
 		AB29A23F155A5B1F0014CC7D /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB29A23D155A5B1F0014CC7D /* AboutViewController.m */; };
 		AB2C43791555036000A4BAFD /* ZJTStatusBarAlertWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = AB2C43781555036000A4BAFD /* ZJTStatusBarAlertWindow.m */; };
 		AB2D5BC81483B3A700987DE7 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2D5BC71483B3A700987DE7 /* libsqlite3.dylib */; };
@@ -79,7 +83,6 @@
 		AB2FD375155ABBDF00465A00 /* TwitterVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 452065751510872500CF3A01 /* TwitterVC.xib */; };
 		AB2FD376155ABBDF00465A00 /* AddCommentVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB57E8B51523517000363B7C /* AddCommentVC.xib */; };
 		AB2FD377155ABBDF00465A00 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB29A23E155A5B1F0014CC7D /* AboutViewController.xib */; };
-		AB2FD378155ABBDF00465A00 /* FirstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB29A242155A62190014CC7D /* FirstViewController.xib */; };
 		AB2FD379155ABBDF00465A00 /* FollowerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB0D19AC1547ED15005EE454 /* FollowerVC.xib */; };
 		AB2FD37A155ABBDF00465A00 /* SettingVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB0D19B61547ED50005EE454 /* SettingVC.xib */; };
 		AB2FD37B155ABBDF00465A00 /* LPFriendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB0D19C2154820A0005EE454 /* LPFriendCell.xib */; };
@@ -97,7 +100,6 @@
 		AB783D55159B4C2B00C3E688 /* AHHyperlinkScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = AB783D47159B4C2B00C3E688 /* AHHyperlinkScanner.m */; };
 		AB783D56159B4C2B00C3E688 /* AHLinkLexer.l in Sources */ = {isa = PBXBuildFile; fileRef = AB783D49159B4C2B00C3E688 /* AHLinkLexer.l */; };
 		AB783D57159B4C2B00C3E688 /* AHMarkedHyperlink.m in Sources */ = {isa = PBXBuildFile; fileRef = AB783D4B159B4C2B00C3E688 /* AHMarkedHyperlink.m */; };
-		AB783D5A159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB783D50159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.m */; };
 		AB783D5B159B4C2B00C3E688 /* JSCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB783D52159B4C2B00C3E688 /* JSCoreTextView.m */; };
 		AB783D5C159B4C2B00C3E688 /* JSTwitterCoreTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = AB783D54159B4C2B00C3E688 /* JSTwitterCoreTextView.m */; };
 		AB783D5E159B4C5500C3E688 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB783D5D159B4C5500C3E688 /* CoreText.framework */; };
@@ -185,6 +187,11 @@
 		AB0D19CA15482123005EE454 /* touxiang_40x40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "touxiang_40x40@2x.png"; sourceTree = "<group>"; };
 		AB0D19D11548250C005EE454 /* tabbar_greenbtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabbar_greenbtn.png; sourceTree = "<group>"; };
 		AB0D19D21548250C005EE454 /* tabbar_greenbtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabbar_greenbtn@2x.png"; sourceTree = "<group>"; };
+		AB19AB41159ED97100BE7052 /* SVModalWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVModalWebViewController.h; sourceTree = "<group>"; };
+		AB19AB42159ED97100BE7052 /* SVModalWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVModalWebViewController.m; sourceTree = "<group>"; };
+		AB19AB43159ED97100BE7052 /* SVWebViewController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVWebViewController.bundle; sourceTree = "<group>"; };
+		AB19AB44159ED97100BE7052 /* SVWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVWebViewController.h; sourceTree = "<group>"; };
+		AB19AB45159ED97100BE7052 /* SVWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVWebViewController.m; sourceTree = "<group>"; };
 		AB29A23C155A5B1F0014CC7D /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		AB29A23D155A5B1F0014CC7D /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		AB29A23E155A5B1F0014CC7D /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
@@ -232,8 +239,6 @@
 		AB783D4A159B4C2B00C3E688 /* AHMarkedHyperlink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHMarkedHyperlink.h; sourceTree = "<group>"; };
 		AB783D4B159B4C2B00C3E688 /* AHMarkedHyperlink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHMarkedHyperlink.m; sourceTree = "<group>"; };
 		AB783D4C159B4C2B00C3E688 /* AutoHyperlinks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoHyperlinks.h; sourceTree = "<group>"; };
-		AB783D4F159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreTextHyperlinkViewViewController.h; sourceTree = "<group>"; };
-		AB783D50159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreTextHyperlinkViewViewController.m; sourceTree = "<group>"; };
 		AB783D51159B4C2B00C3E688 /* JSCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSCoreTextView.h; sourceTree = "<group>"; };
 		AB783D52159B4C2B00C3E688 /* JSCoreTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSCoreTextView.m; sourceTree = "<group>"; };
 		AB783D53159B4C2B00C3E688 /* JSTwitterCoreTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTwitterCoreTextView.h; sourceTree = "<group>"; };
@@ -472,6 +477,18 @@
 			name = OtherVCs;
 			sourceTree = "<group>";
 		};
+		AB19AB40159ED97100BE7052 /* SVWebViewController */ = {
+			isa = PBXGroup;
+			children = (
+				AB19AB41159ED97100BE7052 /* SVModalWebViewController.h */,
+				AB19AB42159ED97100BE7052 /* SVModalWebViewController.m */,
+				AB19AB43159ED97100BE7052 /* SVWebViewController.bundle */,
+				AB19AB44159ED97100BE7052 /* SVWebViewController.h */,
+				AB19AB45159ED97100BE7052 /* SVWebViewController.m */,
+			);
+			path = SVWebViewController;
+			sourceTree = "<group>";
+		};
 		AB37A39A14F91D2C0077774E /* ImageBrowser */ = {
 			isa = PBXGroup;
 			children = (
@@ -512,8 +529,6 @@
 			isa = PBXGroup;
 			children = (
 				AB783D45159B4C2B00C3E688 /* AutoHyperlinks */,
-				AB783D4F159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.h */,
-				AB783D50159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.m */,
 				AB783D51159B4C2B00C3E688 /* JSCoreTextView.h */,
 				AB783D52159B4C2B00C3E688 /* JSCoreTextView.m */,
 				AB783D53159B4C2B00C3E688 /* JSTwitterCoreTextView.h */,
@@ -624,6 +639,7 @@
 		ABE295B514F8C98000FDABA3 /* VCs */ = {
 			isa = PBXGroup;
 			children = (
+				AB19AB40159ED97100BE7052 /* SVWebViewController */,
 				AB37A39A14F91D2C0077774E /* ImageBrowser */,
 				AB0D19BF1547FE11005EE454 /* OtherVCs */,
 				AB0D19BE1547FDEF005EE454 /* TabsVCs */,
@@ -895,7 +911,6 @@
 				AB2FD375155ABBDF00465A00 /* TwitterVC.xib in Resources */,
 				AB2FD376155ABBDF00465A00 /* AddCommentVC.xib in Resources */,
 				AB2FD377155ABBDF00465A00 /* AboutViewController.xib in Resources */,
-				AB2FD378155ABBDF00465A00 /* FirstViewController.xib in Resources */,
 				AB2FD379155ABBDF00465A00 /* FollowerVC.xib in Resources */,
 				AB2FD37A155ABBDF00465A00 /* SettingVC.xib in Resources */,
 				AB2FD37B155ABBDF00465A00 /* LPFriendCell.xib in Resources */,
@@ -943,6 +958,8 @@
 				AB2FD36E155ABBCE00465A00 /* noImage50x118.png in Resources */,
 				AB2FD36F155ABBCE00465A00 /* noImage50x118@2x.png in Resources */,
 				45A09838157364090026B18A /* icon.jpg in Resources */,
+				AB19AB47159ED97100BE7052 /* SVWebViewController.bundle in Resources */,
+				AB19AB7D159EF09600BE7052 /* FirstViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1017,9 +1034,10 @@
 				AB783D55159B4C2B00C3E688 /* AHHyperlinkScanner.m in Sources */,
 				AB783D56159B4C2B00C3E688 /* AHLinkLexer.l in Sources */,
 				AB783D57159B4C2B00C3E688 /* AHMarkedHyperlink.m in Sources */,
-				AB783D5A159B4C2B00C3E688 /* CoreTextHyperlinkViewViewController.m in Sources */,
 				AB783D5B159B4C2B00C3E688 /* JSCoreTextView.m in Sources */,
 				AB783D5C159B4C2B00C3E688 /* JSTwitterCoreTextView.m in Sources */,
+				AB19AB46159ED97100BE7052 /* SVModalWebViewController.m in Sources */,
+				AB19AB48159ED97100BE7052 /* SVWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

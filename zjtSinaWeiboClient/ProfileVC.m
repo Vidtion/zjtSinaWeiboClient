@@ -18,10 +18,10 @@
 #import "ZJTDetailStatusVC.h"
 #import "FollowerVC.h"
 #import "ZJTHelpler.h"
+#import "SVModalWebViewController.h"
 
 @interface ProfileVC ()
 
-- (void)getImages;
 -(void)loadDataFromUser:(User*)theUser;
 
 @end
@@ -99,6 +99,8 @@
     }
     else {
         [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileLargeImageUrl];
+        
+        NSLog(@"down pro = %@",user.profileLargeImageUrl);
     }
     if (![self.title isEqualToString:@"我的微博"]) {
         self.title = user.screenName;
@@ -122,6 +124,9 @@
     if (theUser) {
         self.userID = [NSString stringWithFormat:@"%lld",theUser.userId];
         self.screenName = theUser.screenName;
+        [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileLargeImageUrl];
+        
+        NSLog(@"down 2 pro = %@",user.profileLargeImageUrl);
     }
 }
 
@@ -211,71 +216,86 @@
     [followingVC release];
 }
 
-#pragma mark - Methods
-
-//异步加载图片
--(void)getImages
+-(void)refreshVisibleCellsImages
 {
-    //下载头像图片
-    [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileLargeImageUrl];
-    
-    //得到文字数据后，开始加载图片
-    for(int i=0;i<[statuesArr count];i++)
-    {
-        Status * member=[statuesArr objectAtIndex:i];
-        NSNumber *indexNumber = [NSNumber numberWithInt:i];
+    NSArray *cellArr = [self.table visibleCells];
+    for (StatusCell *cell in cellArr) {
+        NSIndexPath *inPath = [self.table indexPathForCell:cell];
+        Status *status = [statuesArr objectAtIndex:inPath.row];
         
-        //下载博文图片
-        if (member.thumbnailPic && [member.thumbnailPic length] != 0)
+        if (status.user.avatarImage == nil) 
         {
-            [[HHNetDataCacheManager getInstance] getDataWithURL:member.thumbnailPic withIndex:i];
+            [[HHNetDataCacheManager getInstance] getDataWithURL:status.user.profileImageUrl withIndex:inPath.row];
         }
         
-        //下载转发的图片
-        else if (member.retweetedStatus.thumbnailPic && [member.retweetedStatus.thumbnailPic length] != 0) 
+        if (status.statusImage == nil) 
         {
-            [[HHNetDataCacheManager getInstance] getDataWithURL:member.retweetedStatus.thumbnailPic withIndex:i];
+            [[HHNetDataCacheManager getInstance] getDataWithURL:status.thumbnailPic withIndex:inPath.row];
+            [[HHNetDataCacheManager getInstance] getDataWithURL:status.retweetedStatus.thumbnailPic withIndex:inPath.row];
         }
-        else
-        {
-            [imageDictionary setObject:[NSNull null] forKey:indexNumber];
+        else {
+            cell.avatarImage.image = status.user.avatarImage;
+            cell.contentImage.image = status.statusImage;
+            cell.retwitterContentImage.image = status.statusImage;
         }
     }
 }
 
-//得到图片
+#pragma mark - Methods
+
 -(void)getAvatar:(NSNotification*)sender
 {
     NSDictionary * dic = sender.object;
     NSString * url          = [dic objectForKey:HHNetDataCacheURLKey];
     NSNumber *indexNumber   = [dic objectForKey:HHNetDataCacheIndex];
-    NSInteger index = [indexNumber intValue];
+    NSInteger index         = [indexNumber intValue];
+    NSData *data            = [dic objectForKey:HHNetDataCacheData];
+    UIImage * image     = [UIImage imageWithData:data];
     
-    if([url isEqualToString:user.profileLargeImageUrl])
-    {
-        UIImage * image     = [UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
+    if ([url isEqualToString:self.user.profileLargeImageUrl]) {
         self.avatarImage = image;
-        headerVImageV.image = image;
-        [self.table reloadData];
+        self.headerVImageV.image = image;
     }
+    NSLog(@"url = %@",url);
+    
+//    
+//    if([url isEqualToString:user.profileLargeImageUrl])
+//    {
+//        self.avatarImage = image;
+//        headerVImageV.image = image;
+//    }
+//    else {
+//        NSLog(@"url = %@",url);
+//        NSLog(@"pro = %@",user.profileLargeImageUrl);
+//    }
     
     //当下载大图过程中，后退，又返回，如果此时收到大图的返回数据，会引起crash，在此做预防。
-    if (indexNumber == nil) {
+    if (indexNumber == nil || index == -1) {
         NSLog(@"indexNumber = nil");
         return;
     }
     
     if (index >= [statuesArr count]) {
-//        NSLog(@"statues arr error ,index = %d,count = %d",index,[statuesArr count]);
+        //        NSLog(@"statues arr error ,index = %d,count = %d",index,[statuesArr count]);
         return;
     }
     
     Status *sts = [statuesArr objectAtIndex:index];
+    StatusCell *cell = (StatusCell *)[self.table cellForRowAtIndexPath:sts.cellIndexPath];
+    
+    //得到的是头像图片
+    if ([url isEqualToString:sts.user.profileImageUrl]) 
+    {
+        sts.user.avatarImage = image;
+        cell.avatarImage.image = sts.user.avatarImage;
+    }
     
     //得到的是博文图片
     if([url isEqualToString:sts.thumbnailPic])
     {
-        [imageDictionary setObject:[dic objectForKey:HHNetDataCacheData] forKey:indexNumber];
+        sts.statusImage = image;
+        cell.contentImage.image = sts.statusImage;
+        cell.retwitterContentImage.image = sts.statusImage;
     }
     
     //得到的是转发的图片
@@ -283,14 +303,10 @@
     {
         if ([url isEqualToString:sts.retweetedStatus.thumbnailPic])
         {
-            [imageDictionary setObject:[dic objectForKey:HHNetDataCacheData] forKey:indexNumber];
+            sts.statusImage = image;
+            cell.retwitterContentImage.image = sts.statusImage;
         }
     }
-    
-    //reload table
-    NSIndexPath *indexPath  = [NSIndexPath indexPathForRow:index inSection:0];
-    NSArray     *arr        = [NSArray arrayWithObject:indexPath];
-    [table reloadRowsAtIndexPaths:arr withRowAnimation:NO];
 }
 
 -(void)didGetUserInfo:(NSNotification*)sender
@@ -340,8 +356,6 @@
 //    [[ZJTStatusBarAlertWindow getInstance] hide];
     
     [imageDictionary removeAllObjects];
-    
-    [self getImages];
 }
 
 -(void)mmRequestFailed:(id)sender
@@ -376,7 +390,6 @@
 //            [[ZJTStatusBarAlertWindow getInstance] hide];
             isFirstCell = NO;
         }
-        NSLog(@"cell new");
         NSArray *nibObjects = [nib instantiateWithOwner:nil options:nil];
         cell = [nibObjects objectAtIndex:0];
     }
@@ -401,24 +414,38 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger  row = indexPath.row;
-    StatusCell *cell = [self cellForTableView:table fromNib:self.statusCellNib];
+    StatusCell *cell = [self cellForTableView:tableView fromNib:self.statusCellNib];
     
     if (row >= [statuesArr count]) {
-//        NSLog(@"cellForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
         return cell;
     }
     
-    NSData *imageData = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
     Status *status = [statuesArr objectAtIndex:row];
+    status.cellIndexPath = indexPath;
     cell.delegate = self;
     cell.cellIndexPath = indexPath;
-    
-    [cell setupCell:status avatarImageData:UIImagePNGRepresentation(avatarImage) contentImageData:imageData];
+    [cell updateCellTextWith:status];
+    if (self.table.dragging == NO && self.table.decelerating == NO)
+    {
+        if (status.user.avatarImage == nil) 
+        {
+            [[HHNetDataCacheManager getInstance] getDataWithURL:status.user.profileImageUrl withIndex:row];
+        }
+        
+        if (status.statusImage == nil) 
+        {
+            [[HHNetDataCacheManager getInstance] getDataWithURL:status.thumbnailPic withIndex:row];
+            [[HHNetDataCacheManager getInstance] getDataWithURL:status.retweetedStatus.thumbnailPic withIndex:row];
+        }
+    }
+    cell.avatarImage.image = status.user.avatarImage;
+    cell.contentImage.image = status.statusImage;
+    cell.retwitterContentImage.image = status.statusImage;
     
     //开始绘制第一个cell时，隐藏indecator.
     if (isFirstCell) {
         [[SHKActivityIndicator currentIndicator] hide];
-//        [[ZJTStatusBarAlertWindow getInstance] hide];
+        //        [[ZJTStatusBarAlertWindow getInstance] hide];
         isFirstCell = NO;
     }
     return cell;
@@ -475,14 +502,29 @@
     detailVC.isFromProfileVC = YES;
     detailVC.avatarImage = avatarImage;
     
-    NSData *imageData = [imageDictionary objectForKey:[NSNumber numberWithInt:[indexPath row]]];
-    if (![imageData isEqual:[NSNull null]]) 
-    {
-        detailVC.contentImage = [UIImage imageWithData:imageData];
-    }
+    detailVC.avatarImage = status.user.avatarImage;
+    detailVC.contentImage = status.statusImage;
     
     [self.navigationController pushViewController:detailVC animated:YES];
     [detailVC release];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self refreshVisibleCellsImages];
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    [self refreshVisibleCellsImages];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
+    if (!decelerate)
+	{
+        [self refreshVisibleCellsImages];
+    }
 }
 
 #pragma mark - StatusCellDelegate
@@ -566,10 +608,23 @@
 
 -(void)cellLinkDidTaped:(StatusCell *)theCell link:(NSString*)link
 {
-    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
-    profile.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:profile animated:YES];
-    [profile release];
+    if ([link hasPrefix:@"@"]) 
+    {
+        NSString *sn = [[link substringFromIndex:1] decodeFromURL];
+        NSLog(@"sn = %@",sn);
+        ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+        profile.screenName = sn;
+        profile.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:profile animated:YES];
+        [profile release];
+    }
+    if ([link hasPrefix:@"http"]) {
+        SVModalWebViewController *web = [[SVModalWebViewController alloc] initWithURL:[NSURL URLWithString:link]];
+        web.modalPresentationStyle = UIModalPresentationPageSheet;
+        web.availableActions = SVWebViewControllerAvailableActionsOpenInSafari | SVWebViewControllerAvailableActionsCopyLink | SVWebViewControllerAvailableActionsMailLink;
+        [self presentModalViewController:web animated:YES];
+        [web release];
+    }
 }
 
 -(void)cellTextDidTaped:(StatusCell *)theCell

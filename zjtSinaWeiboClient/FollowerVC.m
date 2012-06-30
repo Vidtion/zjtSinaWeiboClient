@@ -15,21 +15,20 @@
 #import "SHKActivityIndicator.h"
 
 @interface FollowerVC ()
--(void)getAvatars;
 -(void)loadData;
+-(void)refreshVisibleCellsImages;
 @end
 
 @implementation FollowerVC
 @synthesize userArr = _userArr;
-@synthesize userAvatarDic = _userAvatarDic;
 @synthesize isFollowingViewController = _isFollowingViewController;
 @synthesize followerCellNib = _followerCellNib;
 @synthesize user = _user;
-
+@synthesize table;
 -(void)dealloc
 {
+    self.table = nil;
     self.userArr = nil;
-    self.userAvatarDic = nil;
     self.followerCellNib = nil;
     self.user = nil;
     
@@ -43,21 +42,11 @@
         self.title = @"粉丝列表";
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
         _isFollowingViewController = NO;
-        _shouldReloadTable = YES;
         _manager = [WeiBoMessageManager getInstance];
-        _userAvatarDic = [[NSMutableDictionary alloc] initWithCapacity:0];
     }
     return self;
 }
 
--(NSMutableDictionary*)userAvatarDic
-{
-    if (_userAvatarDic == nil) 
-    {
-        _userAvatarDic = [[NSMutableDictionary alloc] initWithCapacity:0];
-    }
-    return _userAvatarDic;
-}
 
 -(UINib*)followerCellNib
 {
@@ -70,9 +59,8 @@
 
 - (id)cellForTableView:(UITableView *)tableView fromNib:(UINib *)nib {
     NSString *cellID = NSStringFromClass([LPFriendCell class]);
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    UITableViewCell *cell = [self.table dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
-        NSLog(@"cell new");
         NSArray *nibObjects = [nib instantiateWithOwner:nil options:nil];
         cell = [nibObjects objectAtIndex:0];
     }
@@ -128,6 +116,24 @@
     [super viewDidUnload];
 }
 
+-(void)refreshVisibleCellsImages
+{
+    NSArray *cellArr = [self.table visibleCells];
+    for (LPFriendCell *cell in cellArr) {
+        NSIndexPath *inPath = [self.table indexPathForCell:cell];
+        if (!cell.headerView.image) {
+            User *user = [_userArr objectAtIndex:inPath.row];
+            if (!user.avatarImage || [user.avatarImage isEqual:[NSNull null]])
+            {
+                [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileImageUrl withIndex:inPath.row];
+            }
+            else {
+                cell.headerView.image = user.avatarImage;
+            }
+        }
+    }
+}
+
 -(void)gotFollowUserList:(NSNotification*)sender
 {
     NSArray *arr = sender.object;
@@ -135,14 +141,16 @@
     User *lastUser = [_userArr lastObject];
     if (![tempUser.screenName isEqualToString:lastUser.screenName]) {
         self.userArr = arr;
-        [self.tableView reloadData];
+        [self.table reloadData];
     }
     else {
-        _shouldReloadTable = NO;
+        
     }
-    [self getAvatars];
     [self stopLoading];
     [[SHKActivityIndicator currentIndicator] hide];
+    
+    [self refreshVisibleCellsImages];
+    
 //    [[ZJTStatusBarAlertWindow getInstance] hide];
 }
 
@@ -162,11 +170,8 @@
         if (user.userId == [uid longLongValue]) 
         {
             user.following = YES;
-            
-            //reload table
-            NSIndexPath *indexPath  = [NSIndexPath indexPathForRow:i inSection:0];
-            NSArray     *arr        = [NSArray arrayWithObject:indexPath];
-            [self.tableView reloadRowsAtIndexPaths:arr withRowAnimation:NO];
+            LPFriendCell *cell = (LPFriendCell *)[self.table cellForRowAtIndexPath:user.cellIndexPath];
+            [cell.invitationBtn setTitle:@"取消关注" forState:UIControlStateNormal];
         }
     }
 }
@@ -187,21 +192,16 @@
         if (user.userId == [uid longLongValue]) 
         {
             user.following = NO;
-            
-            //reload table
-            NSIndexPath *indexPath  = [NSIndexPath indexPathForRow:i inSection:0];
-            NSArray     *arr        = [NSArray arrayWithObject:indexPath];
-            [self.tableView reloadRowsAtIndexPaths:arr withRowAnimation:NO];
+            LPFriendCell *cell = (LPFriendCell *)[self.table cellForRowAtIndexPath:user.cellIndexPath];
+            [cell.invitationBtn setTitle:@"关注" forState:UIControlStateNormal];
         }
     }
 }
 
+
+
 -(void)gotAvatar:(NSNotification*)sender
-{
-    if (_shouldReloadTable == NO) {
-        return;
-    }
-    
+{    
     NSDictionary * dic = sender.object;
     NSString * url          = [dic objectForKey:HHNetDataCacheURLKey];
     NSNumber *indexNumber   = [dic objectForKey:HHNetDataCacheIndex];
@@ -209,12 +209,10 @@
     NSData *data            = [dic objectForKey:HHNetDataCacheData];
     
     if (indexNumber == nil || index == -1) {
-        NSLog(@"indexNumber = nil");
         return;
     }
     
     if (index >= [_userArr count]) {
-//        NSLog(@"follow cell error ,index = %d,count = %d",index,[_userArr count]);
         return;
     }
     
@@ -225,18 +223,12 @@
     {
         UIImage * image     = [UIImage imageWithData:data];
         user.avatarImage    = image;
-        if (image != nil) {
-            [_userAvatarDic setObject:image forKey:indexNumber];
-        }
-        else {
-            [_userAvatarDic setObject:[NSNull null] forKey:indexNumber];
+        
+        LPFriendCell *cell = (LPFriendCell*)[self.table cellForRowAtIndexPath:user.cellIndexPath];
+        if (!cell.headerView.image) {
+            cell.headerView.image = user.avatarImage;
         }
     }
-    
-    //reload table
-    NSIndexPath *indexPath  = [NSIndexPath indexPathForRow:index inSection:0];
-    NSArray     *arr        = [NSArray arrayWithObject:indexPath];
-    [self.tableView reloadRowsAtIndexPaths:arr withRowAnimation:NO];
 }
 
 -(void)mmRequestFailed:(id)sender
@@ -246,17 +238,6 @@
 //    [[ZJTStatusBarAlertWindow getInstance] hide];
 }
 
--(void)getAvatars
-{
-    for(int i=0;i<[_userArr count];i++)
-    {
-        User *user=[_userArr objectAtIndex:i];
-        
-        //下载头像图片
-        [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileImageUrl withIndex:i];
-    }
-}
-
 - (void)refresh
 {
     [self loadData];
@@ -264,7 +245,6 @@
 
 -(void)loadData
 {
-    _shouldReloadTable = YES;
     NSString *userID = nil;
     if (_user) {
         userID = [NSString stringWithFormat:@"%lld",_user.userId];
@@ -286,12 +266,6 @@
 
 #pragma mark - Table view data source
 
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-//{
-//#warning Potentially incomplete method implementation.
-//    // Return the number of sections.
-//    return 0;
-//}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -301,7 +275,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    LPFriendCell *cell = [self cellForTableView:tableView fromNib:self.followerCellNib];
+    LPFriendCell *cell = [self cellForTableView:self.table fromNib:self.followerCellNib];
     cell.lpCellIndexPath = indexPath;
     cell.delegate = self;
     
@@ -311,20 +285,22 @@
     
     User *user = [_userArr objectAtIndex:row];
     cell.nameLabel.text = user.screenName;
+    user.cellIndexPath = indexPath;
+    
+    if (self.table.dragging == NO && self.table.decelerating == NO)
+    {
+        if (!user.avatarImage || [user.avatarImage isEqual:[NSNull null]]) {
+            [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileImageUrl withIndex:row];
+        }
+    }
+    
+    cell.headerView.image = user.avatarImage;
     
     if (user.following == NO) {
         [cell.invitationBtn setTitle:@"关注" forState:UIControlStateNormal];
     }
     else {
         [cell.invitationBtn setTitle:@"取消关注" forState:UIControlStateNormal];
-    }
-    
-    if ([_userAvatarDic count] <= row) {
-        return cell;
-    }
-    NSNumber *indexNum = [NSNumber numberWithInt:indexPath.row];
-    if ([_userAvatarDic objectForKey:indexNum] != [NSNull null]) {
-        cell.headerView.image = [_userAvatarDic objectForKey:indexNum];
     }
     
     return cell;
@@ -335,44 +311,19 @@
     return 64;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    [self refreshVisibleCellsImages];
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    if (!decelerate)
+	{
+        [self refreshVisibleCellsImages];
+    }
 }
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
@@ -384,8 +335,7 @@
     ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
     profile.userID = [NSString stringWithFormat:@"%lld",user.userId];
     profile.user = user;
-    NSNumber *indexNum = [NSNumber numberWithInt:indexPath.row];
-    profile.avatarImage = [_userAvatarDic objectForKey:indexNum];
+    profile.avatarImage = user.avatarImage;
     profile.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:profile animated:YES];
     [profile release];

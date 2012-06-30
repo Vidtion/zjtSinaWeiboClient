@@ -91,13 +91,11 @@
     [jsView setFrame:textFrame];
 }
 
-//
--(void)setupCell:(Status *)status avatarImageData:(NSData *)avatarData contentImageData:(NSData *)imageData
+-(void)updateCellTextWith:(Status*)status
 {
     self.contentTF.text = status.text;
     self.JSContentTF.text = status.text;
     self.userNameLB.text = status.user.screenName;
-    self.avatarImage.image = [UIImage imageWithData:avatarData];
     countLB.text = [NSString stringWithFormat:@"评论:%d 转发:%d",status.commentsCount,status.retweetsCount];
     fromLB.text = [NSString stringWithFormat:@"来自:%@",status.source];
     timeLB.text = status.timestamp;
@@ -111,9 +109,46 @@
         self.JSRetitterContentTF.text = [NSString stringWithFormat:@"@%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text];
         self.contentImage.hidden = YES;
         
-        if (![imageData isEqual:[NSNull null]]) 
+        NSString *url = status.retweetedStatus.thumbnailPic;
+        self.retwitterContentImage.hidden = url != nil && [url length] != 0 ? NO : YES;
+        [self setTFHeightWithImage:NO 
+                haveRetwitterImage:url != nil && [url length] != 0 ? YES : NO];//计算cell的高度，以及背景图的处理
+    }
+    
+    //无转发
+    else
+    {
+        self.retwitterMainV.hidden = YES;
+        NSString *url = status.thumbnailPic;
+        self.contentImage.hidden = url != nil && [url length] != 0 ? NO : YES;
+        [self setTFHeightWithImage:url != nil && [url length] != 0 ? YES : NO 
+                haveRetwitterImage:NO];//计算cell的高度，以及背景图的处理
+    }
+}
+
+//
+-(void)setupCell:(Status *)status avatarImage:(UIImage *)avatarImag contentImage:(UIImage *)contentImg
+{
+    self.contentTF.text = status.text;
+    self.JSContentTF.text = status.text;
+    self.userNameLB.text = status.user.screenName;
+    self.avatarImage.image = avatarImag;
+    countLB.text = [NSString stringWithFormat:@"评论:%d 转发:%d",status.commentsCount,status.retweetsCount];
+    fromLB.text = [NSString stringWithFormat:@"来自:%@",status.source];
+    timeLB.text = status.timestamp;
+    
+    Status  *retwitterStatus    = status.retweetedStatus;
+    
+    //有转发
+    if (retwitterStatus && ![retwitterStatus isEqual:[NSNull null]]) 
+    {
+        self.retwitterMainV.hidden = NO;
+        self.JSRetitterContentTF.text = [NSString stringWithFormat:@"@%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text];
+        self.contentImage.hidden = YES;
+        
+        if (![contentImg isEqual:[NSNull null]]) 
         {
-            self.retwitterContentImage.image = [UIImage imageWithData:imageData];
+            self.retwitterContentImage.image = contentImg;
         }
         
         NSString *url = status.retweetedStatus.thumbnailPic;
@@ -126,8 +161,8 @@
     else
     {
         self.retwitterMainV.hidden = YES;
-        if (![imageData isEqual:[NSNull null]]) {
-            self.contentImage.image = [UIImage imageWithData:imageData];
+        if (![contentImg isEqual:[NSNull null]]) {
+            self.contentImage.image = contentImg;
         }
         
         NSString *url = status.thumbnailPic;
@@ -178,8 +213,12 @@
     contentImage.frame = frame;
     
     //背景设置
-    bgImage.image = [[UIImage imageNamed:@"table_header_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
-    retwitterBgImage.image = [[UIImage imageNamed:@"timeline_rt_border_t.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:7];
+    if (bgImage.image == nil) {
+        bgImage.image = [[UIImage imageNamed:@"table_header_bg.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+    }
+    if (retwitterBgImage.image == nil) {
+        retwitterBgImage.image = [[UIImage imageNamed:@"timeline_rt_border_t.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:7];
+    }
     
     return self.JSContentTF.frame.size.height;
 }

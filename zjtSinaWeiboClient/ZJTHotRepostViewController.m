@@ -17,7 +17,7 @@
 
 -(id)initWithType:(VCType)type
 {
-    self = [super init];
+    self = [super initWithNibName:@"FirstViewController" bundle:nil];
     if (self) {
         self.type = type;
     }
@@ -103,10 +103,7 @@
     [[SHKActivityIndicator currentIndicator] hide];
 //    [[ZJTStatusBarAlertWindow getInstance] hide];
     
-    [headDictionary  removeAllObjects];
-    [imageDictionary removeAllObjects];
-    
-    [self getImages];
+    [self refreshVisibleCellsImages];
 }
 
 @end

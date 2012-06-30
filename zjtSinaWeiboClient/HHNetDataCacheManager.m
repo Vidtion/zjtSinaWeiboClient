@@ -106,19 +106,10 @@ static HHNetDataCacheManager * instance;
     NSNumber *indexNumber = [request.userInfo objectForKey:@"index"];
     
     NSData * data=[request responseData];
-    [_CDManager insertImageToCD:data url:url];
-    [self sendNotificationWithKey:url Data:data index:indexNumber];
-    //add to cache
-    @synchronized(self) {
-        [cacheArray insertObject:url atIndex:0];
-        [cacheDic setValue:data forKey:url];
-        if ([cacheArray count]>MaxCacheBufferSize) {
-            //remove
-            NSString * str=[cacheArray lastObject];
-            [cacheDic removeObjectForKey:str];
-            [cacheArray removeLastObject];
-        }
+    if ([url rangeOfString:@"/180/"].location == NSNotFound) {
+        [_CDManager insertImageToCD:data url:url];
     }
+    [self sendNotificationWithKey:url Data:data index:indexNumber];
 }
 
 //下载进度

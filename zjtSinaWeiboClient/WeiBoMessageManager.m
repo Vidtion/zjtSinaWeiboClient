@@ -358,7 +358,6 @@ static WeiBoMessageManager * instance=nil;
 //按天返回热门微博转发榜的微博列表
 -(void)didGetHotRepostDaily:(NSArray *)statusArr
 {
-    NSLog(@"hot repost :%@",[statusArr objectAtIndex:0]);
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotHotRepostDaily object:statusArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }

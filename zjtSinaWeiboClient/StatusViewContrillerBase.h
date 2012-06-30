@@ -52,7 +52,7 @@
 @property (nonatomic, retain)   NSMutableDictionary     *imageDictionary;
 @property (nonatomic, retain)   ImageBrowser            *browserView;
 
-- (void)getImages;
 - (void)doneLoadingTableViewData;
+-(void)refreshVisibleCellsImages;
 
 @end

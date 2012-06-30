@@ -63,6 +63,6 @@
 @property (nonatomic,retain)JSTwitterCoreTextView *JSRetitterContentTF;
 
 -(CGFloat)setTFHeightWithImage:(BOOL)hasImage haveRetwitterImage:(BOOL)haveRetwitterImage;
--(void)setupCell:(Status*)status avatarImageData:(NSData*)avatarData contentImageData:(NSData*)imageData;
+-(void)updateCellTextWith:(Status*)status;
 +(CGFloat)getJSHeight:(NSString*)text jsViewWith:(CGFloat)with;
 @end

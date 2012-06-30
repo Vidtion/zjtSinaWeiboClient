@@ -250,7 +250,7 @@ enum {
         }
         
         else if (row == kMetionsStatuses) {
-            MetionsStatusesVC *m = [[MetionsStatusesVC alloc]init];
+            MetionsStatusesVC *m = [[MetionsStatusesVC alloc]initWithNibName:@"FirstViewController" bundle:nil];
             m.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:m animated:YES];
             [m release];
