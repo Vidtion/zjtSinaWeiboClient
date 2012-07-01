@@ -17,6 +17,8 @@
 		45C3EE9D1500D42C004A282E /* GifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C3EE9C1500D42C004A282E /* GifView.m */; };
 		45C3EEA81500DD7A004A282E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45C3EEA71500DD7A004A282E /* ImageIO.framework */; };
 		AB01D19E159A0F5D00F15885 /* HotTrendsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB01D19C159A0F5D00F15885 /* HotTrendsVC.m */; };
+		AB0412CF15A0B08100097385 /* FollowAndFansVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0412CD15A0B08100097385 /* FollowAndFansVC.m */; };
+		AB0412D015A0B08100097385 /* FollowAndFansVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB0412CE15A0B08100097385 /* FollowAndFansVC.xib */; };
 		AB0D19AD1547ED15005EE454 /* FollowerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0D19AB1547ED15005EE454 /* FollowerVC.m */; };
 		AB0D19B71547ED51005EE454 /* SettingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0D19B51547ED50005EE454 /* SettingVC.m */; };
 		AB0D19C3154820A0005EE454 /* LPFriendCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0D19C1154820A0005EE454 /* LPFriendCell.m */; };
@@ -174,6 +176,9 @@
 		45C3EEA71500DD7A004A282E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		AB01D19B159A0F5D00F15885 /* HotTrendsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotTrendsVC.h; sourceTree = "<group>"; };
 		AB01D19C159A0F5D00F15885 /* HotTrendsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotTrendsVC.m; sourceTree = "<group>"; };
+		AB0412CC15A0B08100097385 /* FollowAndFansVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowAndFansVC.h; sourceTree = "<group>"; };
+		AB0412CD15A0B08100097385 /* FollowAndFansVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowAndFansVC.m; sourceTree = "<group>"; };
+		AB0412CE15A0B08100097385 /* FollowAndFansVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FollowAndFansVC.xib; sourceTree = "<group>"; };
 		AB0D19AA1547ED15005EE454 /* FollowerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowerVC.h; sourceTree = "<group>"; };
 		AB0D19AB1547ED15005EE454 /* FollowerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FollowerVC.m; sourceTree = "<group>"; };
 		AB0D19AC1547ED15005EE454 /* FollowerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FollowerVC.xib; sourceTree = "<group>"; };
@@ -445,6 +450,9 @@
 				AB0D19B61547ED50005EE454 /* SettingVC.xib */,
 				AB3CCCB715930837002F39ED /* MetionsStatusesVC.h */,
 				AB3CCCB815930837002F39ED /* MetionsStatusesVC.m */,
+				AB0412CC15A0B08100097385 /* FollowAndFansVC.h */,
+				AB0412CD15A0B08100097385 /* FollowAndFansVC.m */,
+				AB0412CE15A0B08100097385 /* FollowAndFansVC.xib */,
 			);
 			name = TabsVCs;
 			sourceTree = "<group>";
@@ -960,6 +968,7 @@
 				45A09838157364090026B18A /* icon.jpg in Resources */,
 				AB19AB47159ED97100BE7052 /* SVWebViewController.bundle in Resources */,
 				AB19AB7D159EF09600BE7052 /* FirstViewController.xib in Resources */,
+				AB0412D015A0B08100097385 /* FollowAndFansVC.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1038,6 +1047,7 @@
 				AB783D5C159B4C2B00C3E688 /* JSTwitterCoreTextView.m in Sources */,
 				AB19AB46159ED97100BE7052 /* SVModalWebViewController.m in Sources */,
 				AB19AB48159ED97100BE7052 /* SVWebViewController.m in Sources */,
+				AB0412CF15A0B08100097385 /* FollowAndFansVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

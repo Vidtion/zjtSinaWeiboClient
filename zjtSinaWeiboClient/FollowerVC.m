@@ -352,10 +352,10 @@
     User *user = [_userArr objectAtIndex:index];
     
     if (user.following) {
-        [_manager unfollowByUserID:user.userId];
+        [_manager unfollowByUserID:user.userId inTableView:nil];
     }
     else {
-        [_manager followByUserID:user.userId];
+        [_manager followByUserID:user.userId inTableView:nil];
     }
 }
 

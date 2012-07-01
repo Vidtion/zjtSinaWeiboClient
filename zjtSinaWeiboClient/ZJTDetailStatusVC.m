@@ -333,10 +333,10 @@
 -(void)follow
 {
     if (user.following == YES) {
-        [manager unfollowByUserID:user.userId];
+        [manager unfollowByUserID:user.userId inTableView:nil];
     }
     else {
-        [manager followByUserID:user.userId];
+        [manager followByUserID:user.userId inTableView:nil];
     }
 }
 

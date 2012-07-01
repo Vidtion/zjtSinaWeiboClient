@@ -120,9 +120,9 @@ static WeiBoMessageManager * instance=nil;
 }
 
 //关注一个用户 by User ID
--(void)followByUserID:(long long)uid
+-(void)followByUserID:(long long)uid inTableView:(NSString*)tableName
 {
-    [httpManager followByUserID:uid];
+    [httpManager followByUserID:uid inTableView:tableName];
 }
 
 //关注一个用户 by User Name
@@ -132,9 +132,9 @@ static WeiBoMessageManager * instance=nil;
 }
 
 //取消关注一个用户 by User ID
--(void)unfollowByUserID:(long long)uid
+-(void)unfollowByUserID:(long long)uid inTableView:(NSString*)tableName
 {
-    [httpManager unfollowByUserID:uid];
+    [httpManager unfollowByUserID:uid inTableView:tableName];
 }
 
 //取消关注一个用户 by User Name

@@ -374,7 +374,7 @@
 }
 
 //关注一个用户 by User ID
--(void)followByUserID:(long long)uid
+-(void)followByUserID:(long long)uid inTableView:(NSString*)tableName
 {
     //https://api.weibo.com/2/friendships/create.json
     NSURL *url = [NSURL URLWithString:@"https://api.weibo.com/2/friendships/create.json"];
@@ -387,6 +387,9 @@
     NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[NSNumber numberWithInt:SinaFollowByUserID] forKey:USER_INFO_KEY_TYPE];
     [dict setObject:[NSString stringWithFormat:@"%lld",uid] forKey:@"uid"];
+    if (tableName) {
+        [dict setObject:tableName forKey:@"tableName"];
+    }
     [item setUserInfo:dict];
     [dict release];
     
@@ -411,7 +414,7 @@
 }
 
 //取消关注一个用户 by User ID
--(void)unfollowByUserID:(long long)uid
+-(void)unfollowByUserID:(long long)uid inTableView:(NSString*)tableName
 {
     //https://api.weibo.com/2/friendships/destroy.json
     NSURL *url = [NSURL URLWithString:@"https://api.weibo.com/2/friendships/destroy.json"];
@@ -424,6 +427,9 @@
     NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[NSNumber numberWithInt:SinaUnfollowByUserID] forKey:USER_INFO_KEY_TYPE];
     [dict setObject:[NSString stringWithFormat:@"%lld",uid] forKey:@"uid"];
+    if (tableName) {
+        [dict setObject:tableName forKey:@"tableName"];
+    }
     [item setUserInfo:dict];
     [dict release];
     

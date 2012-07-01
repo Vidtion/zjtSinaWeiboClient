@@ -147,13 +147,13 @@
 -(void)getBilateralUserListAll:(long long)uid sort:(int)sort;
 
 //关注一个用户 by User ID
--(void)followByUserID:(long long)uid;
+-(void)followByUserID:(long long)uid inTableView:(NSString*)tableName;
 
 //关注一个用户 by User Name
 -(void)followByUserName:(NSString*)userName;
 
 //取消关注一个用户 by User ID
--(void)unfollowByUserID:(long long)uid;
+-(void)unfollowByUserID:(long long)uid inTableView:(NSString*)tableName;
 
 //取消关注一个用户 by User Name
 -(void)unfollowByUserName:(NSString*)userName;
