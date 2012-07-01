@@ -26,7 +26,7 @@
     
     [timer invalidate];
     self.timer = nil;
-      
+        
     [super dealloc];
 }
 
