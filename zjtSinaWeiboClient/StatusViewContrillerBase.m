@@ -341,35 +341,40 @@
     NSString *url = status.retweetedStatus.thumbnailPic;
     NSString *url2 = status.thumbnailPic;
     
+    StatusCell *cell = [self cellForTableView:tableView fromNib:self.statusCellNib];
+    [cell updateCellTextWith:status];
+    
     CGFloat height = 0.0f;
     
     //有转发的博文
     if (retwitterStatus && ![retwitterStatus isEqual:[NSNull null]])
     {
-        height = [self cellHeight:status.text with:320.0f] + [self cellHeight:[NSString stringWithFormat:@"@%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text] with:300.0f] + 20;
+        height = [cell setTFHeightWithImage:NO 
+                         haveRetwitterImage:url != nil && [url length] != 0 ? YES : NO];//计算cell的高度
     }
     
     //无转发的博文
     else
     {
-        height = [self cellHeight:status.text with:320.0f];
+        height = [cell setTFHeightWithImage:url2 != nil && [url2 length] != 0 ? YES : NO 
+                         haveRetwitterImage:NO];//计算cell的高度
     }
     
     //有转发图
     if (url && [url length] != 0)
     {
-        height = height + 100;
+        
     }
     else {
-        height = height +40;
+        
     }
     
     //有原图
     if (url2 && [url2 length] != 0) {
-        height = height + 100;
+        
     }
     else {
-        height = height + 40;
+        
     }
     
     if ((url && [url length] != 0) || (url2 && [url2 length] != 0))
@@ -377,9 +382,10 @@
         
     }
     else {
-        height = height - 23;
+        
     }
     return height;
+    
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

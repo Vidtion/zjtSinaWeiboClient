@@ -145,7 +145,7 @@
 							<object class="IBUIImageView" id="963381225">
 								<reference key="NSNextResponder" ref="154365241"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{58, 78}, {80, 80}}</string>
+								<string key="NSFrame">{{58, 78}, {242, 80}}</string>
 								<reference key="NSSuperview" ref="154365241"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="714083742"/>
@@ -197,7 +197,7 @@
 									<object class="IBUIImageView" id="235358219">
 										<reference key="NSNextResponder" ref="714083742"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{20, 70}, {80, 80}}</string>
+										<string key="NSFrame">{{20, 70}, {240, 80}}</string>
 										<reference key="NSSuperview" ref="714083742"/>
 										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="445353643"/>
@@ -602,7 +602,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">64</int>
+			<int key="maxID">65</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

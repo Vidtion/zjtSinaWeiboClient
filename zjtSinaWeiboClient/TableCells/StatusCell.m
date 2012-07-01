@@ -219,8 +219,16 @@
     if (retwitterBgImage.image == nil) {
         retwitterBgImage.image = [[UIImage imageNamed:@"timeline_rt_border_t.png"] stretchableImageWithLeftCapWidth:130 topCapHeight:7];
     }
-    
-    return self.JSContentTF.frame.size.height;
+    if (retwitterMainV.hidden == NO) {
+        return self.retwitterMainV.frame.size.height + self.retwitterMainV.frame.origin.y + 25;
+    }
+    else if(hasImage)
+    {
+        return self.contentImage.frame.size.height + self.contentImage.frame.origin.y + 35;
+    }
+    else {
+        return self.JSContentTF.frame.size.height + self.JSContentTF.frame.origin.y + 35;
+    }
 }
 
 -(IBAction)tapDetected:(id)sender
