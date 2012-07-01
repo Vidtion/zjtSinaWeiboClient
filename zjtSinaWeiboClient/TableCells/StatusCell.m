@@ -31,7 +31,7 @@
 {
     
     if (_JSContentTF == nil) {
-        _JSContentTF = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(0, 29, 320, 80)];
+        _JSContentTF = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(40, 20, 280, 80)];
         [_JSContentTF setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
         [_JSContentTF setDelegate:self];
         [_JSContentTF setFontName:FONT];
@@ -53,7 +53,7 @@
 -(JSTwitterCoreTextView*)JSRetitterContentTF
 {    
     if (_JSRetitterContentTF == nil) {
-        _JSRetitterContentTF = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(10, 0, 300, 80)];
+        _JSRetitterContentTF = [[JSTwitterCoreTextView alloc] initWithFrame:CGRectMake(10, 0, 270, 80)];
         [_JSRetitterContentTF setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
         [_JSRetitterContentTF setDelegate:self];
         [_JSRetitterContentTF setFontName:FONT];

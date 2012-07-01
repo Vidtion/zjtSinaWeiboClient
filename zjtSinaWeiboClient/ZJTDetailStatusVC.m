@@ -18,6 +18,7 @@
 #import "HHNetDataCacheManager.h"
 #import "AHMarkedHyperlink.h"
 #import "NSStringAdditions.h"
+#import "SVModalWebViewController.h"
 
 @interface ZJTDetailStatusVC ()
 -(void)setViewsHeight;
@@ -142,7 +143,14 @@
         [self.navigationController pushViewController:profile animated:YES];
         [profile release];
     }
-
+    
+    if ([link.URL.absoluteString hasPrefix:@"http"]) {
+        SVModalWebViewController *web = [[SVModalWebViewController alloc] initWithURL:link.URL];
+        web.modalPresentationStyle = UIModalPresentationPageSheet;
+        web.availableActions = SVWebViewControllerAvailableActionsOpenInSafari | SVWebViewControllerAvailableActionsCopyLink | SVWebViewControllerAvailableActionsMailLink;
+        [self presentModalViewController:web animated:YES];
+        [web release];
+    }
 }
 
 - (void)textViewTextTapped:(JSCoreTextView *)textView
