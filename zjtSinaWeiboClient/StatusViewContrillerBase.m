@@ -332,7 +332,6 @@
     NSInteger  row = indexPath.row;
     
     if (row >= [statuesArr count]) {
-//        NSLog(@"heightForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
         return 1;
     }
     
@@ -359,33 +358,7 @@
         height = [cell setTFHeightWithImage:url2 != nil && [url2 length] != 0 ? YES : NO 
                          haveRetwitterImage:NO];//计算cell的高度
     }
-    
-    //有转发图
-    if (url && [url length] != 0)
-    {
-        
-    }
-    else {
-        
-    }
-    
-    //有原图
-    if (url2 && [url2 length] != 0) {
-        
-    }
-    else {
-        
-    }
-    
-    if ((url && [url length] != 0) || (url2 && [url2 length] != 0))
-    {
-        
-    }
-    else {
-        
-    }
     return height;
-    
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

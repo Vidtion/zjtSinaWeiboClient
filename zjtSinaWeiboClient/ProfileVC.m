@@ -442,6 +442,10 @@
     cell.contentImage.image = status.statusImage;
     cell.retwitterContentImage.image = status.statusImage;
     
+    if (user && user.avatarImage) {
+        cell.avatarImage.image = user.avatarImage;
+    }
+    
     //开始绘制第一个cell时，隐藏indecator.
     if (isFirstCell) {
         [[SHKActivityIndicator currentIndicator] hide];
@@ -457,7 +461,6 @@
     NSInteger  row = indexPath.row;
     
     if (row >= [statuesArr count]) {
-//        NSLog(@"heightForRowAtIndexPath error ,index = %d,count = %d",row,[statuesArr count]);
         return 1;
     }
     
@@ -466,26 +469,25 @@
     NSString *url = status.retweetedStatus.thumbnailPic;
     NSString *url2 = status.thumbnailPic;
     
+    StatusCell *cell = [self cellForTableView:tableView fromNib:self.statusCellNib];
+    [cell updateCellTextWith:status];
+    
     CGFloat height = 0.0f;
     
     //有转发的博文
     if (retwitterStatus && ![retwitterStatus isEqual:[NSNull null]])
     {
-        height = [self cellHeight:status.text with:320.0f] + [self cellHeight:[NSString stringWithFormat:@"%@:%@",status.retweetedStatus.user.screenName,retwitterStatus.text] with:300.0f] - 22.0f;
+        height = [cell setTFHeightWithImage:NO 
+                         haveRetwitterImage:url != nil && [url length] != 0 ? YES : NO];//计算cell的高度
     }
     
     //无转发的博文
     else
     {
-        height = [self cellHeight:status.text with:320.0f];
+        height = [cell setTFHeightWithImage:url2 != nil && [url2 length] != 0 ? YES : NO 
+                         haveRetwitterImage:NO];//计算cell的高度
     }
-    
-    //
-    if ((url && [url length] != 0) || (url2 && [url2 length] != 0))
-    {
-        height = height + 80;
-    }
-    return height + 30;
+    return height;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
