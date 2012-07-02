@@ -390,6 +390,7 @@
     if (tableName) {
         [dict setObject:tableName forKey:@"tableName"];
     }
+    NSLog(@"dic = %@",dict);
     [item setUserInfo:dict];
     [dict release];
     
@@ -932,10 +933,12 @@
         }
         
         NSString *uid = [userInformation objectForKey:@"uid"];
+        NSString *tableName = [userInformation objectForKey:@"tableName"];
         NSMutableDictionary *dic = [[[NSMutableDictionary alloc]initWithCapacity:0] autorelease];    
         [dic setObject:[NSNumber numberWithInt:result] forKey:@"result"];
         if (uid != nil) {
             [dic setObject:uid forKey:@"uid"];
+            [dic setObject:tableName forKey:@"tableName"];
         }
         
         if ([delegate respondsToSelector:@selector(didFollowByUserIDWithResult:)]) {
@@ -957,10 +960,12 @@
         }
         
         NSString *uid = [userInformation objectForKey:@"uid"];
+        NSString *tableName = [userInformation objectForKey:@"tableName"];
         NSMutableDictionary *dic = [[[NSMutableDictionary alloc]initWithCapacity:0] autorelease];    
         [dic setObject:[NSNumber numberWithInt:result] forKey:@"result"];
         if (uid != nil) {
             [dic setObject:uid forKey:@"uid"];
+            [dic setObject:tableName forKey:@"tableName"];
         }
         if ([delegate respondsToSelector:@selector(didUnfollowByUserIDWithResult:)]) {
             [delegate didUnfollowByUserIDWithResult:dic];

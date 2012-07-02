@@ -35,13 +35,12 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUITableView" id="21849704">
+					<object class="IBUITableView" id="896963590">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrameSize">{144, 367}</string>
+						<string key="NSFrameSize">{320, 367}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="896963590"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="474840819">
 							<int key="NSColorSpace">3</int>
@@ -57,13 +56,13 @@
 						<float key="IBUISectionHeaderHeight">22</float>
 						<float key="IBUISectionFooterHeight">22</float>
 					</object>
-					<object class="IBUITableView" id="896963590">
+					<object class="IBUITableView" id="21849704">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{166, 0}, {154, 367}}</string>
+						<string key="NSFrameSize">{320, 367}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="896963590"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="474840819"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -218,16 +217,16 @@
 					<string key="className">FollowAndFansVC</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="_fansTable">UITableView</string>
-						<string key="_followTable">UITableView</string>
+						<string key="fansTable">UITableView</string>
+						<string key="followTable">UITableView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="_fansTable">
-							<string key="name">_fansTable</string>
+						<object class="IBToOneOutletInfo" key="fansTable">
+							<string key="name">fansTable</string>
 							<string key="candidateClassName">UITableView</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="_followTable">
-							<string key="name">_followTable</string>
+						<object class="IBToOneOutletInfo" key="followTable">
+							<string key="name">followTable</string>
 							<string key="candidateClassName">UITableView</string>
 						</object>
 					</dictionary>

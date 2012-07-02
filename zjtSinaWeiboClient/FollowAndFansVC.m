@@ -14,6 +14,11 @@
 #import "HHNetDataCacheManager.h"
 #import "SHKActivityIndicator.h"
 
+enum{
+    kFollowIndex = 0,
+    kFansIndex,
+};
+
 @interface FollowAndFansVC ()
 
 @end
@@ -25,10 +30,12 @@
 @synthesize user = _user;
 @synthesize followUserArr = _followUserArr;
 @synthesize fansUserArr = _fansUserArr;
+@synthesize segmentCtrol = _segmentCtrol;
 
 -(void)dealloc
 {
     self.fansUserArr = nil;
+    self.segmentCtrol = nil;
     self.followUserArr = nil;
     self.followerCellNib = nil;
     self.user = nil;
@@ -46,6 +53,55 @@
         _manager = [WeiBoMessageManager getInstance];
     }
     return self;
+}
+
+- (void) segmentAction 
+{
+    if (_segmentCtrol.selectedSegmentIndex == kFollowIndex) {
+        _followTable.hidden = NO;
+    }
+    else if (_segmentCtrol.selectedSegmentIndex == kFansIndex) {
+        _followTable.hidden = YES;
+    }
+    [self loadData];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    if (_segmentCtrol == nil) {
+        _segmentCtrol = [[UISegmentedControl alloc] initWithItems:[NSArray arrayWithObjects:@"关注", @"粉丝", nil]];
+        _segmentCtrol.frame = CGRectMake(0.0, 0.0, 200.0, 30.0);
+        [_segmentCtrol addTarget:self action:@selector(segmentAction) forControlEvents:UIControlEventValueChanged];
+        _segmentCtrol.segmentedControlStyle = UISegmentedControlStyleBar; 
+        
+        self.navigationItem.titleView = _segmentCtrol;
+        _segmentCtrol.selectedSegmentIndex = kFollowIndex;
+        self.navigationItem.title = @"关注";
+    }
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    NSNotificationCenter *notifCenter = [NSNotificationCenter defaultCenter];
+    [notifCenter addObserver:self selector:@selector(gotFollowUserList:) name:MMSinaGotFollowingUserList object:nil];
+    [notifCenter addObserver:self selector:@selector(gotFansUserList:) name:MMSinaGotFollowedUserList object:nil];
+    [notifCenter addObserver:self selector:@selector(gotAvatar:) name:HHNetDataCacheNotification object:nil];
+    [notifCenter addObserver:self selector:@selector(gotFollowResult:) name:MMSinaFollowedByUserIDWithResult object:nil];
+    [notifCenter addObserver:self selector:@selector(gotUnfollowResult:) name:MMSinaUnfollowedByUserIDWithResult object:nil];
+    [notifCenter addObserver:self selector:@selector(mmRequestFailed:) name:MMSinaRequestFailed object:nil];
+    [self loadData];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
 }
 
 -(UINib*)followerCellNib
@@ -76,6 +132,16 @@
     NSArray *cellArr = [tableView visibleCells];
     for (LPFriendCell *cell in cellArr) {
         NSIndexPath *inPath = [tableView indexPathForCell:cell];
+        if ([tableView isEqual:_fansTable]) {
+            if (inPath.row == [_fansUserArr count]) {
+                continue;
+            }
+        }
+        else {
+            if (inPath.row == [_followUserArr count]) {
+                continue;
+            }
+        }
         if (!cell.headerView.image) {
             User *user = nil;
             if ([tableView isEqual:_fansTable]) {
@@ -93,6 +159,23 @@
                 cell.headerView.image = user.avatarImage;
             }
         }
+    }
+}
+
+-(void)loadData
+{
+    NSString *userID = nil;
+    if (_user) {
+        userID = [NSString stringWithFormat:@"%lld",_user.userId];
+    }
+    else {
+        userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
+    }
+    if (_followTable.hidden == NO) {
+        [_manager getFollowingUserList:[userID longLongValue] count:50 cursor:0];
+    }
+    else {
+        [_manager getFollowedUserList:[userID longLongValue] count:50 cursor:0];
     }
 }
 
@@ -171,7 +254,7 @@
     NSDictionary *dic = sender.object;
     NSString *uid = [dic objectForKey:@"uid"];
     NSString *tableName = [dic  objectForKey:@"tableName"];
-    
+    NSLog(@"dic = %@",dic);
     if (uid == nil) {
         return;
     }
@@ -204,37 +287,40 @@
         return;
     }
     
-    if (index < [_fansUserArr count]) {
-        User *user = [_fansUserArr objectAtIndex:index];
-        
-        //得到的是头像图片
-        if ([url isEqualToString:user.profileImageUrl]) 
-        {
-            UIImage * image     = [UIImage imageWithData:data];
-            user.avatarImage    = image;
+    if (_segmentCtrol.selectedSegmentIndex == kFansIndex) {
+        if (index < [_fansUserArr count]) {
+            User *user = [_fansUserArr objectAtIndex:index];
             
-            LPFriendCell *cell = (LPFriendCell*)[_fansTable cellForRowAtIndexPath:user.cellIndexPath];
-            if (!cell.headerView.image) {
-                cell.headerView.image = user.avatarImage;
+            //得到的是头像图片
+            if ([url isEqualToString:user.profileImageUrl]) 
+            {
+                UIImage * image     = [UIImage imageWithData:data];
+                user.avatarImage    = image;
+                
+                LPFriendCell *cell = (LPFriendCell*)[_fansTable cellForRowAtIndexPath:user.cellIndexPath];
+                if (!cell.headerView.image) {
+                    cell.headerView.image = user.avatarImage;
+                }
+            }
+        } 
+    }
+    else {
+        if (index < [_followUserArr count]) {
+            User *user = [_followUserArr objectAtIndex:index];
+            
+            //得到的是头像图片
+            if ([url isEqualToString:user.profileImageUrl]) 
+            {
+                UIImage * image     = [UIImage imageWithData:data];
+                user.avatarImage    = image;
+                
+                LPFriendCell *cell = (LPFriendCell*)[_followTable cellForRowAtIndexPath:user.cellIndexPath];
+                if (!cell.headerView.image) {
+                    cell.headerView.image = user.avatarImage;
+                }
             }
         }
     }
-    if (index < [_followUserArr count]) {
-        User *user = [_followUserArr objectAtIndex:index];
-        
-        //得到的是头像图片
-        if ([url isEqualToString:user.profileImageUrl]) 
-        {
-            UIImage * image     = [UIImage imageWithData:data];
-            user.avatarImage    = image;
-            
-            LPFriendCell *cell = (LPFriendCell*)[_followTable cellForRowAtIndexPath:user.cellIndexPath];
-            if (!cell.headerView.image) {
-                cell.headerView.image = user.avatarImage;
-            }
-        }
-    }
-
 }
 
 -(void)mmRequestFailed:(id)sender
@@ -257,7 +343,60 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    NSInteger row = indexPath.row;
+    UITableView *tempTable = nil;
+    NSArray *tempArr = nil;
+    
+    if ([tableView isEqual:_followTable])
+    {
+        tempTable = _followTable;
+        tempArr = _followUserArr;
+    }
+    else {
+        tempTable = _fansTable;
+        tempArr = _fansUserArr;
+    }
+    
+    //last cell
+    if (row == [tempArr count]) {
+        UITableViewCell *lastCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
+        lastCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (row == 0)
+            lastCell.textLabel.text = @"正在载入...";
+        else
+            lastCell.textLabel.text = @"点击载入更多...";
+        return lastCell;
+    }
+    
+    LPFriendCell *cell = [self cellForTableView:tempTable fromNib:self.followerCellNib];
+    cell.lpCellIndexPath = indexPath;
+    cell.delegate = self;
+    
+    if (row >= [tempArr count] + 1) {
+        return cell;
+    }
+    
+    User *user = [tempArr objectAtIndex:row];
+    cell.nameLabel.text = user.screenName;
+    user.cellIndexPath = indexPath;
+    
+    if (tempTable.dragging == NO && tempTable.decelerating == NO)
+    {
+        if (!user.avatarImage || [user.avatarImage isEqual:[NSNull null]]) {
+            [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileImageUrl withIndex:row];
+        }
+    }
+    
+    cell.headerView.image = user.avatarImage;
+    
+    if (user.following == NO) {
+        [cell.invitationBtn setTitle:@"关注" forState:UIControlStateNormal];
+    }
+    else {
+        [cell.invitationBtn setTitle:@"取消关注" forState:UIControlStateNormal];
+    }
+    
+    return cell;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -265,17 +404,97 @@
     return 64;
 }
 
-- (void)viewDidLoad
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    NSInteger row = indexPath.row;
+    UITableView *tempTable = nil;
+    NSArray *tempArr = nil;
+    
+    if ([tableView isEqual:_followTable])
+    {
+        tempTable = _followTable;
+        tempArr = _followUserArr;
+    }
+    else {
+        tempTable = _fansTable;
+        tempArr = _fansUserArr;
+    }
+    
+    //last cell
+    if (row == [tempArr count]) {
+        
+        return;
+    }
+    
+    User *user = nil;
+    if ([tableView isEqual:_fansTable]) {
+        user = [_fansUserArr objectAtIndex:row];
+    }
+    else {
+        user = [_followUserArr objectAtIndex:row];
+    }
+    
+    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+    profile.userID = [NSString stringWithFormat:@"%lld",user.userId];
+    profile.user = user;
+    profile.avatarImage = user.avatarImage;
+    profile.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:profile animated:YES];
+    [profile release];
 }
 
-- (void)viewDidUnload
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+    if (_segmentCtrol.selectedSegmentIndex == kFansIndex) {
+        [self refreshVisibleCellsImages:_fansTable];
+    }
+    else {
+        [self refreshVisibleCellsImages:_followTable];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate)
+	{
+        if (_segmentCtrol.selectedSegmentIndex == kFansIndex) {
+            [self refreshVisibleCellsImages:_fansTable];
+        }
+        else {
+            [self refreshVisibleCellsImages:_followTable];
+        }
+    }
+}
+
+-(void)lpCellDidClicked:(LPFriendCell*)cell
+{
+    NSInteger index = cell.lpCellIndexPath.row;
+    if ([_fansTable indexPathForCell:cell]) {
+        if (index >= [_fansUserArr count]) {
+            return;
+        }
+        User *user = [_fansUserArr objectAtIndex:index];
+        
+        if (user.following) {
+            [_manager unfollowByUserID:user.userId inTableView:@"fansTable"];
+        }
+        else {
+            [_manager followByUserID:user.userId inTableView:@"fansTable"];
+        }
+    }
+    else if ([_followTable indexPathForCell:cell]) {
+        if (index >= [_followUserArr count]) {
+            return;
+        }
+        User *user = [_followUserArr objectAtIndex:index];
+        
+        if (user.following) {
+            [_manager unfollowByUserID:user.userId inTableView:@"followTable"];
+        }
+        else {
+            [_manager followByUserID:user.userId inTableView:@"followTable"];
+        }
+    }
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "FollowerVC.h"
 #import "SettingVC.h"
 #import "ProfileVC.h"
+#import "FollowAndFansVC.h"
 
 @implementation AppDelegate
 
@@ -37,11 +38,10 @@
 //    FirstViewController *firstViewController = [[[FirstViewController alloc] init] autorelease];
     FollowerVC  *followerVC     = [[[FollowerVC alloc]initWithNibName:@"FollowerVC" bundle:nil] autorelease];
     ProfileVC   *profile        = [[[ProfileVC alloc] initWithNibName:@"ProfileVC" bundle:nil] autorelease ];
-    FollowerVC *followingVC    = [[[FollowerVC alloc] initWithNibName:@"FollowerVC" bundle:nil] autorelease];
+    FollowAndFansVC *followingVC    = [[[FollowAndFansVC alloc] initWithNibName:@"FollowAndFansVC" bundle:nil] autorelease];
     SettingVC   *settingVC      = [[[SettingVC alloc] initWithNibName:@"SettingVC" bundle:nil] autorelease];
     
     followingVC.title = @"关注列表";
-    followingVC.isFollowingViewController = YES;
     
     profile.title = @"我的微博";
     
