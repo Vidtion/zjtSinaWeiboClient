@@ -58,6 +58,10 @@
 @property (retain, nonatomic) NSIndexPath *cellIndexPath;
 @property (retain, nonatomic) IBOutlet UILabel *fromLB;
 @property (retain, nonatomic) IBOutlet UILabel *timeLB;
+@property (retain, nonatomic) IBOutlet UIImageView *vipImageView;
+@property (retain, nonatomic) IBOutlet UIImageView *commentCountImageView;
+@property (retain, nonatomic) IBOutlet UIImageView *retweetCountImageView;
+@property (retain, nonatomic) IBOutlet UIImageView *haveImageFlagImageView;
 
 @property (nonatomic,retain)JSTwitterCoreTextView *JSContentTF;
 @property (nonatomic,retain)JSTwitterCoreTextView *JSRetitterContentTF;
