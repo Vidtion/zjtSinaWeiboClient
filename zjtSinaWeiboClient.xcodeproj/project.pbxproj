@@ -26,6 +26,14 @@
 		AB19AB47159ED97100BE7052 /* SVWebViewController.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AB19AB43159ED97100BE7052 /* SVWebViewController.bundle */; };
 		AB19AB48159ED97100BE7052 /* SVWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB19AB45159ED97100BE7052 /* SVWebViewController.m */; };
 		AB19AB7D159EF09600BE7052 /* FirstViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB29A242155A62190014CC7D /* FirstViewController.xib */; };
+		AB22C83015A8165600798D1A /* compose_locatebutton_background.png in Resources */ = {isa = PBXBuildFile; fileRef = AB22C82815A8165600798D1A /* compose_locatebutton_background.png */; };
+		AB22C83115A8165600798D1A /* compose_locatebutton_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB22C82915A8165600798D1A /* compose_locatebutton_background@2x.png */; };
+		AB22C83215A8165600798D1A /* compose_mentionbutton_background.png in Resources */ = {isa = PBXBuildFile; fileRef = AB22C82A15A8165600798D1A /* compose_mentionbutton_background.png */; };
+		AB22C83315A8165600798D1A /* compose_mentionbutton_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB22C82B15A8165600798D1A /* compose_mentionbutton_background@2x.png */; };
+		AB22C83415A8165600798D1A /* compose_trendbutton_background.png in Resources */ = {isa = PBXBuildFile; fileRef = AB22C82C15A8165600798D1A /* compose_trendbutton_background.png */; };
+		AB22C83515A8165600798D1A /* compose_trendbutton_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB22C82D15A8165600798D1A /* compose_trendbutton_background@2x.png */; };
+		AB22C83A15A8198200798D1A /* compose_camerabutton_background.png in Resources */ = {isa = PBXBuildFile; fileRef = AB22C83815A8198200798D1A /* compose_camerabutton_background.png */; };
+		AB22C83B15A8198200798D1A /* compose_camerabutton_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB22C83915A8198200798D1A /* compose_camerabutton_background@2x.png */; };
 		AB29A23F155A5B1F0014CC7D /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB29A23D155A5B1F0014CC7D /* AboutViewController.m */; };
 		AB2C43791555036000A4BAFD /* ZJTStatusBarAlertWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = AB2C43781555036000A4BAFD /* ZJTStatusBarAlertWindow.m */; };
 		AB2D5BC81483B3A700987DE7 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2D5BC71483B3A700987DE7 /* libsqlite3.dylib */; };
@@ -207,6 +215,14 @@
 		AB19AB43159ED97100BE7052 /* SVWebViewController.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVWebViewController.bundle; sourceTree = "<group>"; };
 		AB19AB44159ED97100BE7052 /* SVWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVWebViewController.h; sourceTree = "<group>"; };
 		AB19AB45159ED97100BE7052 /* SVWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVWebViewController.m; sourceTree = "<group>"; };
+		AB22C82815A8165600798D1A /* compose_locatebutton_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compose_locatebutton_background.png; sourceTree = "<group>"; };
+		AB22C82915A8165600798D1A /* compose_locatebutton_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compose_locatebutton_background@2x.png"; sourceTree = "<group>"; };
+		AB22C82A15A8165600798D1A /* compose_mentionbutton_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compose_mentionbutton_background.png; sourceTree = "<group>"; };
+		AB22C82B15A8165600798D1A /* compose_mentionbutton_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compose_mentionbutton_background@2x.png"; sourceTree = "<group>"; };
+		AB22C82C15A8165600798D1A /* compose_trendbutton_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compose_trendbutton_background.png; sourceTree = "<group>"; };
+		AB22C82D15A8165600798D1A /* compose_trendbutton_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compose_trendbutton_background@2x.png"; sourceTree = "<group>"; };
+		AB22C83815A8198200798D1A /* compose_camerabutton_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compose_camerabutton_background.png; sourceTree = "<group>"; };
+		AB22C83915A8198200798D1A /* compose_camerabutton_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compose_camerabutton_background@2x.png"; sourceTree = "<group>"; };
 		AB29A23C155A5B1F0014CC7D /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		AB29A23D155A5B1F0014CC7D /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		AB29A23E155A5B1F0014CC7D /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
@@ -515,6 +531,21 @@
 				AB19AB45159ED97100BE7052 /* SVWebViewController.m */,
 			);
 			path = SVWebViewController;
+			sourceTree = "<group>";
+		};
+		AB22C82615A8164C00798D1A /* twitter */ = {
+			isa = PBXGroup;
+			children = (
+				AB22C83815A8198200798D1A /* compose_camerabutton_background.png */,
+				AB22C83915A8198200798D1A /* compose_camerabutton_background@2x.png */,
+				AB22C82815A8165600798D1A /* compose_locatebutton_background.png */,
+				AB22C82915A8165600798D1A /* compose_locatebutton_background@2x.png */,
+				AB22C82A15A8165600798D1A /* compose_mentionbutton_background.png */,
+				AB22C82B15A8165600798D1A /* compose_mentionbutton_background@2x.png */,
+				AB22C82C15A8165600798D1A /* compose_trendbutton_background.png */,
+				AB22C82D15A8165600798D1A /* compose_trendbutton_background@2x.png */,
+			);
+			name = twitter;
 			sourceTree = "<group>";
 		};
 		AB37A39A14F91D2C0077774E /* ImageBrowser */ = {
@@ -842,6 +873,7 @@
 		ABFDE20014B5A21F00B57C9F /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				AB22C82615A8164C00798D1A /* twitter */,
 				4506A7C61509D9E000C47A93 /* pullToRefresh */,
 				AB968C3314FE849500A17AFE /* timelineBG */,
 				ABFDE20114B5A25100B57C9F /* WeiboImages */,
@@ -1009,6 +1041,14 @@
 				AB38908715A3304D005EAE5A /* timeline_retweet_count_icon@2x.png in Resources */,
 				AB38908A15A33481005EAE5A /* avatar_vip.png in Resources */,
 				AB38908B15A33481005EAE5A /* avatar_vip@2x.png in Resources */,
+				AB22C83015A8165600798D1A /* compose_locatebutton_background.png in Resources */,
+				AB22C83115A8165600798D1A /* compose_locatebutton_background@2x.png in Resources */,
+				AB22C83215A8165600798D1A /* compose_mentionbutton_background.png in Resources */,
+				AB22C83315A8165600798D1A /* compose_mentionbutton_background@2x.png in Resources */,
+				AB22C83415A8165600798D1A /* compose_trendbutton_background.png in Resources */,
+				AB22C83515A8165600798D1A /* compose_trendbutton_background@2x.png in Resources */,
+				AB22C83A15A8198200798D1A /* compose_camerabutton_background.png in Resources */,
+				AB22C83B15A8198200798D1A /* compose_camerabutton_background@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

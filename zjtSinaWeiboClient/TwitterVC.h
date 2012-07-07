@@ -10,7 +10,7 @@
 
 @class WeiBoMessageManager;
 
-@interface TwitterVC : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface TwitterVC : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextViewDelegate>
 {
     WeiBoMessageManager *manager;
     BOOL _shouldPostImage;
@@ -19,5 +19,7 @@
 @property (retain, nonatomic) IBOutlet UIImageView *theImageView;
 @property (retain, nonatomic) IBOutlet UIImageView *TVBackView;
 
+@property (retain, nonatomic) IBOutlet UILabel *countLabel;
 @property (retain, nonatomic) IBOutlet UITextView *theTextView;
+@property (retain, nonatomic) IBOutlet UIView *mainView;
 @end

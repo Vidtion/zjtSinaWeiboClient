@@ -30,7 +30,7 @@ enum{
     kHotStatus = 0,
     kHotRetwitted,
     kHotTrends,
-    kMetionsStatuses,
+//    kMetionsStatuses,
     kStatusRowsCount,
 };
 
@@ -167,9 +167,9 @@ enum {
             cell.textLabel.text = @"今日热门话题";
         }
         
-        else if (row == kMetionsStatuses) {
-            cell.textLabel.text = @"@我";
-        }
+//        else if (row == kMetionsStatuses) {
+//            cell.textLabel.text = @"@我";
+//        }
     }
     return cell;
 }
@@ -249,12 +249,12 @@ enum {
             [h release];
         }
         
-        else if (row == kMetionsStatuses) {
-            MetionsStatusesVC *m = [[MetionsStatusesVC alloc]initWithNibName:@"FirstViewController" bundle:nil];
-            m.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:m animated:YES];
-            [m release];
-        }
+//        else if (row == kMetionsStatuses) {
+//            MetionsStatusesVC *m = [[MetionsStatusesVC alloc]initWithNibName:@"FirstViewController" bundle:nil];
+//            m.hidesBottomBarWhenPushed = YES;
+//            [self.navigationController pushViewController:m animated:YES];
+//            [m release];
+//        }
     }
 }
 

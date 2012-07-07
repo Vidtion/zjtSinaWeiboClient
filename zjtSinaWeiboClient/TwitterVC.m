@@ -19,7 +19,9 @@
 @synthesize theScrollView;
 @synthesize theImageView;
 @synthesize TVBackView;
+@synthesize countLabel;
 @synthesize theTextView;
+@synthesize mainView;
 
 #pragma mark - Tool Methods
 - (void)addPhoto
@@ -97,6 +99,8 @@
     [theImageView release];
     [theTextView release];
     [TVBackView release];
+    [mainView release];
+    [countLabel release];
     [super dealloc];
 }
 
@@ -109,7 +113,7 @@
     [retwitterBtn release];
     
     theScrollView.contentSize = CGSizeMake(320, 410);
-    
+    theTextView.delegate = self;
     TVBackView.image = [[UIImage imageNamed:@"input_window.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:15];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPost:) name:MMSinaGotPostResult object:nil];
@@ -121,21 +125,84 @@
 {
     [super viewWillAppear:animated];
     [theTextView becomeFirstResponder];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    // 键盘高度变化通知，ios5.0新增的  
+#ifdef __IPHONE_5_0
+    float version = [[[UIDevice currentDevice] systemVersion] floatValue];
+    if (version >= 5.0) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    }
+#endif
 }
 
 -(void)viewWillDisappear:(BOOL)animated 
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super viewWillDisappear:animated];
 }
 
 - (void)viewDidUnload
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPost:) name:MMSinaGotPostResult object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MMSinaGotPostResult object:nil];
     [self setTheScrollView:nil];
     [self setTheImageView:nil];
     [self setTheTextView:nil];
     [self setTVBackView:nil];
+    [self setMainView:nil];
+    [self setCountLabel:nil];
     [super viewDidUnload];
+}
+
+#pragma mark -
+
+#pragma mark Responding to keyboard events
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    NSValue* aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    
+    
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    // Animate the resize of the text view's frame in sync with the keyboard's appearance.
+//    [self moveInputBarWithKeyboardHeight:keyboardRect.size.height withDuration:animationDuration];
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+    if (keyboardRect.size.height == 252) 
+    {
+        CGRect frame = mainView.frame;
+        frame.size.height = 165;
+        mainView.frame = frame;
+    }
+    else if(keyboardRect.size.height == 216)
+    {
+        CGRect frame = mainView.frame;
+        frame.size.height = 165 + 36;
+        mainView.frame = frame;
+    }
+    [UIView commitAnimations];
+}
+
+
+
+
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    NSDictionary* userInfo = [notification userInfo];
+    
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    
+    NSTimeInterval animationDuration;
+    
+    [animationDurationValue getValue:&animationDuration];
+    
 }
 
 -(void)didPost:(NSNotification*)sender
@@ -174,6 +241,42 @@
         [self takePhoto];
     }
 }
+
+#pragma mark - UITextViewDelegate
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    if (textView.text.length == 0) {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
+    else {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    }
+    return YES;
+}
+//- (BOOL)textViewShouldEndEditing:(UITextView *)textView;
+
+//- (void)textViewDidBeginEditing:(UITextView *)textView;
+//- (void)textViewDidEndEditing:(UITextView *)textView;
+
+//- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;
+- (void)textViewDidChange:(UITextView *)textView
+{
+    NSString *temp = textView.text;
+    if (temp.length != 0) {
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    }
+    else {
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    }
+    
+    if (temp.length > 140) {  
+        textView.text = [temp substringToIndex:140];  
+    }  
+    countLabel.text = [NSString stringWithFormat:@"%d",140 - theTextView.text.length];
+}
+
+//- (void)textViewDidChangeSelection:(UITextView *)textView;
 
 
 @end
