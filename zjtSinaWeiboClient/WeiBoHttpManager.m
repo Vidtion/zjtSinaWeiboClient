@@ -742,6 +742,33 @@
     [request release];
 }
 
+
+//获取附近地点
+-(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate qurreyStr:(NSString*)qurreyStr
+{
+    //https://api.weibo.com/2/place/nearby/pois.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,   @"access_token",
+                                       [NSString stringWithFormat:@"%f",coodinate.latitude],@"lat",
+                                       [NSString stringWithFormat:@"%f",coodinate.longitude],@"long",
+                                       @"50",@"count",
+                                       @"800",@"range",
+                                       nil];
+    if (qurreyStr) {
+        [params setObject:qurreyStr forKey:@"q"];
+    }
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/place/nearby/pois.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetPois];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
+
 #pragma mark - Operate queue
 - (BOOL)isRunning
 {
@@ -1120,6 +1147,25 @@
             [delegate didGetMetionsStatused:statuesArr];
         }
         [statuesArr release];
+    }
+    
+    if (requestType == SinaGetPois) {
+        NSArray *arr = [userInfo objectForKey:@"pois"];
+        if (arr == nil || [arr isEqual:[NSNull null]]) 
+        {
+            return;
+        }
+        
+        NSMutableArray *poisArr = [[NSMutableArray alloc] initWithCapacity:0];
+        for (id item in arr) {
+            POI *p = [POI poiWithJsonDictionary:item];
+            [poisArr addObject:p];
+        }
+        
+        if ([delegate respondsToSelector:@selector(didgetPois:)]) {
+            [delegate didgetPois:poisArr];
+        }
+        [poisArr release];
     }
 }
 

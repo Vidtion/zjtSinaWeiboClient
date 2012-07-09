@@ -10,6 +10,8 @@
 #import "ASIHTTPRequestDelegate.h"
 #import "StringUtil.h"
 #import "NSStringAdditions.h"
+#import "POI.h"
+#import <CoreLocation/CoreLocation.h>
 
 #define SINA_V2_DOMAIN              @"https://api.weibo.com/2"
 #define SINA_API_AUTHORIZE          @"https://api.weibo.com/oauth2/authorize"
@@ -60,6 +62,7 @@ typedef enum {
     SinaGetHotTrendDaily,
     SinaGetUnreadCount,             //获取某个用户的各种消息未读数
     SINAGetMetionsStatuses,         //获取最新的提到登录用户的微博列表，即@我的微博
+    SinaGetPois,                    //获取附近地点
 }RequestType;
 
 @class ASINetworkQueue;
@@ -136,6 +139,9 @@ typedef enum {
 
 //获取最新的提到登录用户的微博列表，即@我的微博
 -(void)didGetMetionsStatused:(NSArray*)statusArr;
+
+//获取附近地点
+-(void)didgetPois:(NSArray*)poisArr;
 
 @end
 
@@ -245,5 +251,8 @@ typedef enum {
 
 //获取最新的提到登录用户的微博列表，即@我的微博
 -(void)getMetionsStatuses;
+
+//获取附近地点
+-(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate qurreyStr:(NSString*)qurreyStr;
 
 @end

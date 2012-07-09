@@ -104,6 +104,10 @@
 //获取最新的提到登录用户的微博列表，即@我的微博
 #define MMSinaGotMetionsStatuses @"MMSinaGotMetionsStatuses"
 
+//获取附近地点
+//返回成员为POI的NSArray
+#define MMSinaGotPois @"MMSinaGotPois"
+
 @interface WeiBoMessageManager : NSObject <WeiBoHttpDelegate>
 {
     WeiBoHttpManager *httpManager;
@@ -197,5 +201,8 @@
 
 //获取最新的提到登录用户的微博列表，即@我的微博
 -(void)getMetionsStatuses;
+
+//获取附近地点
+-(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate qurreyStr:(NSString*)qurreyStr;
 
 @end

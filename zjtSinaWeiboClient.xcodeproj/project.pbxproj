@@ -34,6 +34,10 @@
 		AB22C83515A8165600798D1A /* compose_trendbutton_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB22C82D15A8165600798D1A /* compose_trendbutton_background@2x.png */; };
 		AB22C83A15A8198200798D1A /* compose_camerabutton_background.png in Resources */ = {isa = PBXBuildFile; fileRef = AB22C83815A8198200798D1A /* compose_camerabutton_background.png */; };
 		AB22C83B15A8198200798D1A /* compose_camerabutton_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB22C83915A8198200798D1A /* compose_camerabutton_background@2x.png */; };
+		AB25585C15AB185F00CF8F4B /* POI.m in Sources */ = {isa = PBXBuildFile; fileRef = AB25585B15AB185F00CF8F4B /* POI.m */; };
+		AB25586615AB1D5600CF8F4B /* POIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB25586415AB1D5600CF8F4B /* POIViewController.m */; };
+		AB25586715AB1D5600CF8F4B /* POIViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB25586515AB1D5600CF8F4B /* POIViewController.xib */; };
+		AB25586D15AB1DBF00CF8F4B /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB25586C15AB1DBF00CF8F4B /* CoreLocation.framework */; };
 		AB29A23F155A5B1F0014CC7D /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB29A23D155A5B1F0014CC7D /* AboutViewController.m */; };
 		AB2C43791555036000A4BAFD /* ZJTStatusBarAlertWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = AB2C43781555036000A4BAFD /* ZJTStatusBarAlertWindow.m */; };
 		AB2D5BC81483B3A700987DE7 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB2D5BC71483B3A700987DE7 /* libsqlite3.dylib */; };
@@ -223,6 +227,12 @@
 		AB22C82D15A8165600798D1A /* compose_trendbutton_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compose_trendbutton_background@2x.png"; sourceTree = "<group>"; };
 		AB22C83815A8198200798D1A /* compose_camerabutton_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compose_camerabutton_background.png; sourceTree = "<group>"; };
 		AB22C83915A8198200798D1A /* compose_camerabutton_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compose_camerabutton_background@2x.png"; sourceTree = "<group>"; };
+		AB25585A15AB185F00CF8F4B /* POI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POI.h; sourceTree = "<group>"; };
+		AB25585B15AB185F00CF8F4B /* POI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POI.m; sourceTree = "<group>"; };
+		AB25586315AB1D5600CF8F4B /* POIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POIViewController.h; sourceTree = "<group>"; };
+		AB25586415AB1D5600CF8F4B /* POIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POIViewController.m; sourceTree = "<group>"; };
+		AB25586515AB1D5600CF8F4B /* POIViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = POIViewController.xib; sourceTree = "<group>"; };
+		AB25586C15AB1DBF00CF8F4B /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		AB29A23C155A5B1F0014CC7D /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		AB29A23D155A5B1F0014CC7D /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		AB29A23E155A5B1F0014CC7D /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
@@ -420,6 +430,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB25586D15AB1DBF00CF8F4B /* CoreLocation.framework in Frameworks */,
 				AB783D5E159B4C5500C3E688 /* CoreText.framework in Frameworks */,
 				AB35226915937F92001885BE /* CoreData.framework in Frameworks */,
 				45C3EEA81500DD7A004A282E /* ImageIO.framework in Frameworks */,
@@ -489,6 +500,9 @@
 				AB0412CC15A0B08100097385 /* FollowAndFansVC.h */,
 				AB0412CD15A0B08100097385 /* FollowAndFansVC.m */,
 				AB0412CE15A0B08100097385 /* FollowAndFansVC.xib */,
+				AB25586315AB1D5600CF8F4B /* POIViewController.h */,
+				AB25586415AB1D5600CF8F4B /* POIViewController.m */,
+				AB25586515AB1D5600CF8F4B /* POIViewController.xib */,
 			);
 			name = TabsVCs;
 			sourceTree = "<group>";
@@ -636,6 +650,7 @@
 		ABA94F2A147FA7F70010C283 = {
 			isa = PBXGroup;
 			children = (
+				AB25586C15AB1DBF00CF8F4B /* CoreLocation.framework */,
 				AB783D5D159B4C5500C3E688 /* CoreText.framework */,
 				AB35226815937F92001885BE /* CoreData.framework */,
 				45C3EEA71500DD7A004A282E /* ImageIO.framework */,
@@ -785,6 +800,8 @@
 				ABF23F8014B5976900AEEB5C /* Status.m */,
 				ABF23F8114B5976900AEEB5C /* User.h */,
 				ABF23F8214B5976900AEEB5C /* User.m */,
+				AB25585A15AB185F00CF8F4B /* POI.h */,
+				AB25585B15AB185F00CF8F4B /* POI.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1049,6 +1066,7 @@
 				AB22C83515A8165600798D1A /* compose_trendbutton_background@2x.png in Resources */,
 				AB22C83A15A8198200798D1A /* compose_camerabutton_background.png in Resources */,
 				AB22C83B15A8198200798D1A /* compose_camerabutton_background@2x.png in Resources */,
+				AB25586715AB1D5600CF8F4B /* POIViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1128,6 +1146,8 @@
 				AB19AB46159ED97100BE7052 /* SVModalWebViewController.m in Sources */,
 				AB19AB48159ED97100BE7052 /* SVWebViewController.m in Sources */,
 				AB0412CF15A0B08100097385 /* FollowAndFansVC.m in Sources */,
+				AB25585C15AB185F00CF8F4B /* POI.m in Sources */,
+				AB25586615AB1D5600CF8F4B /* POIViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

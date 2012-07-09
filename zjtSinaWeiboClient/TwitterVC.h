@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "POIViewController.h"
 
 @class WeiBoMessageManager;
 
-@interface TwitterVC : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextViewDelegate>
+@interface TwitterVC : UIViewController<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextViewDelegate,POIViewControllerDelegate>
 {
     WeiBoMessageManager *manager;
     BOOL _shouldPostImage;

@@ -70,7 +70,6 @@
     NSString *content = theTextView.text;
     UIImage *image = theImageView.image;
     if (content != nil && [content length] != 0) {
-        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"发送中，请稍后..."];
         if (!_shouldPostImage) {
             [manager postWithText:content];
         }
@@ -116,8 +115,6 @@
     theTextView.delegate = self;
     TVBackView.image = [[UIImage imageNamed:@"input_window.png"] stretchableImageWithLeftCapWidth:0 topCapHeight:15];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPost:) name:MMSinaGotPostResult object:nil];
-    
     [manager getMetionsStatuses];
 }
 
@@ -127,6 +124,7 @@
     [theTextView becomeFirstResponder];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPost:) name:MMSinaGotPostResult object:nil];
     
     // 键盘高度变化通知，ios5.0新增的  
 #ifdef __IPHONE_5_0
@@ -145,7 +143,6 @@
 
 - (void)viewDidUnload
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:MMSinaGotPostResult object:nil];
     [self setTheScrollView:nil];
     [self setTheImageView:nil];
     [self setTheTextView:nil];
@@ -155,6 +152,13 @@
     [super viewDidUnload];
 }
 
+- (IBAction)getLocations:(id)sender {
+    POIViewController *pVC = [[POIViewController alloc] initWithNibName:@"POIViewController" bundle:nil];
+    pVC.hidesBottomBarWhenPushed = YES;
+    pVC.delegate = self;
+    [self.navigationController pushViewController:pVC animated:YES];
+    [pVC release];
+}
 #pragma mark -
 
 #pragma mark Responding to keyboard events
@@ -209,7 +213,6 @@
 {
     Status *sts = sender.object;
     if (sts.text != nil && [sts.text length] != 0) {
-        [[ZJTStatusBarAlertWindow getInstance] hide];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
@@ -278,5 +281,10 @@
 
 //- (void)textViewDidChangeSelection:(UITextView *)textView;
 
+
+-(void)poisCellDidSelected:(POI *)poi
+{
+    theTextView.text = [theTextView.text stringByAppendingFormat:@"我在这里：#%@#",poi.title];
+}
 
 @end

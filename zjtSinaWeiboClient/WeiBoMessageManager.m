@@ -221,6 +221,12 @@ static WeiBoMessageManager * instance=nil;
     [httpManager getMetionsStatuses];
 }
 
+//获取附近地点
+-(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate qurreyStr:(NSString*)qurreyStr
+{
+    [httpManager getPoisWithCoodinate:coodinate qurreyStr:qurreyStr];
+}
+
 #pragma mark - WeiBoHttpDelegate
 //获取最新的公共微博
 -(void)didGetPublicTimelineWithStatues:(NSArray *)statusArr
@@ -386,6 +392,12 @@ static WeiBoMessageManager * instance=nil;
 -(void)didGetMetionsStatused:(NSArray *)statusArr
 {
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotMetionsStatuses object:statusArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+-(void)didgetPois:(NSArray *)poisArr
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotPois object:poisArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
