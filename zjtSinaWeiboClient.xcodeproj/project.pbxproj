@@ -119,6 +119,9 @@
 		AB38908A15A33481005EAE5A /* avatar_vip.png in Resources */ = {isa = PBXBuildFile; fileRef = AB38908815A33480005EAE5A /* avatar_vip.png */; };
 		AB38908B15A33481005EAE5A /* avatar_vip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB38908915A33481005EAE5A /* avatar_vip@2x.png */; };
 		AB3CCCB915930838002F39ED /* MetionsStatusesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB3CCCB815930837002F39ED /* MetionsStatusesVC.m */; };
+		AB4E61A815AC6B8100FE4BCE /* HotTrendsDetailTableVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4E61A715AC6B8100FE4BCE /* HotTrendsDetailTableVC.m */; };
+		AB4E61B415AC89E100FE4BCE /* ZJTAddTrendTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB4E61B215AC89E100FE4BCE /* ZJTAddTrendTableViewController.m */; };
+		AB4E61B515AC89E100FE4BCE /* ZJTAddTrendTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB4E61B315AC89E100FE4BCE /* ZJTAddTrendTableViewController.xib */; };
 		AB55551014B7069200B27BCE /* HHNetDataCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = AB55550F14B7069200B27BCE /* HHNetDataCacheManager.m */; };
 		AB57E8B61523517000363B7C /* AddCommentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB57E8B41523517000363B7C /* AddCommentVC.m */; };
 		AB783D55159B4C2B00C3E688 /* AHHyperlinkScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = AB783D47159B4C2B00C3E688 /* AHHyperlinkScanner.m */; };
@@ -272,6 +275,11 @@
 		AB38908915A33481005EAE5A /* avatar_vip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatar_vip@2x.png"; sourceTree = "<group>"; };
 		AB3CCCB715930837002F39ED /* MetionsStatusesVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetionsStatusesVC.h; sourceTree = "<group>"; };
 		AB3CCCB815930837002F39ED /* MetionsStatusesVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetionsStatusesVC.m; sourceTree = "<group>"; };
+		AB4E61A615AC6B8100FE4BCE /* HotTrendsDetailTableVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotTrendsDetailTableVC.h; sourceTree = "<group>"; };
+		AB4E61A715AC6B8100FE4BCE /* HotTrendsDetailTableVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotTrendsDetailTableVC.m; sourceTree = "<group>"; };
+		AB4E61B115AC89E100FE4BCE /* ZJTAddTrendTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZJTAddTrendTableViewController.h; sourceTree = "<group>"; };
+		AB4E61B215AC89E100FE4BCE /* ZJTAddTrendTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZJTAddTrendTableViewController.m; sourceTree = "<group>"; };
+		AB4E61B315AC89E100FE4BCE /* ZJTAddTrendTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZJTAddTrendTableViewController.xib; sourceTree = "<group>"; };
 		AB50963C14B5CCE200DE0438 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
 		AB50963D14B5CCE200DE0438 /* Icon-Small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small@2x.png"; sourceTree = "<group>"; };
 		AB5554FD14B6F63200B27BCE /* table_header_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table_header_bg.png; sourceTree = "<group>"; };
@@ -495,14 +503,9 @@
 				AB0D19B41547ED50005EE454 /* SettingVC.h */,
 				AB0D19B51547ED50005EE454 /* SettingVC.m */,
 				AB0D19B61547ED50005EE454 /* SettingVC.xib */,
-				AB3CCCB715930837002F39ED /* MetionsStatusesVC.h */,
-				AB3CCCB815930837002F39ED /* MetionsStatusesVC.m */,
 				AB0412CC15A0B08100097385 /* FollowAndFansVC.h */,
 				AB0412CD15A0B08100097385 /* FollowAndFansVC.m */,
 				AB0412CE15A0B08100097385 /* FollowAndFansVC.xib */,
-				AB25586315AB1D5600CF8F4B /* POIViewController.h */,
-				AB25586415AB1D5600CF8F4B /* POIViewController.m */,
-				AB25586515AB1D5600CF8F4B /* POIViewController.xib */,
 			);
 			name = TabsVCs;
 			sourceTree = "<group>";
@@ -510,6 +513,9 @@
 		AB0D19BF1547FE11005EE454 /* OtherVCs */ = {
 			isa = PBXGroup;
 			children = (
+				AB4E61B115AC89E100FE4BCE /* ZJTAddTrendTableViewController.h */,
+				AB4E61B215AC89E100FE4BCE /* ZJTAddTrendTableViewController.m */,
+				AB4E61B315AC89E100FE4BCE /* ZJTAddTrendTableViewController.xib */,
 				ABA658F2155A2E6C00BFD728 /* StatusViewContrillerBase.h */,
 				ABA658F1155A2E6C00BFD728 /* StatusViewContrillerBase.m */,
 				ABE295B614F8C99C00FDABA3 /* ProfileVC.h */,
@@ -531,6 +537,13 @@
 				AB29A23E155A5B1F0014CC7D /* AboutViewController.xib */,
 				AB01D19B159A0F5D00F15885 /* HotTrendsVC.h */,
 				AB01D19C159A0F5D00F15885 /* HotTrendsVC.m */,
+				AB3CCCB715930837002F39ED /* MetionsStatusesVC.h */,
+				AB3CCCB815930837002F39ED /* MetionsStatusesVC.m */,
+				AB25586315AB1D5600CF8F4B /* POIViewController.h */,
+				AB25586415AB1D5600CF8F4B /* POIViewController.m */,
+				AB25586515AB1D5600CF8F4B /* POIViewController.xib */,
+				AB4E61A615AC6B8100FE4BCE /* HotTrendsDetailTableVC.h */,
+				AB4E61A715AC6B8100FE4BCE /* HotTrendsDetailTableVC.m */,
 			);
 			name = OtherVCs;
 			sourceTree = "<group>";
@@ -1067,6 +1080,7 @@
 				AB22C83A15A8198200798D1A /* compose_camerabutton_background.png in Resources */,
 				AB22C83B15A8198200798D1A /* compose_camerabutton_background@2x.png in Resources */,
 				AB25586715AB1D5600CF8F4B /* POIViewController.xib in Resources */,
+				AB4E61B515AC89E100FE4BCE /* ZJTAddTrendTableViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1148,6 +1162,8 @@
 				AB0412CF15A0B08100097385 /* FollowAndFansVC.m in Sources */,
 				AB25585C15AB185F00CF8F4B /* POI.m in Sources */,
 				AB25586615AB1D5600CF8F4B /* POIViewController.m in Sources */,
+				AB4E61A815AC6B8100FE4BCE /* HotTrendsDetailTableVC.m in Sources */,
+				AB4E61B415AC89E100FE4BCE /* ZJTAddTrendTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

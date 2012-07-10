@@ -8,13 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol HotTrendsVCDelegate <NSObject>
+
+-(void)hotTrendTableCellDidClicked:(NSIndexPath*)indexPath title:(NSString*)title;
+
+@end
 @interface HotTrendsVC : UITableViewController
 {
     NSArray *_dataSourceArr;
+    id<HotTrendsVCDelegate> _delegate;
+    BOOL _isForPost;
 }
 
 @property (nonatomic,retain)NSArray *dataSourceArr;
-
+@property (nonatomic,assign)id<HotTrendsVCDelegate> delegate;
 -(id)initWithDataSourceArr:(NSArray*)arr stylee:(UITableViewStyle)style;
 
 @end
