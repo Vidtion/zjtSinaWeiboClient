@@ -9,6 +9,7 @@
 #import "StatusViewContrillerBase.h"
 #import "ProfileVC.h"
 #import "SVWebViewController.h"
+#import "HotTrendsDetailTableVC.h"
 
 #define kTextViewPadding            16.0
 #define kLineBreakMode              UILineBreakModeWordWrap
@@ -166,6 +167,9 @@
         {
             [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileImageUrl withIndex:inPath.row];
         }
+        else {
+            cell.avatarImage.image = user.avatarImage;
+        }
         
         if (status.statusImage == nil) 
         {
@@ -173,7 +177,6 @@
             [[HHNetDataCacheManager getInstance] getDataWithURL:status.retweetedStatus.thumbnailPic withIndex:inPath.row];
         }
         else {
-            cell.avatarImage.image = user.avatarImage;
             cell.contentImage.image = status.statusImage;
             cell.retwitterContentImage.image = status.statusImage;
         }
@@ -467,12 +470,18 @@
         [self.navigationController pushViewController:profile animated:YES];
         [profile release];
     }
-    if ([link hasPrefix:@"http"]) {
+    else if ([link hasPrefix:@"http"]) {
         SVModalWebViewController *web = [[SVModalWebViewController alloc] initWithURL:[NSURL URLWithString:link]];
         web.modalPresentationStyle = UIModalPresentationPageSheet;
         web.availableActions = SVWebViewControllerAvailableActionsOpenInSafari | SVWebViewControllerAvailableActionsCopyLink | SVWebViewControllerAvailableActionsMailLink;
         [self presentModalViewController:web animated:YES];
         [web release];
+    }
+    else if ([link hasPrefix:@"#"]) {
+        HotTrendsDetailTableVC *hotVC = [[HotTrendsDetailTableVC alloc] initWithNibName:@"FirstViewController" bundle:nil];
+        hotVC.qureyString = [[link substringFromIndex:1] decodeFromURL];;
+        [self.navigationController pushViewController:hotVC animated:YES];
+        [hotVC release];
     }
 }
 

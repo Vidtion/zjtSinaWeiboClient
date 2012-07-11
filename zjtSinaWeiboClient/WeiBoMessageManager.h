@@ -108,6 +108,10 @@
 //返回成员为POI的NSArray
 #define MMSinaGotPois @"MMSinaGotPois"
 
+//搜索某一话题下的微博
+//返回成员为Status的NSArray
+#define MMSinaGotTopicStatuses  @"MMSinaGotTopicStatuses"
+
 @interface WeiBoMessageManager : NSObject <WeiBoHttpDelegate>
 {
     WeiBoHttpManager *httpManager;
@@ -203,6 +207,9 @@
 -(void)getMetionsStatuses;
 
 //获取附近地点
--(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate qurreyStr:(NSString*)qurreyStr;
+-(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate queryStr:(NSString*)queryStr;
+
+//搜索某一话题下的微博
+-(void)searchTopic:(NSString *)queryStr count:(int)count page:(int)page;
 
 @end

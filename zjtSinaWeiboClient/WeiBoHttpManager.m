@@ -744,7 +744,7 @@
 
 
 //获取附近地点
--(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate qurreyStr:(NSString*)qurreyStr
+-(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate queryStr:(NSString*)queryStr
 {
     //https://api.weibo.com/2/place/nearby/pois.json
     self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
@@ -755,8 +755,8 @@
                                        @"50",@"count",
                                        @"800",@"range",
                                        nil];
-    if (qurreyStr) {
-        [params setObject:qurreyStr forKey:@"q"];
+    if (queryStr) {
+        [params setObject:queryStr forKey:@"q"];
     }
     NSString                *baseUrl =[NSString  stringWithFormat:@"%@/place/nearby/pois.json",SINA_V2_DOMAIN];
     NSURL                   *url = [self generateURL:baseUrl params:params];
@@ -764,6 +764,29 @@
     ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
     NSLog(@"url=%@",url);
     [self setGetUserInfo:request withRequestType:SinaGetPois];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
+//搜索某一话题下的微博
+-(void)searchTopic:(NSString *)queryStr count:(int)count page:(int)page
+{
+    //https://api.weibo.com/2/search/topics.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,   @"access_token",
+                                       [NSString stringWithFormat:@"%d",count],@"lat",
+                                       [NSString stringWithFormat:@"%d",page],@"page",
+                                       nil];
+    if (queryStr) {
+        [params setObject:[queryStr URLEncodedString] forKey:@"q"];
+    }
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/search/topics.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaSearchTopic];
     [requestQueue addOperation:request];
     [request release];
 }
@@ -1166,6 +1189,25 @@
             [delegate didgetPois:poisArr];
         }
         [poisArr release];
+    }
+    
+    if (requestType == SinaSearchTopic) {
+        NSArray *arr = [userInfo objectForKey:@"statuses"];
+        
+        if (arr == nil || [arr isEqual:[NSNull null]]) 
+        {
+            return;
+        }
+        
+        NSMutableArray  *statuesArr = [[NSMutableArray alloc]initWithCapacity:0];
+        for (id item in arr) {
+            Status* sts = [Status statusWithJsonDictionary:item];
+            [statuesArr addObject:sts];
+        }
+        if ([delegate respondsToSelector:@selector(didGetTopicSearchResult:)]) {
+            [delegate didGetTopicSearchResult:statuesArr];
+        }
+        [statuesArr release];
     }
 }
 

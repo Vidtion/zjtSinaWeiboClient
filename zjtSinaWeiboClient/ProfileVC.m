@@ -19,6 +19,7 @@
 #import "FollowerVC.h"
 #import "ZJTHelpler.h"
 #import "SVModalWebViewController.h"
+#import "HotTrendsDetailTableVC.h"
 
 @interface ProfileVC ()
 
@@ -620,12 +621,18 @@
         [self.navigationController pushViewController:profile animated:YES];
         [profile release];
     }
-    if ([link hasPrefix:@"http"]) {
+    else if ([link hasPrefix:@"http"]) {
         SVModalWebViewController *web = [[SVModalWebViewController alloc] initWithURL:[NSURL URLWithString:link]];
         web.modalPresentationStyle = UIModalPresentationPageSheet;
         web.availableActions = SVWebViewControllerAvailableActionsOpenInSafari | SVWebViewControllerAvailableActionsCopyLink | SVWebViewControllerAvailableActionsMailLink;
         [self presentModalViewController:web animated:YES];
         [web release];
+    }
+    else if ([link hasPrefix:@"#"]) {
+        HotTrendsDetailTableVC *hotVC = [[HotTrendsDetailTableVC alloc] initWithNibName:@"FirstViewController" bundle:nil];
+        hotVC.qureyString = [[link substringFromIndex:1] decodeFromURL];;
+        [self.navigationController pushViewController:hotVC animated:YES];
+        [hotVC release];
     }
 }
 

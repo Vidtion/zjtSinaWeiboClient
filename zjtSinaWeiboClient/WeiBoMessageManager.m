@@ -222,9 +222,15 @@ static WeiBoMessageManager * instance=nil;
 }
 
 //获取附近地点
--(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate qurreyStr:(NSString*)qurreyStr
+-(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate queryStr:(NSString*)queryStr
 {
-    [httpManager getPoisWithCoodinate:coodinate qurreyStr:qurreyStr];
+    [httpManager getPoisWithCoodinate:coodinate queryStr:queryStr];
+}
+
+//搜索某一话题下的微博
+-(void)searchTopic:(NSString *)queryStr count:(int)count page:(int)page
+{
+    [httpManager searchTopic:queryStr count:count page:page];
 }
 
 #pragma mark - WeiBoHttpDelegate
@@ -398,6 +404,13 @@ static WeiBoMessageManager * instance=nil;
 -(void)didgetPois:(NSArray *)poisArr
 {
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotPois object:poisArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+//搜索某一话题下的微博
+-(void)didGetTopicSearchResult:(NSArray *)statusArr
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotTopicStatuses object:statusArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 

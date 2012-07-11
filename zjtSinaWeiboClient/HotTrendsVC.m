@@ -8,6 +8,7 @@
 
 #import "HotTrendsVC.h"
 #import "WeiBoMessageManager.h"
+#import "HotTrendsDetailTableVC.h"
 
 @interface HotTrendsVC ()
 
@@ -97,14 +98,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    
     if (_isForPost) {
         if ([_delegate respondsToSelector:@selector(hotTrendTableCellDidClicked:title:)]) {
             NSString *title = [[_dataSourceArr objectAtIndex:indexPath.row] objectForKey:@"name"];
             [_delegate hotTrendTableCellDidClicked:indexPath title:title];
         }
+        return;
     }
+    
+    HotTrendsDetailTableVC *hotVC = [[HotTrendsDetailTableVC alloc] initWithNibName:@"FirstViewController" bundle:nil];
+    hotVC.qureyString = [[_dataSourceArr objectAtIndex:indexPath.row] objectForKey:@"name"];
+    [self.navigationController pushViewController:hotVC animated:YES];
+    [hotVC release];
 }
 
 @end

@@ -10,4 +10,6 @@
 
 @interface HotTrendsDetailTableVC : StatusViewContrillerBase
 
+@property (nonatomic,copy)NSString *qureyString;
+
 @end

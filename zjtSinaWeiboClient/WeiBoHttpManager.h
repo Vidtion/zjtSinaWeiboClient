@@ -63,6 +63,7 @@ typedef enum {
     SinaGetUnreadCount,             //获取某个用户的各种消息未读数
     SINAGetMetionsStatuses,         //获取最新的提到登录用户的微博列表，即@我的微博
     SinaGetPois,                    //获取附近地点
+    SinaSearchTopic,                //搜索某一话题下的微博
 }RequestType;
 
 @class ASINetworkQueue;
@@ -142,6 +143,9 @@ typedef enum {
 
 //获取附近地点
 -(void)didgetPois:(NSArray*)poisArr;
+
+//搜索某一话题下的微博
+-(void)didGetTopicSearchResult:(NSArray*)statusArr;
 
 @end
 
@@ -253,6 +257,9 @@ typedef enum {
 -(void)getMetionsStatuses;
 
 //获取附近地点
--(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate qurreyStr:(NSString*)qurreyStr;
+-(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate queryStr:(NSString*)queryStr;
+
+//搜索某一话题下的微博
+-(void)searchTopic:(NSString *)queryStr count:(int)count page:(int)page;
 
 @end

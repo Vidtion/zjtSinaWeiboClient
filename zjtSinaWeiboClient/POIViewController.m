@@ -111,7 +111,7 @@
     NSLog(@"%f,%f",newLocation.coordinate.latitude,newLocation.coordinate.longitude);
     _coordinate.latitude = newLocation.coordinate.latitude;
     _coordinate.longitude = newLocation.coordinate.longitude;
-    [_manager getPoisWithCoodinate:_coordinate qurreyStr:nil];
+    [_manager getPoisWithCoodinate:_coordinate queryStr:nil];
     [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
 }
 

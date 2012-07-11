@@ -17,8 +17,9 @@
 #define IMAGES_VIEW_HEIGHT 100.0f
 
 @class WeiBoMessageManager;
+@class Comment;
 
-@interface ZJTDetailStatusVC : PullRefreshTableViewController<UITableViewDelegate,UITableViewDataSource,JSCoreTextViewDelegate,ImageBrowserDelegate>
+@interface ZJTDetailStatusVC : PullRefreshTableViewController<UITableViewDelegate,UITableViewDataSource,JSCoreTextViewDelegate,ImageBrowserDelegate,UIActionSheetDelegate>
 {
     UIView      *headerView;
     UITableView *table;
@@ -75,5 +76,11 @@
 @property (retain, nonatomic) ImageBrowser          *browserView;
 @property (nonatomic,retain)JSTwitterCoreTextView *JSContentTF;
 @property (nonatomic,retain)JSTwitterCoreTextView *JSRetitterContentTF;
+@property (retain, nonatomic) IBOutlet UIImageView *contentImageBackgroundView;
+@property (retain, nonatomic) IBOutlet UIImageView *retwitterImageBackground;
+@property (retain, nonatomic) IBOutlet UIImageView *retwitterCountImageView;
+@property (retain, nonatomic) IBOutlet UIImageView *commentCountImageView;
+@property (retain, nonatomic) IBOutlet UIImageView *vipImageView;
+@property (retain, nonatomic) Comment *clickedComment;
 
 @end
