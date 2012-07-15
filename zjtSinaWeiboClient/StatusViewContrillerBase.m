@@ -10,6 +10,7 @@
 #import "ProfileVC.h"
 #import "SVWebViewController.h"
 #import "HotTrendsDetailTableVC.h"
+#import "ZJTProfileViewController.h"
 
 #define kTextViewPadding            16.0
 #define kLineBreakMode              UILineBreakModeWordWrap
@@ -464,7 +465,13 @@
     {
         NSString *sn = [[link substringFromIndex:1] decodeFromURL];
         NSLog(@"sn = %@",sn);
-        ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+//        ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+//        profile.screenName = sn;
+//        profile.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:profile animated:YES];
+//        [profile release];
+        
+        ZJTProfileViewController *profile = [[ZJTProfileViewController alloc]initWithNibName:@"ZJTProfileViewController" bundle:nil];
         profile.screenName = sn;
         profile.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:profile animated:YES];

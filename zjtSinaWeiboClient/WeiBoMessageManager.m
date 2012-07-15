@@ -233,6 +233,12 @@ static WeiBoMessageManager * instance=nil;
     [httpManager searchTopic:queryStr count:count page:page];
 }
 
+//获取某人的话题列表
+-(void)getTopicsOfUser:(User*)user
+{
+    [httpManager getTopicsOfUser:user];
+}
+
 #pragma mark - WeiBoHttpDelegate
 //获取最新的公共微博
 -(void)didGetPublicTimelineWithStatues:(NSArray *)statusArr
@@ -414,4 +420,10 @@ static WeiBoMessageManager * instance=nil;
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
+//获取某人的话题列表
+-(void)didGetuserTopics:(NSArray *)trendsArr   
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotUserTopics object:trendsArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
 @end

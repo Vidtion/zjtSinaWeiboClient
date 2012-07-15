@@ -64,6 +64,7 @@ typedef enum {
     SINAGetMetionsStatuses,         //获取最新的提到登录用户的微博列表，即@我的微博
     SinaGetPois,                    //获取附近地点
     SinaSearchTopic,                //搜索某一话题下的微博
+    SinaGetUserTopics,              //获取某人的话题列表
 }RequestType;
 
 @class ASINetworkQueue;
@@ -146,6 +147,9 @@ typedef enum {
 
 //搜索某一话题下的微博
 -(void)didGetTopicSearchResult:(NSArray*)statusArr;
+
+//获取某人的话题列表
+-(void)didGetuserTopics:(NSArray*)trendsArr;
 
 @end
 
@@ -262,4 +266,6 @@ typedef enum {
 //搜索某一话题下的微博
 -(void)searchTopic:(NSString *)queryStr count:(int)count page:(int)page;
 
+//获取某人的话题列表
+-(void)getTopicsOfUser:(User*)user;
 @end

@@ -20,6 +20,7 @@
 #import "ZJTHelpler.h"
 #import "SVModalWebViewController.h"
 #import "HotTrendsDetailTableVC.h"
+#import "ZJTProfileViewController.h"
 
 @interface ProfileVC ()
 
@@ -99,9 +100,7 @@
         self.headerVImageV.image = avatarImage;
     }
     else {
-        [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileLargeImageUrl];
-        
-        NSLog(@"down pro = %@",user.profileLargeImageUrl);
+//        [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileLargeImageUrl];
     }
     if (![self.title isEqualToString:@"我的微博"]) {
         self.title = user.screenName;
@@ -125,9 +124,7 @@
     if (theUser) {
         self.userID = [NSString stringWithFormat:@"%lld",theUser.userId];
         self.screenName = theUser.screenName;
-        [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileLargeImageUrl];
-        
-        NSLog(@"down 2 pro = %@",user.profileLargeImageUrl);
+//        [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileLargeImageUrl];
     }
 }
 
@@ -135,7 +132,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [table setTableHeaderView:headerView];
+//    [table setTableHeaderView:headerView];
     
 //    if (userID == nil) {
 //        userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
@@ -253,11 +250,10 @@
     NSData *data            = [dic objectForKey:HHNetDataCacheData];
     UIImage * image     = [UIImage imageWithData:data];
     
-    if ([url isEqualToString:self.user.profileLargeImageUrl]) {
-        self.avatarImage = image;
-        self.headerVImageV.image = image;
-    }
-    NSLog(@"url = %@",url);
+//    if ([url isEqualToString:self.user.profileLargeImageUrl]) {
+//        self.avatarImage = image;
+//        self.headerVImageV.image = image;
+//    }
     
 //    
 //    if([url isEqualToString:user.profileLargeImageUrl])
@@ -615,7 +611,13 @@
     {
         NSString *sn = [[link substringFromIndex:1] decodeFromURL];
         NSLog(@"sn = %@",sn);
-        ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+//        ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+//        profile.screenName = sn;
+//        profile.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:profile animated:YES];
+//        [profile release];
+        
+        ZJTProfileViewController *profile = [[ZJTProfileViewController alloc]initWithNibName:@"ZJTProfileViewController" bundle:nil];
         profile.screenName = sn;
         profile.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:profile animated:YES];

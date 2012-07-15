@@ -13,6 +13,7 @@
 #import "LPFriendCell.h"
 #import "HHNetDataCacheManager.h"
 #import "SHKActivityIndicator.h"
+#import "ZJTProfileViewController.h"
 
 enum{
     kFollowIndex = 0,
@@ -407,18 +408,18 @@ enum{
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-    UITableView *tempTable = nil;
+//    UITableView *tempTable = nil;
     NSArray *tempArr = nil;
     
-    if ([tableView isEqual:_followTable])
-    {
-        tempTable = _followTable;
-        tempArr = _followUserArr;
-    }
-    else {
-        tempTable = _fansTable;
-        tempArr = _fansUserArr;
-    }
+//    if ([tableView isEqual:_followTable])
+//    {
+//        tempTable = _followTable;
+//        tempArr = _followUserArr;
+//    }
+//    else {
+//        tempTable = _fansTable;
+//        tempArr = _fansUserArr;
+//    }
     
     //last cell
     if (row == [tempArr count]) {
@@ -434,10 +435,16 @@ enum{
         user = [_followUserArr objectAtIndex:row];
     }
     
-    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
-    profile.userID = [NSString stringWithFormat:@"%lld",user.userId];
+//    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+//    profile.userID = [NSString stringWithFormat:@"%lld",user.userId];
+//    profile.user = user;
+//    profile.avatarImage = user.avatarImage;
+//    profile.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController pushViewController:profile animated:YES];
+//    [profile release];
+    
+    ZJTProfileViewController *profile = [[ZJTProfileViewController alloc]initWithNibName:@"ZJTProfileViewController" bundle:nil];
     profile.user = user;
-    profile.avatarImage = user.avatarImage;
     profile.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:profile animated:YES];
     [profile release];

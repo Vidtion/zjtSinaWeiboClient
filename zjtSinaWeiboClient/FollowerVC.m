@@ -13,6 +13,7 @@
 #import "LPFriendCell.h"
 #import "HHNetDataCacheManager.h"
 #import "SHKActivityIndicator.h"
+#import "ZJTProfileViewController.h"
 
 @interface FollowerVC ()
 -(void)loadData;
@@ -332,10 +333,16 @@
     NSInteger row = indexPath.row;
     User *user = [_userArr objectAtIndex:row];
     
-    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
-    profile.userID = [NSString stringWithFormat:@"%lld",user.userId];
+//    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+//    profile.userID = [NSString stringWithFormat:@"%lld",user.userId];
+//    profile.user = user;
+//    profile.avatarImage = user.avatarImage;
+//    profile.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController pushViewController:profile animated:YES];
+//    [profile release];
+    
+    ZJTProfileViewController *profile = [[ZJTProfileViewController alloc]initWithNibName:@"ZJTProfileViewController" bundle:nil];
     profile.user = user;
-    profile.avatarImage = user.avatarImage;
     profile.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:profile animated:YES];
     [profile release];

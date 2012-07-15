@@ -39,25 +39,31 @@
 
 -(void)getDataFromCD
 {
-    if (!statuesArr || statuesArr.count == 0) {
-        statuesArr = [[NSMutableArray alloc] initWithCapacity:70];
-        NSArray *arr = [[CoreDataManager getInstance] readStatusesFromCD];
-        if (arr && arr.count != 0) {
-            for (int i = 0; i < arr.count; i++) 
-            {
-                StatusCDItem *s = [arr objectAtIndex:i];
-                Status *sts = [[Status alloc]init];
-                [sts updataStatusFromStatusCDItem:s];
-                
-                [statuesArr insertObject:sts atIndex:s.index.intValue];
-                [sts release];
+    dispatch_queue_t readQueue = dispatch_queue_create("read from db", NULL);
+    dispatch_async(readQueue, ^(void){
+        if (!statuesArr || statuesArr.count == 0) {
+            statuesArr = [[NSMutableArray alloc] initWithCapacity:70];
+            NSArray *arr = [[CoreDataManager getInstance] readStatusesFromCD];
+            if (arr && arr.count != 0) {
+                for (int i = 0; i < arr.count; i++) 
+                {
+                    StatusCDItem *s = [arr objectAtIndex:i];
+                    Status *sts = [[Status alloc]init];
+                    [sts updataStatusFromStatusCDItem:s];
+                    
+                    [statuesArr insertObject:sts atIndex:s.index.intValue];
+                    [sts release];
+                }
             }
         }
-    }
-    [[CoreDataManager getInstance] cleanEntityRecords:@"StatusCDItem"];
-    [[CoreDataManager getInstance] cleanEntityRecords:@"UserCDItem"];
-//    [table reloadData];
-    [self.tableView reloadData];
+        [[CoreDataManager getInstance] cleanEntityRecords:@"StatusCDItem"];
+        [[CoreDataManager getInstance] cleanEntityRecords:@"UserCDItem"];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+        dispatch_release(readQueue);
+    });
 }
 
 							

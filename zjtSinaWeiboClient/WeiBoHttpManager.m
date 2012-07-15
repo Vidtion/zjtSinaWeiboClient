@@ -791,6 +791,26 @@
     [request release];
 }
 
+//获取某人的话题列表
+-(void)getTopicsOfUser:(User*)user
+{
+    //https://api.weibo.com/2/trends.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,                                       @"access_token",
+                                       [NSString stringWithFormat:@"%d",1000],          @"lat",
+                                       [NSString stringWithFormat:@"%d",1],             @"page",
+                                       [NSString stringWithFormat:@"%lld",user.userId], @"uid",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/2/trends.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetUserTopics];
+    [requestQueue addOperation:request];
+    [request release];
+}
 
 #pragma mark - Operate queue
 - (BOOL)isRunning
@@ -1208,6 +1228,12 @@
             [delegate didGetTopicSearchResult:statuesArr];
         }
         [statuesArr release];
+    }
+    
+    //获取某人的话题列表
+    if (requestType == SinaGetUserTopics)
+    {
+        
     }
 }
 

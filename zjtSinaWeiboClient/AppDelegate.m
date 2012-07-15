@@ -13,6 +13,7 @@
 #import "ProfileVC.h"
 #import "FollowAndFansVC.h"
 #import "MetionsStatusesVC.h"
+#import "ZJTProfileViewController.h"
 
 @implementation AppDelegate
 
@@ -36,11 +37,11 @@
     
     FirstViewController *firstViewController = [[[FirstViewController alloc] initWithNibName:@"FirstViewController" bundle:nil] autorelease];
     MetionsStatusesVC *m = [[MetionsStatusesVC alloc]initWithNibName:@"FirstViewController" bundle:nil];
-    ProfileVC *profile = [[[ProfileVC alloc] initWithNibName:@"ProfileVC" bundle:nil] autorelease ];
+    ZJTProfileViewController *profile = [[[ZJTProfileViewController alloc] initWithNibName:@"ZJTProfileViewController" bundle:nil] autorelease ];
     FollowAndFansVC *followingVC = [[[FollowAndFansVC alloc] initWithNibName:@"FollowAndFansVC" bundle:nil] autorelease];
     SettingVC *settingVC = [[[SettingVC alloc] initWithNibName:@"SettingVC" bundle:nil] autorelease];
     
-    followingVC.title = @"关注列表";
+    followingVC.title = @"好友";
     m.title = @"@我";
     profile.title = @"我的微博";
     

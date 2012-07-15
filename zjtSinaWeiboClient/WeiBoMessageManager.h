@@ -112,6 +112,9 @@
 //返回成员为Status的NSArray
 #define MMSinaGotTopicStatuses  @"MMSinaGotTopicStatuses"
 
+//获取某人的话题列表
+#define MMSinaGotUserTopics  @"MMSinaGotUserTopics"
+
 @interface WeiBoMessageManager : NSObject <WeiBoHttpDelegate>
 {
     WeiBoHttpManager *httpManager;
@@ -211,5 +214,8 @@
 
 //搜索某一话题下的微博
 -(void)searchTopic:(NSString *)queryStr count:(int)count page:(int)page;
+
+//获取某人的话题列表
+-(void)getTopicsOfUser:(User*)user;
 
 @end

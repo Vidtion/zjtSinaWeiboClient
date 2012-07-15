@@ -26,6 +26,8 @@
 @synthesize userKey;
 @synthesize avatarImage;
 @synthesize cellIndexPath;
+@synthesize topicCount;
+@synthesize verifiedReason;
 
 - (UserCDItem*)updateUserCDItem:(UserCDItem*)us
 {
@@ -116,7 +118,7 @@
     userKey			= [[NSNumber alloc] initWithLongLong:userId];
 	screenName      = [dic objectForKey:@"screen_name"];
     name            = [dic objectForKey:@"name"];
-	
+	self.verifiedReason = [dic objectForKey:@"verified_reason"];
 	//int provinceId = [[dic objectForKey:@"province"] intValue];
 	//int cityId = [[dic objectForKey:@"city"] intValue];
 	province		= @"";
@@ -190,6 +192,7 @@
 
 - (void)dealloc
 {
+    [verifiedReason release];
     [cellIndexPath release];
 	[userKey release];
     [screenName release];

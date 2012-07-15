@@ -20,6 +20,7 @@
 #import "NSStringAdditions.h"
 #import "SVModalWebViewController.h"
 #import "HotTrendsDetailTableVC.h"
+#import "ZJTProfileViewController.h"
 
 enum{
     kCommentClickActionSheet = 0,
@@ -189,7 +190,12 @@ enum  {
     {
         NSString *sn = [[link.URL.absoluteString substringFromIndex:1] decodeFromURL];
         NSLog(@"sn = %@",sn);
-        ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+//        ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+//        profile.screenName = sn;
+//        profile.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:profile animated:YES];
+//        [profile release];
+        ZJTProfileViewController *profile = [[ZJTProfileViewController alloc]initWithNibName:@"ZJTProfileViewController" bundle:nil];
         profile.screenName = sn;
         profile.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:profile animated:YES];
@@ -393,7 +399,7 @@ enum  {
     frame.origin.y = self.JSRetitterContentTF.frame.size.height + 8;
     CGSize size = [self getFrameOfImageView:retwitterImageV].size;
     
-    float zoom = size.width > size.height ? 250.0/size.width : 300.0/size.height;
+    float zoom = 2 * size.width > size.height ? 250.0/size.width : 300.0/size.height;
     size = CGSizeMake(size.width * zoom, size.height * zoom);
     
     frame.size = size;
@@ -515,10 +521,15 @@ enum  {
         return;
     }
     
-    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
-    profile.userID = [NSString stringWithFormat:@"%lld",self.user.userId];
-    profile.user = self.user;
-    profile.avatarImage = self.avatarImage;
+//    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
+//    profile.userID = [NSString stringWithFormat:@"%lld",self.user.userId];
+//    profile.user = self.user;
+//    profile.avatarImage = self.avatarImage;
+//    [self.navigationController pushViewController:profile animated:YES];
+//    [profile release];
+    ZJTProfileViewController *profile = [[ZJTProfileViewController alloc]initWithNibName:@"ZJTProfileViewController" bundle:nil];
+    profile.user = user;
+    profile.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:profile animated:YES];
     [profile release];
 }
