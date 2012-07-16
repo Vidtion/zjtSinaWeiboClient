@@ -71,7 +71,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    _page = 1;
     UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发微博" style:UIBarButtonItemStylePlain target:self action:@selector(twitter)];
     self.navigationItem.rightBarButtonItem = retwitterBtn;
     [retwitterBtn release];
@@ -146,6 +146,13 @@
 
 #pragma mark - Methods
 
+//上拉刷新
+-(void)refresh
+{
+    [manager getHomeLine:-1 maxID:_maxID count:-1 page:_page baseApp:-1 feature:-1];
+    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+}
+
 -(void)appWillResign:(id)sender
 {
     for (int i = 0; i < statuesArr.count; i++) {
@@ -208,17 +215,18 @@
     [self stopLoading];
     [self doneLoadingTableViewData];
     
-    [statuesArr removeAllObjects];
-    self.statuesArr = sender.object;
-//    [table reloadData];
+    if (statuesArr == nil) {
+        self.statuesArr = sender.object;
+        Status *sts = [statuesArr objectAtIndex:0];
+        _maxID = sts.statusId;
+    }
+    else {
+        [statuesArr addObjectsFromArray:sender.object];
+    }
+    _page++;
+    refreshFooterView.hidden = NO;
     [self.tableView reloadData];
-    
     [[SHKActivityIndicator currentIndicator] hide];
-    [[ZJTStatusBarAlertWindow getInstance] hide];
-    
-    [headDictionary  removeAllObjects];
-    [imageDictionary removeAllObjects];
-    
     [self refreshVisibleCellsImages];
     
     if (timer == nil) {

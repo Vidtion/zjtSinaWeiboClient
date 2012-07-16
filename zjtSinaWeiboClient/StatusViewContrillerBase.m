@@ -120,6 +120,7 @@
     
     [self setUpRefreshView];
     self.tableView.contentInset = UIEdgeInsetsOriginal;
+    refreshFooterView.hidden = YES;
     
     [defaultNotifCenter addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(mmRequestFailed:)   name:MMSinaRequestFailed object:nil];
@@ -250,9 +251,8 @@
 //上拉刷新
 -(void)refresh
 {
-    [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
-//    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+//    [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
 }
 
 //计算text field 的高度。
@@ -519,7 +519,7 @@
 	//  model should call this when its done loading
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.tableView];
-	
+	refreshFooterView.hidden = NO;
 }
 
 
@@ -565,10 +565,9 @@
 #pragma mark EGORefreshTableHeaderDelegate Methods
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
-    _reloading = YES;
-	[manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
-//    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+//    _reloading = YES;
+//	[manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
 }
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
