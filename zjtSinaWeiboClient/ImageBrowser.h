@@ -34,5 +34,6 @@
 -(void)setUp;
 -(void)loadImage;
 -(void)dismiss;
+-(void)zoomToFit;
 
 @end

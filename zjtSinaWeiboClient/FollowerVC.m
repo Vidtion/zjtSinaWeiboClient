@@ -75,7 +75,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    CGRect frame = table.frame;
+    frame.size.height = frame.size.height + REFRESH_FOOTER_HEIGHT;
+    table.frame = frame;
+    self.tableView.contentInset = UIEdgeInsetsOriginal;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -320,6 +323,7 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
     if (!decelerate)
 	{
         [self refreshVisibleCellsImages];

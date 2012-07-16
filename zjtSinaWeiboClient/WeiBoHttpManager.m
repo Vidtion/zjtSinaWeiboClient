@@ -211,7 +211,7 @@
     [request release];
 }
 
--(void)getCommentListWithID:(long long)weiboID
+-(void)getCommentListWithID:(long long)weiboID maxID:(NSString*)max_id page:(int)page
 {
     //https://api.weibo.com/2/comments/show.json
     self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
@@ -221,6 +221,10 @@
                                        authToken,                                       @"access_token",
                                        [NSString stringWithFormat:@"%lld",weiboID],     @"id",
                                        nil];
+    if (max_id) {
+        [params setObject:max_id forKey:@"max_id"];
+    }
+    [params setObject:[NSString stringWithFormat:@"%d",page] forKey:@"page"];
     NSString                *baseUrl =[NSString  stringWithFormat:@"%@/comments/show.json",SINA_V2_DOMAIN];
     NSURL                   *url = [self generateURL:baseUrl params:params];
     

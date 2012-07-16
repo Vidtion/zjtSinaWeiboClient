@@ -79,9 +79,9 @@ static WeiBoMessageManager * instance=nil;
 }
 
 //根据微博消息ID返回某条微博消息的评论列表
--(void)getCommentListWithID:(long long)weiboID
+-(void)getCommentListWithID:(long long)weiboID maxID:(NSString*)max_id page:(int)page
 {
-    [httpManager getCommentListWithID:weiboID];
+    [httpManager getCommentListWithID:weiboID maxID:max_id page:page];
 }
 
 

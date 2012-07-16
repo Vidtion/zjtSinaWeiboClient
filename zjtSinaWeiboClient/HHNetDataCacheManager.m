@@ -9,6 +9,7 @@
 #import "HHNetDataCacheManager.h"
 #import "CoreDataManager.h"
 #import "Images.h"
+#import "SHKActivityIndicator.h"
 
 @interface HHNetDataCacheManager()
 @end
@@ -115,7 +116,14 @@ static HHNetDataCacheManager * instance;
 //下载进度
 - (void)setProgress:(ASIHTTPRequest *)request newProgress:(float)newProgress
 {
-//    NSLog(@"progress = %f",newProgress);
+    NSDictionary *dic = request.userInfo;
+    NSObject *obj = [dic objectForKey:@"index"];
+    if (obj == nil) 
+    {
+        NSString *progressStr = [NSString stringWithFormat:@"%.1f%%",newProgress*100];
+        NSLog(@"%@",progressStr);
+        [[SHKActivityIndicator currentIndicator]setSubMessage:progressStr];
+    }
 }
 
 

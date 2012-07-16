@@ -83,6 +83,7 @@ enum  {
         _hasRetwitter = NO;
         isFromProfileVC = NO;
         shouldShowIndicator = YES;
+        _page = 1;
     }
     return self;
 }
@@ -288,6 +289,10 @@ enum  {
     [self setViewsHeight];
     [self.table setTableHeaderView:headerView];
     
+    CGRect frame = table.frame;
+    frame.size.height = frame.size.height + REFRESH_FOOTER_HEIGHT;
+    table.frame = frame;
+        
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(didGetComments:) name:MMSinaGotCommentList object:nil];
     [center addObserver:self selector:@selector(didFollowByUserID:) name:MMSinaFollowedByUserIDWithResult object:nil];
@@ -313,9 +318,10 @@ enum  {
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.tableView.contentInset = UIEdgeInsetsOriginal;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
     if (self.commentArr == nil) {
-        [manager getCommentListWithID:status.statusId];
+        [manager getCommentListWithID:status.statusId maxID:nil page:1];
         [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
 //        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
     }
@@ -336,6 +342,8 @@ enum  {
 }
 
 - (void)dealloc {
+    [_maxID release];
+    _maxID = nil;
     self.clickedComment = nil;
     self.JSContentTF = nil;
     self.JSRetitterContentTF = nil;
@@ -451,7 +459,7 @@ enum  {
 }
 
 - (void)refresh {
-    [manager getCommentListWithID:status.statusId];
+    [manager getCommentListWithID:status.statusId maxID:_maxID page:_page];
     [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
 //    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
 }
@@ -564,8 +572,19 @@ enum  {
     if ([sender.object isKindOfClass:[NSDictionary class]])
     {
         NSDictionary *dic = sender.object;
+        NSMutableArray *arr = [dic objectForKey:@"commentArrary"];
         
-        self.commentArr = [dic objectForKey:@"commentArrary"];
+        if (commentArr == nil) {
+            self.commentArr = arr;
+        }
+        else {
+            [commentArr addObjectsFromArray:arr];
+        }
+        _page++;
+        if (_maxID == nil) {
+            Comment *com = [commentArr objectAtIndex:0];
+            _maxID = [[NSString stringWithFormat:@"%lld",com.commentId] retain];
+        }
         if (commentArr != nil && ![commentArr isEqual:[NSNull null]]) 
         {
             NSNumber *count = [dic objectForKey:@"count"];
@@ -747,18 +766,26 @@ enum  {
         
         UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
         [browserView.imageView setImage:img];
+        [browserView zoomToFit];
         contentImageV.image = img;
         
         NSLog(@"big url = %@",browserView.bigImageURL);
         if ([browserView.bigImageURL hasSuffix:@".gif"]) 
         {
-            UIImageView *iv = browserView.imageView; // your image view
-            CGSize imageSize = iv.image.size;
-            CGFloat imageScale = fminf(CGRectGetWidth(iv.bounds)/imageSize.width, CGRectGetHeight(iv.bounds)/imageSize.height);
-            CGSize scaledImageSize = CGSizeMake(imageSize.width*imageScale, imageSize.height*imageScale);
-            CGRect imageFrame = CGRectMake(floorf(0.5f*(CGRectGetWidth(iv.bounds)-scaledImageSize.width)), floorf(0.5f*(CGRectGetHeight(iv.bounds)-scaledImageSize.height)), scaledImageSize.width, scaledImageSize.height);
+            CGFloat zoom = 320.0/browserView.imageView.image.size.width;
+            CGSize size = CGSizeMake(320.0, browserView.imageView.image.size.height * zoom);
             
-            GifView *gifView = [[GifView alloc]initWithFrame:imageFrame data:[dic objectForKey:HHNetDataCacheData]];
+            CGRect frame = browserView.imageView.frame;
+            frame.size = size;
+            frame.origin.x = 0;
+            CGFloat y = (480.0 - size.height)/2.0;
+            frame.origin.y = y >= 0 ? y:0;
+            browserView.imageView.frame = frame;
+            if (browserView.imageView.frame.size.height > 480) {
+                browserView.aScrollView.contentSize = CGSizeMake(320, browserView.imageView.frame.size.height);
+            }
+            
+            GifView *gifView = [[GifView alloc]initWithFrame:frame data:[dic objectForKey:HHNetDataCacheData]];
             
             gifView.userInteractionEnabled = NO;
             gifView.tag = GIF_VIEW_TAG;
@@ -786,7 +813,7 @@ enum  {
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
-    
+    [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
     if (!decelerate)
 	{
         [self refreshVisibleCellsImages];

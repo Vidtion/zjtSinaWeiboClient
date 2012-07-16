@@ -51,6 +51,9 @@
     BOOL _haveRetwitterImage;
     BOOL _hasImage;
     BOOL shouldShowIndicator;
+    
+    int _page;
+    NSString *_maxID;
 }
 @property (retain, nonatomic) IBOutlet UIImageView  *headerBackgroundView;
 @property (retain, nonatomic) IBOutlet UIImageView  *mainViewBackView;

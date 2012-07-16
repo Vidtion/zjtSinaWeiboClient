@@ -539,17 +539,25 @@
         
         UIImage * img=[UIImage imageWithData:[dic objectForKey:HHNetDataCacheData]];
         [browserView.imageView setImage:img];
+        [browserView zoomToFit];
         
         NSLog(@"big url = %@",browserView.bigImageURL);
         if ([browserView.bigImageURL hasSuffix:@".gif"]) 
         {
-            UIImageView *iv = browserView.imageView; // your image view
-            CGSize imageSize = iv.image.size;
-            CGFloat imageScale = fminf(CGRectGetWidth(iv.bounds)/imageSize.width, CGRectGetHeight(iv.bounds)/imageSize.height);
-            CGSize scaledImageSize = CGSizeMake(imageSize.width*imageScale, imageSize.height*imageScale);
-            CGRect imageFrame = CGRectMake(floorf(0.5f*(CGRectGetWidth(iv.bounds)-scaledImageSize.width)), floorf(0.5f*(CGRectGetHeight(iv.bounds)-scaledImageSize.height)), scaledImageSize.width, scaledImageSize.height);
+            CGFloat zoom = 320.0/browserView.imageView.image.size.width;
+            CGSize size = CGSizeMake(320.0, browserView.imageView.image.size.height * zoom);
             
-            GifView *gifView = [[GifView alloc]initWithFrame:imageFrame data:[dic objectForKey:HHNetDataCacheData]];
+            CGRect frame = browserView.imageView.frame;
+            frame.size = size;
+            frame.origin.x = 0;
+            CGFloat y = (480.0 - size.height)/2.0;
+            frame.origin.y = y >= 0 ? y:0;
+            browserView.imageView.frame = frame;
+            if (browserView.imageView.frame.size.height > 480) {
+                browserView.aScrollView.contentSize = CGSizeMake(320, browserView.imageView.frame.size.height);
+            }
+            
+            GifView *gifView = [[GifView alloc]initWithFrame:frame data:[dic objectForKey:HHNetDataCacheData]];
             
             gifView.userInteractionEnabled = NO;
             gifView.tag = GIF_VIEW_TAG;
