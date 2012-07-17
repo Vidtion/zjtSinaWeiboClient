@@ -39,6 +39,11 @@
 
 -(void)getDataFromCD
 {
+    NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:@"homePageMaxID"];
+    if (number) {
+        _maxID = number.longLongValue;
+    }
+    
     dispatch_queue_t readQueue = dispatch_queue_create("read from db", NULL);
     dispatch_async(readQueue, ^(void){
         if (!statuesArr || statuesArr.count == 0) {
@@ -50,7 +55,9 @@
                     StatusCDItem *s = [arr objectAtIndex:i];
                     Status *sts = [[Status alloc]init];
                     [sts updataStatusFromStatusCDItem:s];
-                    
+                    if (i == 0) {
+                        sts.isRefresh = @"YES";
+                    }
                     [statuesArr insertObject:sts atIndex:s.index.intValue];
                     [sts release];
                 }
@@ -72,6 +79,8 @@
 {
     [super viewDidLoad];
     _page = 1;
+    _maxID = -1;
+    _shouldAppendTheDataArr = NO;
     UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发微博" style:UIBarButtonItemStylePlain target:self action:@selector(twitter)];
     self.navigationItem.rightBarButtonItem = retwitterBtn;
     [retwitterBtn release];
@@ -146,11 +155,11 @@
 
 #pragma mark - Methods
 
-//上拉刷新
+//上拉
 -(void)refresh
 {
     [manager getHomeLine:-1 maxID:_maxID count:-1 page:_page baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+    _shouldAppendTheDataArr = YES;
 }
 
 -(void)appWillResign:(id)sender
@@ -215,10 +224,13 @@
     [self stopLoading];
     [self doneLoadingTableViewData];
     
-    if (statuesArr == nil) {
+    if (statuesArr == nil || _shouldAppendTheDataArr == NO || _maxID < 0) {
         self.statuesArr = sender.object;
         Status *sts = [statuesArr objectAtIndex:0];
         _maxID = sts.statusId;
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:_maxID] forKey:@"homePageMaxID"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        _page = 1;
     }
     else {
         [statuesArr addObjectsFromArray:sender.object];
@@ -232,6 +244,12 @@
     if (timer == nil) {
         self.timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerOnActive) userInfo:nil repeats:YES];
     }
+}
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+    _reloading = YES;
+	[manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+    _shouldAppendTheDataArr = NO;
 }
 
 -(void)didGetUnreadCount:(NSNotification*)sender

@@ -581,7 +581,13 @@
     
     ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
     NSLog(@"url=%@",url);
-    [self setGetUserInfo:request withRequestType:SinaGetHomeLine];
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:[NSNumber numberWithInt:SinaGetHomeLine] forKey:USER_INFO_KEY_TYPE];
+    if (maxID>0) {
+        [dict setObject:@"YES" forKey:@"isRefresh"];
+    }
+    [request setUserInfo:dict];
+    [dict release];
     [requestQueue addOperation:request];
     [request release];
 }
@@ -847,6 +853,9 @@
 //失败
 - (void)requestFailed:(ASIHTTPRequest *)request{
     NSLog(@"requestFailed:%@,%@,",request.responseString,[request.error localizedDescription]);
+    
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaRequestFailed object:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 //成功
@@ -1097,6 +1106,11 @@
             Status* sts = [Status statusWithJsonDictionary:item];
             [statuesArr addObject:sts];
         }
+        NSString *isRefresh = [userInformation objectForKey:@"isRefresh"];
+        if ([isRefresh isEqualToString:@"YES"]) {
+            Status* s = [statuesArr objectAtIndex:0];
+            s.isRefresh = @"YES";
+        }
         if ([delegate respondsToSelector:@selector(didGetHomeLine:)]) {
             [delegate didGetHomeLine:statuesArr];
         }
@@ -1244,8 +1258,6 @@
 //跳转
 - (void)request:(ASIHTTPRequest *)request willRedirectToURL:(NSURL *)newURL {
     NSLog(@"request will redirect");
-    NSNotification *notification = [NSNotification notificationWithName:MMSinaRequestFailed object:nil];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 @end

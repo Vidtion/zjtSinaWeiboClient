@@ -322,8 +322,7 @@ enum  {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
     if (self.commentArr == nil) {
         [manager getCommentListWithID:status.statusId maxID:nil page:1];
-        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
-//        [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+//        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
     }
 }
 
@@ -460,8 +459,7 @@ enum  {
 
 - (void)refresh {
     [manager getCommentListWithID:status.statusId maxID:_maxID page:_page];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
-//    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+//    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
 }
 
 -(void)follow
@@ -581,7 +579,7 @@ enum  {
             [commentArr addObjectsFromArray:arr];
         }
         _page++;
-        if (_maxID == nil) {
+        if (_maxID == nil && commentArr.count != 0) {
             Comment *com = [commentArr objectAtIndex:0];
             _maxID = [[NSString stringWithFormat:@"%lld",com.commentId] retain];
         }
@@ -737,7 +735,11 @@ enum  {
             
         }
         else if (buttonIndex == kViewUserProfile) {
-            
+            ZJTProfileViewController *profile = [[ZJTProfileViewController alloc]initWithNibName:@"ZJTProfileViewController" bundle:nil];
+            profile.user = theUser;
+            profile.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:profile animated:YES];
+            [profile release];
         }
         else if(buttonIndex == kFollowTheUser){
             

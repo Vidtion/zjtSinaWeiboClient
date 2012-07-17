@@ -36,6 +36,9 @@
     BOOL                shouldLoad;
     BOOL                shouldLoadAvatar;
     BOOL                isFirstCell;
+    
+    int _page;
+    long long _maxID;
 }
 
 @property (retain, nonatomic)   IBOutlet UITableView    *table;

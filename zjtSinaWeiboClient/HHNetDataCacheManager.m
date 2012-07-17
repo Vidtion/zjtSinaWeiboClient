@@ -122,7 +122,9 @@ static HHNetDataCacheManager * instance;
     {
         NSString *progressStr = [NSString stringWithFormat:@"%.1f%%",newProgress*100];
         NSLog(@"%@",progressStr);
-        [[SHKActivityIndicator currentIndicator]setSubMessage:progressStr];
+        if (newProgress > 0.0) {
+            [[SHKActivityIndicator currentIndicator]setSubMessage:progressStr];
+        }
     }
 }
 

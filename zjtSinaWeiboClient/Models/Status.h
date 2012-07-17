@@ -75,8 +75,9 @@
 @property (nonatomic, assign) BOOL          hasRetwitter;
 @property (nonatomic, assign) BOOL          haveRetwitterImage;
 @property (nonatomic, assign) BOOL          hasImage;
-@property (nonatomic,retain) UIImage *statusImage;
-@property (nonatomic,retain) NSIndexPath *cellIndexPath;
+@property (nonatomic,retain) UIImage        *statusImage;
+@property (nonatomic,retain) NSIndexPath    *cellIndexPath;
+@property (nonatomic,retain) NSString       *isRefresh;
 
 
 - (NSString*)timestamp;

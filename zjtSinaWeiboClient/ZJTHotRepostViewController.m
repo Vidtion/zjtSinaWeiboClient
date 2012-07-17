@@ -27,6 +27,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _refreshHeaderView.hidden = YES;
+    refreshArrow.image = nil;
+    refreshArrow.hidden = YES;
+    refreshLabel.hidden = YES;
+    refreshSpinner.hidden = YES;
+    
     if (_type == kHotRepostDaily) {
         self.title = @"今日热门转发";
         [defaultNotifCenter addObserver:self selector:@selector(didGetHotStatus:)    name:MMSinaGotHotRepostDaily   object:nil];
@@ -73,7 +80,7 @@
         return;
     }
     if (_type == kHotRepostDaily) {
-        [manager getHotRepostDaily:20];
+        [manager getHotRepostDaily:50];
     }
     
     else if (_type == kHotRepostWeekly) {
@@ -81,7 +88,7 @@
     }
     
     else if (_type == kHotCommentDaily) {
-        [manager getHotCommnetDaily:20];
+        [manager getHotCommnetDaily:50];
     }
     
     else if (_type == kHotCommentWeekly) {
@@ -104,6 +111,43 @@
 //    [[ZJTStatusBarAlertWindow getInstance] hide];
     
     [self refreshVisibleCellsImages];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{	
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self refreshVisibleCellsImages];
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    //    [self refreshVisibleCellsImages];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
+    if (!decelerate)
+	{
+        [self refreshVisibleCellsImages];
+    }
+}
+
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+    
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	return NO;
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	return nil;
 }
 
 @end

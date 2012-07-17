@@ -185,6 +185,10 @@ enum{
     NSArray *arr = sender.object;
     User *tempUser = [arr lastObject];
     User *lastUser = [_followUserArr lastObject];
+    
+    UITableViewCell *lastCell = [_followTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_followUserArr count] inSection:0]];
+    lastCell.textLabel.text = @"点击载入更多...";
+    
     if (![tempUser.screenName isEqualToString:lastUser.screenName]) {
         self.followUserArr = arr;
         [self.followTable reloadData];
@@ -205,6 +209,10 @@ enum{
     NSArray *arr = sender.object;
     User *tempUser = [arr lastObject];
     User *lastUser = [_fansUserArr lastObject];
+    
+    UITableViewCell *lastCell = [_fansTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_fansUserArr count] inSection:0]];
+    lastCell.textLabel.text = @"点击载入更多...";
+    
     if (![tempUser.screenName isEqualToString:lastUser.screenName]) {
         self.fansUserArr = arr;
         [self.fansTable reloadData];
@@ -362,6 +370,10 @@ enum{
     if (row == [tempArr count]) {
         UITableViewCell *lastCell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil] autorelease];
         lastCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        lastCell.textLabel.font = [UIFont systemFontOfSize:14];
+        lastCell.textLabel.textColor = [UIColor darkGrayColor];
+        lastCell.textLabel.textAlignment = UITextAlignmentCenter;
+        
         if (row == 0)
             lastCell.textLabel.text = @"正在载入...";
         else
@@ -408,40 +420,30 @@ enum{
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
-//    UITableView *tempTable = nil;
+    UITableView *tempTable = nil;
     NSArray *tempArr = nil;
     
-//    if ([tableView isEqual:_followTable])
-//    {
-//        tempTable = _followTable;
-//        tempArr = _followUserArr;
-//    }
-//    else {
-//        tempTable = _fansTable;
-//        tempArr = _fansUserArr;
-//    }
+    if ([tableView isEqual:_followTable])
+    {
+        tempTable = _followTable;
+        tempArr = _followUserArr;
+    }
+    else {
+        tempTable = _fansTable;
+        tempArr = _fansUserArr;
+    }
     
     //last cell
     if (row == [tempArr count]) {
-        
+        //load more
+        NSLog(@"load more");
+        UITableViewCell *cell = [tempTable cellForRowAtIndexPath:indexPath];
+        cell.textLabel.text = @"正在载入...";
         return;
     }
     
     User *user = nil;
-    if ([tableView isEqual:_fansTable]) {
-        user = [_fansUserArr objectAtIndex:row];
-    }
-    else {
-        user = [_followUserArr objectAtIndex:row];
-    }
-    
-//    ProfileVC *profile = [[ProfileVC alloc]initWithNibName:@"ProfileVC" bundle:nil];
-//    profile.userID = [NSString stringWithFormat:@"%lld",user.userId];
-//    profile.user = user;
-//    profile.avatarImage = user.avatarImage;
-//    profile.hidesBottomBarWhenPushed = YES;
-//    [self.navigationController pushViewController:profile animated:YES];
-//    [profile release];
+    user = [tempArr objectAtIndex:row];
     
     ZJTProfileViewController *profile = [[ZJTProfileViewController alloc]initWithNibName:@"ZJTProfileViewController" bundle:nil];
     profile.user = user;
@@ -477,7 +479,7 @@ enum{
 {
     NSInteger index = cell.lpCellIndexPath.row;
     if ([_fansTable indexPathForCell:cell]) {
-        if (index >= [_fansUserArr count]) {
+        if (index > [_fansUserArr count]) {
             return;
         }
         User *user = [_fansUserArr objectAtIndex:index];
@@ -490,7 +492,7 @@ enum{
         }
     }
     else if ([_followTable indexPathForCell:cell]) {
-        if (index >= [_followUserArr count]) {
+        if (index > [_followUserArr count]) {
             return;
         }
         User *user = [_followUserArr objectAtIndex:index];

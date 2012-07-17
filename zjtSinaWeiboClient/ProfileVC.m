@@ -75,6 +75,9 @@
         shouldLoad = NO;
         shouldLoadAvatar = NO;
         shouldShowIndicator = YES;
+        _page = 1;
+        _maxID = -1;
+        
         manager = [WeiBoMessageManager getInstance];
         defaultNotifCenter = [NSNotificationCenter defaultCenter];
         imageDictionary = [[NSMutableDictionary alloc] initWithCapacity:100];
@@ -114,7 +117,7 @@
         return;
     }
     
-    [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:8 page:-1 baseApp:-1 feature:-1];
+    [manager getUserStatusUserID:userID sinceID:-1 maxID:_maxID count:8 page:_page baseApp:-1 feature:-1];
     [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
 //    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
 }
@@ -347,7 +350,16 @@
     [self stopLoading];
     
     shouldLoadAvatar = YES;
-    self.statuesArr = sender.object;
+    if (statuesArr == nil || statuesArr.count == 0) {
+        self.statuesArr = sender.object;
+        Status *sts = [statuesArr objectAtIndex:0];
+        _maxID = sts.statusId;
+        _page = 1;
+    }
+    else {
+        [statuesArr addObjectsFromArray:sender.object];
+    }
+    _page ++;
     [table reloadData];
     [[SHKActivityIndicator currentIndicator] hide];
 //    [[ZJTStatusBarAlertWindow getInstance] hide];
@@ -364,9 +376,7 @@
 
 -(void)refresh
 {
-    [manager getUserStatusUserID:userID sinceID:-1 maxID:-1 count:8 page:-1 baseApp:-1 feature:-1];
-    [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..."];
-//    [[ZJTStatusBarAlertWindow getInstance] showWithString:@"正在载入，请稍后..."];
+    [manager getUserStatusUserID:userID sinceID:-1 maxID:_maxID count:8 page:_page baseApp:-1 feature:-1];
 }
 
 //计算text field 的高度。
@@ -524,6 +534,7 @@
 	{
         [self refreshVisibleCellsImages];
     }
+    [super scrollViewDidEndDragging:scrollView willDecelerate:decelerate];
 }
 
 #pragma mark - StatusCellDelegate
