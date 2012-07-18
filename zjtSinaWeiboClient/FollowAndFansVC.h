@@ -20,18 +20,20 @@
     WeiBoMessageManager *_manager;
     UINib *_followerCellNib;
     User *_user;
-    NSArray *_followUserArr;
-    NSArray *_fansUserArr;
+    NSMutableArray *_followUserArr;
+    NSMutableArray *_fansUserArr;
     
     UISegmentedControl *_segmentCtrol;
+    int _fansCursor;
+    int _followCursor;
 }
 
 @property (nonatomic,retain)IBOutlet UITableView *followTable;
 @property (nonatomic,retain)IBOutlet UITableView *fansTable;
 @property (nonatomic,retain) UINib *followerCellNib;
 @property (nonatomic,retain) User *user;
-@property (nonatomic,retain) NSArray *followUserArr;
-@property (nonatomic,retain) NSArray *fansUserArr;
+@property (nonatomic,retain) NSMutableArray *followUserArr;
+@property (nonatomic,retain) NSMutableArray *fansUserArr;
 @property (nonatomic,retain) UISegmentedControl *segmentCtrol;
 
 @end

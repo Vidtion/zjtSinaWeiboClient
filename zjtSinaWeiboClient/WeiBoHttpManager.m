@@ -975,14 +975,16 @@
     //获取用户的关注列表
     if (requestType == SinaGetFollowingUserList) {        
         NSArray *arr = [userInfo objectForKey:@"users"];
+        NSNumber *cursor = [userInfo objectForKey:@"next_cursor"];
         NSMutableArray *userArr = [[NSMutableArray alloc]initWithCapacity:0];
         for (id item in arr) {
             User *user = [[User alloc]initWithJsonDictionary:item];
             [userArr addObject:user];
             [user release];
         }
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:userArr, @"userArr",cursor,@"cursor", nil];
         if ([delegate respondsToSelector:@selector(didGetFollowingUsersList:)]) {
-            [delegate didGetFollowingUsersList:userArr];
+            [delegate didGetFollowingUsersList:dic];
         }
         [userArr release];
     }
@@ -990,14 +992,16 @@
     //获取用户粉丝列表
     if (requestType == SinaGetFollowedUserList) {        
         NSArray *arr = [userInfo objectForKey:@"users"];
+        NSNumber *cursor = [userInfo objectForKey:@"next_cursor"];
         NSMutableArray *userArr = [[NSMutableArray alloc]initWithCapacity:0];
         for (id item in arr) {
             User *user = [[User alloc]initWithJsonDictionary:item];
             [userArr addObject:user];
             [user release];
         }
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:userArr, @"userArr",cursor,@"cursor", nil];
         if ([delegate respondsToSelector:@selector(didGetFollowedUsersList:)]) {
-            [delegate didGetFollowedUsersList:userArr];
+            [delegate didGetFollowedUsersList:dic];
         }
         [userArr release];
     }

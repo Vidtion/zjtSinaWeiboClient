@@ -140,7 +140,8 @@
 
 -(void)gotFollowUserList:(NSNotification*)sender
 {
-    NSArray *arr = sender.object;
+    NSDictionary *dic = sender.object;
+    NSArray *arr = [dic objectForKey:@"userArr"];
     User *tempUser = [arr lastObject];
     User *lastUser = [_userArr lastObject];
     if (![tempUser.screenName isEqualToString:lastUser.screenName]) {

@@ -52,6 +52,8 @@ enum{
         self.title = @"粉丝列表";
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
         _manager = [WeiBoMessageManager getInstance];
+        _followCursor = 0;
+        _fansCursor = 0;
     }
     return self;
 }
@@ -60,11 +62,12 @@ enum{
 {
     if (_segmentCtrol.selectedSegmentIndex == kFollowIndex) {
         _followTable.hidden = NO;
+        [self loadDataWithCursor:_followCursor];
     }
     else if (_segmentCtrol.selectedSegmentIndex == kFansIndex) {
         _followTable.hidden = YES;
+        [self loadDataWithCursor:_fansCursor];
     }
-    [self loadData];
 }
 
 - (void)viewDidLoad
@@ -97,7 +100,9 @@ enum{
     [notifCenter addObserver:self selector:@selector(gotFollowResult:) name:MMSinaFollowedByUserIDWithResult object:nil];
     [notifCenter addObserver:self selector:@selector(gotUnfollowResult:) name:MMSinaUnfollowedByUserIDWithResult object:nil];
     [notifCenter addObserver:self selector:@selector(mmRequestFailed:) name:MMSinaRequestFailed object:nil];
-    [self loadData];
+    _fansCursor = 0;
+    _followCursor = 0;
+    [self loadDataWithCursor:0];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -163,7 +168,7 @@ enum{
     }
 }
 
--(void)loadData
+-(void)loadDataWithCursor:(int)cursor
 {
     NSString *userID = nil;
     if (_user) {
@@ -173,16 +178,18 @@ enum{
         userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
     }
     if (_followTable.hidden == NO) {
-        [_manager getFollowingUserList:[userID longLongValue] count:50 cursor:0];
+        [_manager getFollowingUserList:[userID longLongValue] count:50 cursor:cursor];
     }
     else {
-        [_manager getFollowedUserList:[userID longLongValue] count:50 cursor:0];
+        [_manager getFollowedUserList:[userID longLongValue] count:50 cursor:cursor];
     }
 }
 
 -(void)gotFollowUserList:(NSNotification*)sender
 {
-    NSArray *arr = sender.object;
+    NSDictionary *dic = sender.object;
+    NSArray *arr = [dic objectForKey:@"userArr"];
+    NSNumber *cursor = [dic objectForKey:@"cursor"];
     User *tempUser = [arr lastObject];
     User *lastUser = [_followUserArr lastObject];
     
@@ -190,7 +197,13 @@ enum{
     lastCell.textLabel.text = @"点击载入更多...";
     
     if (![tempUser.screenName isEqualToString:lastUser.screenName]) {
-        self.followUserArr = arr;
+        if (_followUserArr == nil || _followUserArr.count == 0 || _followCursor == 0) {
+            self.followUserArr = [NSMutableArray arrayWithArray:arr];
+        }
+        else {
+            [_followUserArr addObjectsFromArray:arr];
+        }
+        _followCursor = cursor.intValue;
         [self.followTable reloadData];
     }
     else {
@@ -206,7 +219,9 @@ enum{
 
 -(void)gotFansUserList:(NSNotification*)sender
 {
-    NSArray *arr = sender.object;
+    NSDictionary *dic = sender.object;
+    NSArray *arr = [dic objectForKey:@"userArr"];
+    NSNumber *cursor = [dic objectForKey:@"cursor"];
     User *tempUser = [arr lastObject];
     User *lastUser = [_fansUserArr lastObject];
     
@@ -214,7 +229,13 @@ enum{
     lastCell.textLabel.text = @"点击载入更多...";
     
     if (![tempUser.screenName isEqualToString:lastUser.screenName]) {
-        self.fansUserArr = arr;
+        if (_fansUserArr == nil || _fansUserArr.count == 0 || _fansCursor == 0) {
+            self.fansUserArr = [NSMutableArray arrayWithArray:arr];
+        }
+        else {
+            [_fansUserArr addObjectsFromArray:arr];
+        }
+        _fansCursor = cursor.intValue;
         [self.fansTable reloadData];
     }
     else {

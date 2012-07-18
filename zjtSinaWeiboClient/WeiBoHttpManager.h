@@ -95,10 +95,10 @@ typedef enum {
 -(void)didGetBilateralUserList:(NSArray*)userArr;
 
 //获取用户的关注列表
--(void)didGetFollowingUsersList:(NSArray*)userArr;
+-(void)didGetFollowingUsersList:(NSDictionary*)dic;
 
 //获取用户粉丝列表
--(void)didGetFollowedUsersList:(NSArray*)userArr;
+-(void)didGetFollowedUsersList:(NSDictionary*)dic;
 
 //获取某话题下的微博消息
 -(void)didGetTrendStatues:(NSArray*)statusArr;

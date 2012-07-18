@@ -286,16 +286,16 @@ static WeiBoMessageManager * instance=nil;
 }
 
 //获取用户的关注列表
--(void)didGetFollowingUsersList:(NSArray *)userArr
+-(void)didGetFollowingUsersList:(NSDictionary *)dic
 {
-    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotFollowingUserList object:userArr];
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotFollowingUserList object:dic];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 //获取用户的粉丝列表
--(void)didGetFollowedUsersList:(NSArray *)userArr
+-(void)didGetFollowedUsersList:(NSDictionary *)dic
 {
-    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotFollowedUserList object:userArr];
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotFollowedUserList object:dic];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
