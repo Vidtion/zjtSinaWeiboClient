@@ -22,6 +22,12 @@
 @synthesize countLabel;
 @synthesize theTextView;
 @synthesize mainView;
+@synthesize locationButton;
+@synthesize topicButton;
+@synthesize photoButton;
+@synthesize atButton;
+@synthesize weiboID;
+@synthesize commentID;
 
 #pragma mark - Tool Methods
 - (void)addPhoto
@@ -68,16 +74,29 @@
 - (void)send:(id)sender 
 {
     NSString *content = theTextView.text;
-    UIImage *image = theImageView.image;
-    if (content != nil && [content length] != 0) {
-        if (!_shouldPostImage) {
-            [manager postWithText:content];
-        }
-        else {
-            [manager postWithText:content image:image];
+    
+    if (_isForComment) {
+        [manager replyACommentWeiboId:weiboID commentID:commentID content:content];
+    }
+    else if (_isForReply) {
+        
+    }
+    else if (_isForRepost) {
+        [manager repost:weiboID content:content withComment:NO];
+    }
+    else 
+    {
+        UIImage *image = theImageView.image;
+        if (content != nil && [content length] != 0)
+        {
+            if (!_shouldPostImage) {
+                [manager postWithText:content];
+            }
+            else {
+                [manager postWithText:content image:image];
+            }
         }
     }
-    
 }
 
 #pragma mark - Lifecycle
@@ -93,13 +112,46 @@
     return self;
 }
 
+-(void)setupForReply
+{
+    locationButton.hidden = YES;
+    photoButton.hidden = YES;
+    theImageView.hidden = YES;
+    _isForReply = YES;
+}
+
+-(void)setupForComment:(NSString*)comID weiboID:(NSString*)wbID
+{
+    locationButton.hidden = YES;
+    photoButton.hidden = YES;
+    theImageView.hidden = YES;
+    _isForComment = YES;
+    self.commentID = comID;
+    self.weiboID = wbID;
+}
+
+-(void)setupForRepost:(NSString*)wbID
+{
+    locationButton.hidden = YES;
+    photoButton.hidden = YES;
+    theImageView.hidden = YES;
+    _isForRepost = YES;
+    self.weiboID = wbID;
+}
+
 - (void)dealloc {
+    [commentID release];
+    [weiboID release];
     [theScrollView release];
     [theImageView release];
     [theTextView release];
     [TVBackView release];
     [mainView release];
     [countLabel release];
+    [locationButton release];
+    [topicButton release];
+    [photoButton release];
+    [atButton release];
     [super dealloc];
 }
 
@@ -107,7 +159,10 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(send:)];
+    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发送" 
+                                                                    style:UIBarButtonItemStylePlain 
+                                                                   target:self 
+                                                                   action:@selector(send:)];
     self.navigationItem.rightBarButtonItem = retwitterBtn;
     [retwitterBtn release];
     
@@ -125,6 +180,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPost:) name:MMSinaGotPostResult object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didPost:) name:MMSinaGotRepost object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didComment:) name:MMSinaReplyAComment object:nil];
     
     // 键盘高度变化通知，ios5.0新增的  
 #ifdef __IPHONE_5_0
@@ -149,6 +206,10 @@
     [self setTVBackView:nil];
     [self setMainView:nil];
     [self setCountLabel:nil];
+    [self setLocationButton:nil];
+    [self setTopicButton:nil];
+    [self setPhotoButton:nil];
+    [self setAtButton:nil];
     [super viewDidUnload];
 }
 
@@ -214,6 +275,24 @@
     Status *sts = sender.object;
     if (sts.text != nil && [sts.text length] != 0) {
         [self.navigationController popViewControllerAnimated:YES];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"发送失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }
+}
+
+-(void)didComment:(NSNotification*)sender
+{
+    NSNumber *num = sender.object;
+    if (num.boolValue == YES) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"评论失败" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
     }
 }
 

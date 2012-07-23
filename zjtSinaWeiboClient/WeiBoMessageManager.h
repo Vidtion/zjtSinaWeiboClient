@@ -113,7 +113,18 @@
 #define MMSinaGotTopicStatuses  @"MMSinaGotTopicStatuses"
 
 //获取某人的话题列表
+//{
+//    "num": 225673,
+//    "hotword": "苹果",
+//    "trend_id": 1567898
+//},
 #define MMSinaGotUserTopics  @"MMSinaGotUserTopics"
+
+//回复一条评论
+#define MMSinaReplyAComment @"MMSinaReplyAComment"
+
+//对一条微博进行评论
+#define MMSinaCommentAStatus @"MMSinaCommentAStatus"
 
 @interface WeiBoMessageManager : NSObject <WeiBoHttpDelegate>
 {
@@ -218,4 +229,9 @@
 //获取某人的话题列表
 -(void)getTopicsOfUser:(User*)user;
 
+//回复一条评论
+-(void)replyACommentWeiboId:(NSString *)weiboID commentID:(NSString*)commentID content:(NSString*)content;
+
+//对一条微博进行评论
+-(void)commentAStatus:(NSString*)weiboID content:(NSString*)content;
 @end

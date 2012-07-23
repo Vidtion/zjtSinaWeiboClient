@@ -18,10 +18,12 @@
     NSArray *_dataSourceArr;
     id<HotTrendsVCDelegate> _delegate;
     BOOL _isForPost;
+    BOOL _isUserTopics;
 }
 
 @property (nonatomic,retain)NSArray *dataSourceArr;
 @property (nonatomic,assign)id<HotTrendsVCDelegate> delegate;
 -(id)initWithDataSourceArr:(NSArray*)arr stylee:(UITableViewStyle)style;
+@property (nonatomic,assign) BOOL isUserTopics;
 
 @end

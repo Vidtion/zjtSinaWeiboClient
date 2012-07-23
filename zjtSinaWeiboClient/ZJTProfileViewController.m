@@ -12,6 +12,7 @@
 #import "ProfileVC.h"
 #import "WeiBoMessageManager.h"
 #import "ZJTHelpler.h"
+#import "HotTrendsVC.h"
 
 #define kLineBreakMode              UILineBreakModeWordWrap
 
@@ -43,6 +44,7 @@ enum {
 @synthesize locationProfileCell;
 @synthesize descriptionProfileCell;
 @synthesize screenName;
+@synthesize topicsArr;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -64,6 +66,9 @@ enum {
     if ([self.title isEqualToString:@"我的微博"]) {
         self.user = [ZJTHelpler getInstance].user;
         followButton.hidden = YES;
+    }
+    if (self.user) {
+        [[WeiBoMessageManager getInstance]getTopicsOfUser:self.user];
     }
     
     UIImage *normalImage = [UIImage imageNamed:@"details_edit_normal_btn.png"];
@@ -134,6 +139,19 @@ enum {
     }
     
     nameLabel.text = user.screenName;
+    CGSize size = [user.screenName sizeWithFont:nameLabel.font];
+    
+    CGRect frame =  nameLabel.frame;
+    if (size.width>125) {
+        size.width = 125;
+    }
+    frame.size = size;
+    nameLabel.frame = frame;
+    
+    frame = genderImageView.frame;
+    frame.origin.x = nameLabel.frame.origin.x + nameLabel.frame.size.width + 5;
+    genderImageView.frame = frame;
+    
     [[HHNetDataCacheManager getInstance] getDataWithURL:user.profileLargeImageUrl];
 }
 
@@ -142,6 +160,9 @@ enum {
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAvatar:) name:HHNetDataCacheNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGetuserTopics:)    name:MMSinaGotUserTopics          object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didFollowByUserIDWithResult:) name:MMSinaFollowedByUserIDWithResult object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didUnfollowByUserIDWithResult:) name:MMSinaUnfollowedByUserIDWithResult object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -209,6 +230,51 @@ enum {
     self.user = theUser;
     [self updateWithUser:user];
     [table reloadData];
+    
+    [[WeiBoMessageManager getInstance] getTopicsOfUser:self.user];
+}
+
+-(void)didGetuserTopics:(NSNotification*)sender
+{
+    NSArray *arr = sender.object;
+    if ([arr isKindOfClass:[NSArray class]]) {
+        self.topicsArr = arr;
+        user.topicCount = arr.count;
+        [self updateWithUser:user];
+    }
+}
+
+-(void)didUnfollowByUserIDWithResult:(NSNotification*)sender
+{
+    NSLog(@"sender.objet = %@",sender.object);
+    NSDictionary *dic = sender.object;
+    NSString *uid = [dic objectForKey:@"uid"];
+    if (uid == nil) {
+        return;
+    }
+    [followButton setTitle:@"+加关注" forState:UIControlStateNormal];
+}
+
+-(void)didFollowByUserIDWithResult:(NSNotification*)sender
+{
+    NSLog(@"sender.objet = %@",sender.object);
+    NSDictionary *dic = sender.object;
+    NSString *uid = [dic objectForKey:@"uid"];
+    NSLog(@"dic = %@",dic);
+    if (uid == nil) {
+        return;
+    }
+    [followButton setTitle:@"取消关注" forState:UIControlStateNormal];
+}
+
+- (IBAction)followButtonClicked:(id)sender {
+    UIButton *button = (UIButton*)sender;
+    if ([button.titleLabel.text isEqualToString:@"取消关注"]) {
+        [[WeiBoMessageManager getInstance] unfollowByUserID:self.user.userId inTableView:@""];
+    }
+    else if([button.titleLabel.text isEqualToString:@"+加关注"]){
+        [[WeiBoMessageManager getInstance] followByUserID:self.user.userId inTableView:@""];
+    }
 }
 
 -(IBAction)gotoUsersStatusesView:(id)sender
@@ -246,7 +312,19 @@ enum {
     [followingVC release];
 }
 
+- (IBAction)gotoUserTopicsVC:(id)sender {
+    if (self.topicsArr && self.topicsArr.count != 0) {
+        HotTrendsVC *h = [[HotTrendsVC alloc] initWithStyle:UITableViewStylePlain];
+        h.dataSourceArr = self.topicsArr;
+        h.isUserTopics = YES;
+        h.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:h animated:YES];
+        [h release];
+    }
+}
+
 - (void)dealloc {
+    self.topicsArr = nil;
     self.screenName = nil;
     self.user = nil;
     [table release];

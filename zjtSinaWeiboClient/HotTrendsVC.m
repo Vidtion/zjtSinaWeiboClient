@@ -17,6 +17,7 @@
 @implementation HotTrendsVC
 @synthesize dataSourceArr = _dataSourceArr;
 @synthesize delegate = _delegate;
+@synthesize isUserTopics = _isUserTopics;
 
 -(void)dealloc
 {
@@ -45,7 +46,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[WeiBoMessageManager getInstance]getHOtTrendsDaily];
+    if (_dataSourceArr == nil || _dataSourceArr.count == 0) {
+        [[WeiBoMessageManager getInstance]getHOtTrendsDaily];
+    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didGetHotTrend:) name:MMSinaGotHotCommentDaily object:nil];
 }
@@ -85,7 +88,13 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    NSString *name = [[_dataSourceArr objectAtIndex:indexPath.row] objectForKey:@"name"];
+    NSString *name;
+    if (_isUserTopics) {
+        name = [[_dataSourceArr objectAtIndex:indexPath.row] objectForKey:@"hotword"];
+    }
+    else {
+        name = [[_dataSourceArr objectAtIndex:indexPath.row] objectForKey:@"name"];
+    }
     if (name && name.length != 0) {
         cell.textLabel.text = [NSString stringWithFormat:@"#%@#",name];
     }
@@ -107,7 +116,12 @@
     }
     
     HotTrendsDetailTableVC *hotVC = [[HotTrendsDetailTableVC alloc] initWithNibName:@"FirstViewController" bundle:nil];
-    hotVC.qureyString = [[_dataSourceArr objectAtIndex:indexPath.row] objectForKey:@"name"];
+    if (_isUserTopics) {
+        hotVC.qureyString = [[_dataSourceArr objectAtIndex:indexPath.row] objectForKey:@"hotword"];
+    }
+    else {
+        hotVC.qureyString = [[_dataSourceArr objectAtIndex:indexPath.row] objectForKey:@"name"];
+    }
     [self.navigationController pushViewController:hotVC animated:YES];
     [hotVC release];
 }

@@ -21,6 +21,7 @@
 #import "SVModalWebViewController.h"
 #import "HotTrendsDetailTableVC.h"
 #import "ZJTProfileViewController.h"
+#import "TwitterVC.h"
 
 enum{
     kCommentClickActionSheet = 0,
@@ -34,7 +35,7 @@ enum{
 };
 
 enum  {
-    kReply = 0,
+    kRetweet = 0,
     kComment,
 };
 
@@ -276,7 +277,7 @@ enum  {
         self.JSRetitterContentTF.text = [NSString stringWithFormat:@"@%@:%@",status.retweetedStatus.user.screenName,status.retweetedStatus.text];
     }
     
-    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemReply target:self action:@selector(replyActionSheet)];
+    UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(replyActionSheet)];
     self.navigationItem.rightBarButtonItem = retwitterBtn;
     [retwitterBtn release];
     
@@ -292,21 +293,10 @@ enum  {
     CGRect frame = table.frame;
     frame.size.height = frame.size.height + REFRESH_FOOTER_HEIGHT;
     table.frame = frame;
-        
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(didGetComments:) name:MMSinaGotCommentList object:nil];
-    [center addObserver:self selector:@selector(didFollowByUserID:) name:MMSinaFollowedByUserIDWithResult object:nil];
-    [center addObserver:self selector:@selector(didUnfollowByUserID:) name:MMSinaUnfollowedByUserIDWithResult object:nil];
-    [center addObserver:self selector:@selector(mmRequestFailed:) name:MMSinaRequestFailed object:nil];
 }
 
 -(void)viewDidUnload
 {
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center removeObserver:self name:MMSinaGotCommentList object:nil];
-    [center removeObserver:self name:MMSinaFollowedByUserIDWithResult object:nil];
-    [center removeObserver:self name:MMSinaUnfollowedByUserIDWithResult object:nil];
-    [center removeObserver:self name:MMSinaRequestFailed object:nil];
     [self setContentImageBackgroundView:nil];
     [self setRetwitterImageBackground:nil];
     [self setRetwitterCountImageView:nil];
@@ -319,7 +309,14 @@ enum  {
 {
     [super viewWillAppear:animated];
     self.tableView.contentInset = UIEdgeInsetsOriginal;
+    
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(didGetComments:) name:MMSinaGotCommentList object:nil];
+    [center addObserver:self selector:@selector(didFollowByUserID:) name:MMSinaFollowedByUserIDWithResult object:nil];
+    [center addObserver:self selector:@selector(didUnfollowByUserID:) name:MMSinaUnfollowedByUserIDWithResult object:nil];
+    [center addObserver:self selector:@selector(mmRequestFailed:) name:MMSinaRequestFailed object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getAvatar:)         name:HHNetDataCacheNotification object:nil];
+        [center addObserver:self selector:@selector(didCommentAStatus:) name:MMSinaCommentAStatus object:nil];
     if (self.commentArr == nil) {
         [manager getCommentListWithID:status.statusId maxID:nil page:1];
 //        [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view]; 
@@ -377,7 +374,7 @@ enum  {
 #pragma mark - Methods
 -(void)replyActionSheet
 {
-    UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"回复",@"转发", nil];
+    UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"转发",@"评论", nil];
     as.tag = kStatusReplyActionSheet;
     [as showInView:self.view];
     [as release];
@@ -465,10 +462,10 @@ enum  {
 -(void)follow
 {
     if (user.following == YES) {
-        [manager unfollowByUserID:user.userId inTableView:nil];
+        [manager unfollowByUserID:user.userId inTableView:@""];
     }
     else {
-        [manager followByUserID:user.userId inTableView:nil];
+        [manager followByUserID:user.userId inTableView:@""];
     }
 }
 
@@ -597,10 +594,33 @@ enum  {
     }
 }
 
+-(void)dismissAlert:(id)sender
+{
+    NSTimer *timer = sender;
+    if ([timer.userInfo isKindOfClass:[UIAlertView class]]) {
+        UIAlertView *alert = timer.userInfo;
+        
+        if (alert) {
+            [alert dismissWithClickedButtonIndex:0 animated:YES];
+            [alert release];
+        }
+    }
+}
+
+-(void)didCommentAStatus:(NSNotification*)sender
+{
+    NSDictionary *dic = sender.object;
+}
+
 -(void)didFollowByUserID:(NSNotification*)sender
 {
     NSDictionary *dic = sender.object;
     NSNumber *result = [dic objectForKey:@"result"];
+    if (result.intValue == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"关注成功！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
+        [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(dismissAlert:) userInfo:alert repeats:NO];
+    }
     
     if (result.intValue == 0) {//成功
         user.following = YES;
@@ -742,17 +762,24 @@ enum  {
             [profile release];
         }
         else if(buttonIndex == kFollowTheUser){
-            
+            [manager followByUserID:theUser.userId inTableView:@""];
         }
     }
     else if (actionSheet.tag == kStatusReplyActionSheet)
     {
-        if (buttonIndex == kReply) {
-            
+        if (buttonIndex == kRetweet) {
+            TwitterVC *tv = [[TwitterVC alloc]initWithNibName:@"TwitterVC" bundle:nil];
+            [self.navigationController pushViewController:tv animated:YES];
+            [tv setupForRepost:[NSString stringWithFormat:@"%lld",self.status.statusId]];
+            [tv release];
         }
         else if(buttonIndex == kComment)
         {
-            
+            TwitterVC *tv = [[TwitterVC alloc]initWithNibName:@"TwitterVC" bundle:nil];
+            [self.navigationController pushViewController:tv animated:YES];
+            [tv setupForComment:[NSString stringWithFormat:@"%lld",clickedComment.commentId] 
+                        weiboID:[NSString stringWithFormat:@"%lld",self.status.statusId]];
+            [tv release];
         }
     }
 }

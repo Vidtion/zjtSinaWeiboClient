@@ -65,6 +65,8 @@ typedef enum {
     SinaGetPois,                    //获取附近地点
     SinaSearchTopic,                //搜索某一话题下的微博
     SinaGetUserTopics,              //获取某人的话题列表
+    SinaReplyAComment,              //回复一条评论
+    SinaCommentAStatus,             //对一条微博进行评论
 }RequestType;
 
 @class ASINetworkQueue;
@@ -151,6 +153,11 @@ typedef enum {
 //获取某人的话题列表
 -(void)didGetuserTopics:(NSArray*)trendsArr;
 
+//回复一条评论
+-(void)didReplyAComment:(BOOL)isOK;
+
+//对一条微博进行评论
+-(void)didCommentAStatus:(BOOL)isOK;
 @end
 
 @interface WeiBoHttpManager : NSObject
@@ -268,4 +275,11 @@ typedef enum {
 
 //获取某人的话题列表
 -(void)getTopicsOfUser:(User*)user;
+
+//回复一条评论
+-(void)replyACommentWeiboId:(NSString *)weiboID commentID:(NSString*)commentID content:(NSString*)content;
+
+//对一条微博进行评论
+-(void)commentAStatus:(NSString*)weiboID content:(NSString*)content;
+
 @end

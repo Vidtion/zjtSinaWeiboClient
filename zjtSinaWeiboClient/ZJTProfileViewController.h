@@ -33,6 +33,8 @@
 @property (retain, nonatomic) IBOutlet ZJTProfileCell *locationProfileCell;
 @property (retain, nonatomic) IBOutlet ZJTProfileCell *descriptionProfileCell;
 
+@property (nonatomic,retain) NSArray *topicsArr;
+
 @end
 
 @interface ZJTProfileCell : UITableViewCell

@@ -161,7 +161,7 @@
 							<object class="IBUIButton" id="487018221">
 								<reference key="NSNextResponder" ref="1061007439"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{75, 121}, {44, 44}}</string>
+								<string key="NSFrame">{{138, 121}, {44, 44}}</string>
 								<reference key="NSSuperview" ref="1061007439"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="134135034"/>
@@ -186,7 +186,7 @@
 							<object class="IBUIButton" id="134135034">
 								<reference key="NSNextResponder" ref="1061007439"/>
 								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{138, 121}, {44, 44}}</string>
+								<string key="NSFrame">{{75, 121}, {44, 44}}</string>
 								<reference key="NSSuperview" ref="1061007439"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="352549682"/>
@@ -342,6 +342,38 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">locationButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="879480313"/>
+					</object>
+					<int key="connectionID">32</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">topicButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="134135034"/>
+					</object>
+					<int key="connectionID">33</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">photoButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="487018221"/>
+					</object>
+					<int key="connectionID">34</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">atButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="352549682"/>
+					</object>
+					<int key="connectionID">35</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="138311013"/>
 						<reference key="destination" ref="372490531"/>
@@ -479,7 +511,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">31</int>
+			<int key="maxID">35</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -488,24 +520,40 @@
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="TVBackView">UIImageView</string>
+						<string key="atButton">UIButton</string>
 						<string key="countLabel">UILabel</string>
+						<string key="locationButton">UIButton</string>
 						<string key="mainView">UIView</string>
+						<string key="photoButton">UIButton</string>
 						<string key="theImageView">UIImageView</string>
 						<string key="theScrollView">UIScrollView</string>
 						<string key="theTextView">UITextView</string>
+						<string key="topicButton">UIButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="TVBackView">
 							<string key="name">TVBackView</string>
 							<string key="candidateClassName">UIImageView</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="atButton">
+							<string key="name">atButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="countLabel">
 							<string key="name">countLabel</string>
 							<string key="candidateClassName">UILabel</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="locationButton">
+							<string key="name">locationButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="mainView">
 							<string key="name">mainView</string>
 							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="photoButton">
+							<string key="name">photoButton</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="theImageView">
 							<string key="name">theImageView</string>
@@ -518,6 +566,10 @@
 						<object class="IBToOneOutletInfo" key="theTextView">
 							<string key="name">theTextView</string>
 							<string key="candidateClassName">UITextView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="topicButton">
+							<string key="name">topicButton</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 					</dictionary>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">

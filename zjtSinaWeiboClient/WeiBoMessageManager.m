@@ -239,6 +239,18 @@ static WeiBoMessageManager * instance=nil;
     [httpManager getTopicsOfUser:user];
 }
 
+//回复一条评论
+-(void)replyACommentWeiboId:(NSString *)weiboID commentID:(NSString*)commentID content:(NSString*)content
+{
+    [httpManager replyACommentWeiboId:weiboID commentID:commentID content:content];
+}
+
+//对一条微博进行评论
+-(void)commentAStatus:(NSString*)weiboID content:(NSString*)content
+{
+    [httpManager commentAStatus:weiboID content:content];
+}
+
 #pragma mark - WeiBoHttpDelegate
 //获取最新的公共微博
 -(void)didGetPublicTimelineWithStatues:(NSArray *)statusArr
@@ -426,4 +438,19 @@ static WeiBoMessageManager * instance=nil;
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotUserTopics object:trendsArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
+
+//回复一条评论
+-(void)didReplyAComment:(BOOL)isOK
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaReplyAComment object:[NSNumber numberWithBool:isOK]];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+//对一条微博进行评论
+-(void)didCommentAStatus:(BOOL)isOK
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaCommentAStatus object:[NSNumber numberWithBool:isOK]];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
 @end

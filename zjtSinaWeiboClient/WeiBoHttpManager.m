@@ -812,7 +812,7 @@
                                        [NSString stringWithFormat:@"%d",1],             @"page",
                                        [NSString stringWithFormat:@"%lld",user.userId], @"uid",
                                        nil];
-    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/2/trends.json",SINA_V2_DOMAIN];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/trends.json",SINA_V2_DOMAIN];
     NSURL                   *url = [self generateURL:baseUrl params:params];
     
     ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
@@ -820,6 +820,40 @@
     [self setGetUserInfo:request withRequestType:SinaGetUserTopics];
     [requestQueue addOperation:request];
     [request release];
+}
+
+//回复一条评论
+-(void)replyACommentWeiboId:(NSString *)weiboID commentID:(NSString*)commentID content:(NSString*)content
+{
+    NSURL *url = [NSURL URLWithString:@"https://api.weibo.com/2/comments/reply.json"];
+    ASIFormDataRequest *item = [[ASIFormDataRequest alloc] initWithURL:url];
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    
+    [item setPostValue:authToken    forKey:@"access_token"];
+    [item setPostValue:commentID    forKey:@"cid"];
+    [item setPostValue:weiboID      forKey:@"id"];
+    [item setPostValue:content      forKey:@"comment"];
+    
+    [self setPostUserInfo:item withRequestType:SinaReplyAComment];
+    [requestQueue addOperation:item];
+    [item release];
+}
+
+//对一条微博进行评论
+-(void)commentAStatus:(NSString*)weiboID content:(NSString*)content
+{
+    //https://api.weibo.com/2/statuses/repost.json
+    NSURL *url = [NSURL URLWithString:@"https://api.weibo.com/2/comments/create.json"];
+    ASIFormDataRequest *item = [[ASIFormDataRequest alloc] initWithURL:url];
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    
+    [item setPostValue:authToken    forKey:@"access_token"];
+    [item setPostValue:content      forKey:@"comment"];
+    [item setPostValue:weiboID      forKey:@"id"];
+    
+    [self setPostUserInfo:item withRequestType:SinaCommentAStatus];
+    [requestQueue addOperation:item];
+    [item release];
 }
 
 #pragma mark - Operate queue
@@ -1255,7 +1289,49 @@
     //获取某人的话题列表
     if (requestType == SinaGetUserTopics)
     {
+        if (userArr == nil || [userArr isEqual:[NSNull null]]) 
+        {
+            return;
+        }
+        if ([delegate respondsToSelector:@selector(didGetuserTopics:)]) {
+            [delegate didGetuserTopics:userArr];
+        }
+    }
+    
+    //回复一条评论
+    if (requestType == SinaReplyAComment) {
+        NSDictionary *dic = [userInfo objectForKey:@"reply_comment"];
+        if (dic) 
+        {
+            if ([delegate respondsToSelector:@selector(didReplyAComment:)]) {
+                [delegate didReplyAComment:YES];
+            }
+        }
+        else 
+        {
+            if ([delegate respondsToSelector:@selector(didReplyAComment:)]) {
+                [delegate didReplyAComment:NO];
+            }
+        }
+    }
+    
+    //对一条微博进行评论
+    if (requestType == SinaCommentAStatus) 
+    {
         
+        NSDictionary *dic = [userInfo objectForKey:@"reply_comment"];
+        if (dic) 
+        {
+            if ([delegate respondsToSelector:@selector(didCommentAStatus:)]) {
+                [delegate didCommentAStatus:YES];
+            }
+        }
+        else 
+        {
+            if ([delegate respondsToSelector:@selector(didCommentAStatus:)]) {
+                [delegate didCommentAStatus:NO];
+            }
+        }
     }
 }
 

@@ -113,7 +113,7 @@
 					<object class="IBUIImageView" id="103377521">
 						<reference key="NSNextResponder" ref="857497767"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{130, 33}, {13, 13}}</string>
+						<string key="NSFrame">{{206, 29}, {13, 13}}</string>
 						<reference key="NSSuperview" ref="857497767"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="6614373"/>
@@ -128,7 +128,7 @@
 					<object class="IBUILabel" id="874244991">
 						<reference key="NSNextResponder" ref="857497767"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{80, 28}, {42, 21}}</string>
+						<string key="NSFrame">{{80, 28}, {125, 21}}</string>
 						<reference key="NSSuperview" ref="857497767"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="103377521"/>
@@ -138,7 +138,7 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Label</string>
+						<string key="IBUIText">正在载入</string>
 						<object class="NSColor" key="IBUITextColor" id="241000640">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MCAwIDAAA</bytes>
@@ -155,6 +155,7 @@
 							<double key="NSSize">17</double>
 							<int key="NSfFlags">16</int>
 						</object>
+						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUIButton" id="1052779732">
 						<reference key="NSNextResponder" ref="857497767"/>
@@ -723,6 +724,15 @@
 					<int key="connectionID">32</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">followButtonClicked:</string>
+						<reference key="source" ref="1052779732"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">58</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">contentLabel</string>
 						<reference key="source" ref="864188244"/>
@@ -755,6 +765,15 @@
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">55</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">gotoUserTopicsVC:</string>
+						<reference key="source" ref="371414274"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">57</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -847,7 +866,6 @@
 							<reference ref="6614373"/>
 							<reference ref="1052779732"/>
 							<reference ref="874244991"/>
-							<reference ref="103377521"/>
 							<reference ref="589670279"/>
 							<reference ref="559708780"/>
 							<reference ref="420586184"/>
@@ -855,6 +873,7 @@
 							<reference ref="662477842"/>
 							<reference ref="371414274"/>
 							<reference ref="620900649"/>
+							<reference ref="103377521"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -1006,7 +1025,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">56</int>
+			<int key="maxID">58</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">

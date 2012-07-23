@@ -78,6 +78,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    refreshFooterView.hidden = NO;
     _page = 1;
     _maxID = -1;
     _shouldAppendTheDataArr = NO;
