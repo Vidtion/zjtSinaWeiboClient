@@ -13,8 +13,8 @@
 @end
 
 @implementation ZJTAddTrendTableViewController
-@synthesize searchBar;
-@synthesize table;
+@synthesize searchBar = _searchBar;
+@synthesize table = _table;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,8 +53,8 @@
 }
 
 - (void)dealloc {
-    [searchBar release];
-    [table release];
+    [_searchBar release];
+    [_table release];
     [super dealloc];
 }
 
