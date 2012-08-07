@@ -112,6 +112,13 @@
     return self;
 }
 
+- (IBAction)atButtonClicked:(id)sender {
+    AtTableViewController *at = [[AtTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    at.delegate = self;
+    [self.navigationController pushViewController:at animated:YES];
+    [at release];
+}
+
 -(void)setupForReply
 {
     locationButton.hidden = YES;
@@ -364,6 +371,11 @@
 -(void)poisCellDidSelected:(POI *)poi
 {
     theTextView.text = [theTextView.text stringByAppendingFormat:@"我在这里：#%@#",poi.title];
+}
+
+-(void)atTableViewControllerCellDidClickedWithScreenName:(NSString*)name
+{
+    theTextView.text = [theTextView.text stringByAppendingFormat:@"@%@",name];
 }
 
 @end

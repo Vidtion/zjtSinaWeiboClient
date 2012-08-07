@@ -64,6 +64,7 @@ typedef enum {
 @property (nonatomic, retain) NSIndexPath *cellIndexPath;
 @property (nonatomic, assign) int topicCount;
 @property (nonatomic, copy) NSString *verifiedReason;
+@property (nonatomic, copy) NSString *pinyin;
 
 
 

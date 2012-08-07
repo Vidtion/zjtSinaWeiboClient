@@ -16,6 +16,8 @@
 		45A09838157364090026B18A /* icon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 45A09837157364080026B18A /* icon.jpg */; };
 		45C3EE9D1500D42C004A282E /* GifView.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C3EE9C1500D42C004A282E /* GifView.m */; };
 		45C3EEA81500DD7A004A282E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45C3EEA71500DD7A004A282E /* ImageIO.framework */; };
+		45C83FED15D0A81F001C4604 /* AtTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C83FEC15D0A81F001C4604 /* AtTableViewController.m */; };
+		45C83FF915D0F449001C4604 /* ChineseToPinyin.m in Sources */ = {isa = PBXBuildFile; fileRef = 45C83FF815D0F429001C4604 /* ChineseToPinyin.m */; };
 		AB01D19E159A0F5D00F15885 /* HotTrendsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB01D19C159A0F5D00F15885 /* HotTrendsVC.m */; };
 		AB0412CF15A0B08100097385 /* FollowAndFansVC.m in Sources */ = {isa = PBXBuildFile; fileRef = AB0412CD15A0B08100097385 /* FollowAndFansVC.m */; };
 		AB0412D015A0B08100097385 /* FollowAndFansVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB0412CE15A0B08100097385 /* FollowAndFansVC.xib */; };
@@ -214,6 +216,10 @@
 		45C3EE9B1500D42C004A282E /* GifView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GifView.h; sourceTree = "<group>"; };
 		45C3EE9C1500D42C004A282E /* GifView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GifView.m; sourceTree = "<group>"; };
 		45C3EEA71500DD7A004A282E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		45C83FEB15D0A81F001C4604 /* AtTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AtTableViewController.h; sourceTree = "<group>"; };
+		45C83FEC15D0A81F001C4604 /* AtTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AtTableViewController.m; sourceTree = "<group>"; };
+		45C83FF715D0F429001C4604 /* ChineseToPinyin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChineseToPinyin.h; sourceTree = "<group>"; };
+		45C83FF815D0F429001C4604 /* ChineseToPinyin.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChineseToPinyin.m; sourceTree = "<group>"; };
 		AB01D19B159A0F5D00F15885 /* HotTrendsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotTrendsVC.h; sourceTree = "<group>"; };
 		AB01D19C159A0F5D00F15885 /* HotTrendsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotTrendsVC.m; sourceTree = "<group>"; };
 		AB0412CC15A0B08100097385 /* FollowAndFansVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FollowAndFansVC.h; sourceTree = "<group>"; };
@@ -514,6 +520,8 @@
 		4547F2071508A8790082FD13 /* ZJTTools */ = {
 			isa = PBXGroup;
 			children = (
+				45C83FF715D0F429001C4604 /* ChineseToPinyin.h */,
+				45C83FF815D0F429001C4604 /* ChineseToPinyin.m */,
 				4547F2091508A8CE0082FD13 /* ZJTHelpler.h */,
 				4547F20A1508A8CE0082FD13 /* ZJTHelpler.m */,
 				AB2C43771555036000A4BAFD /* ZJTStatusBarAlertWindow.h */,
@@ -578,6 +586,8 @@
 				AB7E0B7315B1695E00A94AC7 /* ZJTProfileViewController.h */,
 				AB7E0B7415B1695E00A94AC7 /* ZJTProfileViewController.m */,
 				AB7E0B7515B1695E00A94AC7 /* ZJTProfileViewController.xib */,
+				45C83FEB15D0A81F001C4604 /* AtTableViewController.h */,
+				45C83FEC15D0A81F001C4604 /* AtTableViewController.m */,
 			);
 			name = OtherVCs;
 			sourceTree = "<group>";
@@ -1226,6 +1236,8 @@
 				AB4E61A815AC6B8100FE4BCE /* HotTrendsDetailTableVC.m in Sources */,
 				AB4E61B415AC89E100FE4BCE /* ZJTAddTrendTableViewController.m in Sources */,
 				AB7E0B7615B1695E00A94AC7 /* ZJTProfileViewController.m in Sources */,
+				45C83FED15D0A81F001C4604 /* AtTableViewController.m in Sources */,
+				45C83FF915D0F449001C4604 /* ChineseToPinyin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1308,8 +1320,8 @@
 					"\"$(SRCROOT)/zjtSinaWeiboClient/WeiboEngine\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "82E8652D-CC4D-4F2A-8CCE-EC017B10E0FD";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "82E8652D-CC4D-4F2A-8CCE-EC017B10E0FD";
+				PROVISIONING_PROFILE = "691CA5EB-4E24-450B-B318-D1DD6C4B4E11";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "691CA5EB-4E24-450B-B318-D1DD6C4B4E11";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;

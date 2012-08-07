@@ -26,6 +26,7 @@
 @synthesize followerCellNib = _followerCellNib;
 @synthesize user = _user;
 @synthesize table;
+
 -(void)dealloc
 {
     self.table = nil;
