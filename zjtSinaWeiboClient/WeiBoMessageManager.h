@@ -90,11 +90,41 @@
 //返回成员为Status的NSArray
 #define MMSinaGotHotCommentDaily @"MMSinaGotHotCommentDaily"
 
+//返回最近一天内的热门话题
+//返回成员为NSDictionary： 
+//{
+//    "name": "曼联",
+//    "query": "曼联"
+//}
+#define MMSinaGotHotCommentDaily @"MMSinaGotHotCommentDaily"
+
 //获取某个用户的各种消息未读数
 #define MMSinaGotUnreadCount @"MMSinaGotUnreadCount"
 
 //获取最新的提到登录用户的微博列表，即@我的微博
 #define MMSinaGotMetionsStatuses @"MMSinaGotMetionsStatuses"
+
+//获取附近地点
+//返回成员为POI的NSArray
+#define MMSinaGotPois @"MMSinaGotPois"
+
+//搜索某一话题下的微博
+//返回成员为Status的NSArray
+#define MMSinaGotTopicStatuses  @"MMSinaGotTopicStatuses"
+
+//获取某人的话题列表
+//{
+//    "num": 225673,
+//    "hotword": "苹果",
+//    "trend_id": 1567898
+//},
+#define MMSinaGotUserTopics  @"MMSinaGotUserTopics"
+
+//回复一条评论
+#define MMSinaReplyAComment @"MMSinaReplyAComment"
+
+//对一条微博进行评论
+#define MMSinaCommentAStatus @"MMSinaCommentAStatus"
 
 @interface WeiBoMessageManager : NSObject <WeiBoHttpDelegate>
 {
@@ -119,9 +149,10 @@
 
 //获取任意一个用户的信息
 -(void)getUserInfoWithUserID:(long long)uid;
+-(void)getUserInfoWithScreenName:(NSString*)sn;
 
 //根据微博消息ID返回某条微博消息的评论列表
--(void)getCommentListWithID:(long long)weiboID;
+-(void)getCommentListWithID:(long long)weiboID maxID:(NSString*)max_id page:(int)page;
 
 //获取用户双向关注的用户ID列表，即互粉UID列表 
 -(void)getBilateralIdListAll:(long long)uid sort:(int)sort;
@@ -138,13 +169,13 @@
 -(void)getBilateralUserListAll:(long long)uid sort:(int)sort;
 
 //关注一个用户 by User ID
--(void)followByUserID:(long long)uid;
+-(void)followByUserID:(long long)uid inTableView:(NSString*)tableName;
 
 //关注一个用户 by User Name
 -(void)followByUserName:(NSString*)userName;
 
 //取消关注一个用户 by User ID
--(void)unfollowByUserID:(long long)uid;
+-(void)unfollowByUserID:(long long)uid inTableView:(NSString*)tableName;
 
 //取消关注一个用户 by User Name
 -(void)unfollowByUserName:(NSString*)userName;
@@ -180,10 +211,27 @@
 //按天返回热门微博评论榜的微博列表
 -(void)getHotCommnetDaily:(int)count;
 
+//返回最近一天内的热门话题
+-(void)getHOtTrendsDaily;
+
 //获取某个用户的各种消息未读数
 -(void)getUnreadCount:(NSString*)uid;
 
 //获取最新的提到登录用户的微博列表，即@我的微博
 -(void)getMetionsStatuses;
 
+//获取附近地点
+-(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate queryStr:(NSString*)queryStr;
+
+//搜索某一话题下的微博
+-(void)searchTopic:(NSString *)queryStr count:(int)count page:(int)page;
+
+//获取某人的话题列表
+-(void)getTopicsOfUser:(User*)user;
+
+//回复一条评论
+-(void)replyACommentWeiboId:(NSString *)weiboID commentID:(NSString*)commentID content:(NSString*)content;
+
+//对一条微博进行评论
+-(void)commentAStatus:(NSString*)weiboID content:(NSString*)content;
 @end

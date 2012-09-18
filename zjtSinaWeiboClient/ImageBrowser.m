@@ -62,8 +62,9 @@
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self   name:HHNetDataCacheNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self       name:@"tapClicked"              object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self   name:@"tapClicked"              object:nil];
     [UIApplication sharedApplication].statusBarHidden = NO;
+    aScrollView.contentSize = CGSizeMake(320, 480);
     [self removeFromSuperview];
 }
 
@@ -79,14 +80,33 @@
     [alert release];
 }
 
+-(void)zoomToFit
+{
+    CGFloat zoom = 320.0/imageView.image.size.width;
+    CGSize size = CGSizeMake(320.0, imageView.image.size.height * zoom);
+    
+    CGRect frame = imageView.frame;
+    frame.size = size;
+    frame.origin.x = 0;
+    CGFloat y = (480.0 - size.height)/2.0;
+    frame.origin.y = y >= 0 ? y:0;
+    imageView.frame = frame;
+    if (self.imageView.frame.size.height > 480) {
+        aScrollView.contentSize = CGSizeMake(320, self.imageView.frame.size.height);
+    }
+    else {
+        aScrollView.contentSize = CGSizeMake(320, 480);
+    }
+}
 
 #pragma mark - View lifecycle
 -(void)loadImage
 {
     [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(getOriginImage:) name:HHNetDataCacheNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self      selector:@selector(dismiss)         name:@"tapClicked"              object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(dismiss)         name:@"tapClicked"              object:nil];
     aScrollView.zoomScale = 1.0;
     [imageView setImage:image];
+    [self zoomToFit];
     if (bigImageURL!=nil) 
     {
         [[HHNetDataCacheManager getInstance] getDataWithURL:bigImageURL];

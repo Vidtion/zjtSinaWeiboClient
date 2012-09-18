@@ -21,6 +21,8 @@
 
 +(ZJTHelpler*)getInstance;
 
++ (NSString *) regularStringFromSearchString:(NSString *)string;
+
 //大小变化动画
 + (CAAnimation *)animationWithScaleFrom:(CGFloat) from To:(CGFloat) to Duration:(CGFloat) duration BeginTime:(CGFloat)beginTime;
 

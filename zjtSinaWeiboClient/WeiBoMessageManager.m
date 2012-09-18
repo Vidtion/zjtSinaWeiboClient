@@ -73,10 +73,15 @@ static WeiBoMessageManager * instance=nil;
     [httpManager getUserInfoWithUserID:uid];
 }
 
-//根据微博消息ID返回某条微博消息的评论列表
--(void)getCommentListWithID:(long long)weiboID
+-(void)getUserInfoWithScreenName:(NSString*)sn
 {
-    [httpManager getCommentListWithID:weiboID];
+    [httpManager getUserInfoWithScreenName:sn];
+}
+
+//根据微博消息ID返回某条微博消息的评论列表
+-(void)getCommentListWithID:(long long)weiboID maxID:(NSString*)max_id page:(int)page
+{
+    [httpManager getCommentListWithID:weiboID maxID:max_id page:page];
 }
 
 
@@ -115,9 +120,9 @@ static WeiBoMessageManager * instance=nil;
 }
 
 //关注一个用户 by User ID
--(void)followByUserID:(long long)uid
+-(void)followByUserID:(long long)uid inTableView:(NSString*)tableName
 {
-    [httpManager followByUserID:uid];
+    [httpManager followByUserID:uid inTableView:tableName];
 }
 
 //关注一个用户 by User Name
@@ -127,9 +132,9 @@ static WeiBoMessageManager * instance=nil;
 }
 
 //取消关注一个用户 by User ID
--(void)unfollowByUserID:(long long)uid
+-(void)unfollowByUserID:(long long)uid inTableView:(NSString*)tableName
 {
-    [httpManager unfollowByUserID:uid];
+    [httpManager unfollowByUserID:uid inTableView:tableName];
 }
 
 //取消关注一个用户 by User Name
@@ -198,6 +203,12 @@ static WeiBoMessageManager * instance=nil;
     [httpManager getHotCommnetDaily:count];
 }
 
+//返回最近一天内的热门话题
+-(void)getHOtTrendsDaily
+{
+    [httpManager getHOtTrendsDaily];
+}
+
 //获取某个用户的各种消息未读数
 -(void)getUnreadCount:(NSString*)uid
 {
@@ -208,6 +219,36 @@ static WeiBoMessageManager * instance=nil;
 -(void)getMetionsStatuses
 {
     [httpManager getMetionsStatuses];
+}
+
+//获取附近地点
+-(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate queryStr:(NSString*)queryStr
+{
+    [httpManager getPoisWithCoodinate:coodinate queryStr:queryStr];
+}
+
+//搜索某一话题下的微博
+-(void)searchTopic:(NSString *)queryStr count:(int)count page:(int)page
+{
+    [httpManager searchTopic:queryStr count:count page:page];
+}
+
+//获取某人的话题列表
+-(void)getTopicsOfUser:(User*)user
+{
+    [httpManager getTopicsOfUser:user];
+}
+
+//回复一条评论
+-(void)replyACommentWeiboId:(NSString *)weiboID commentID:(NSString*)commentID content:(NSString*)content
+{
+    [httpManager replyACommentWeiboId:weiboID commentID:commentID content:content];
+}
+
+//对一条微博进行评论
+-(void)commentAStatus:(NSString*)weiboID content:(NSString*)content
+{
+    [httpManager commentAStatus:weiboID content:content];
 }
 
 #pragma mark - WeiBoHttpDelegate
@@ -257,16 +298,16 @@ static WeiBoMessageManager * instance=nil;
 }
 
 //获取用户的关注列表
--(void)didGetFollowingUsersList:(NSArray *)userArr
+-(void)didGetFollowingUsersList:(NSDictionary *)dic
 {
-    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotFollowingUserList object:userArr];
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotFollowingUserList object:dic];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 //获取用户的粉丝列表
--(void)didGetFollowedUsersList:(NSArray *)userArr
+-(void)didGetFollowedUsersList:(NSDictionary *)dic
 {
-    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotFollowedUserList object:userArr];
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotFollowedUserList object:dic];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
@@ -347,7 +388,6 @@ static WeiBoMessageManager * instance=nil;
 //按天返回热门微博转发榜的微博列表
 -(void)didGetHotRepostDaily:(NSArray *)statusArr
 {
-    NSLog(@"hot repost :%@",[statusArr objectAtIndex:0]);
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotHotRepostDaily object:statusArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
@@ -356,6 +396,13 @@ static WeiBoMessageManager * instance=nil;
 -(void)didGetHotCommentDaily:(NSArray *)statusArr
 {
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotHotCommentDaily object:statusArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+//返回最近一天内的热门话题
+-(void)didGetHotTrendDaily:(NSArray*)trendsArr
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotHotCommentDaily object:trendsArr];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
@@ -369,6 +416,40 @@ static WeiBoMessageManager * instance=nil;
 -(void)didGetMetionsStatused:(NSArray *)statusArr
 {
     NSNotification *notification = [NSNotification notificationWithName:MMSinaGotMetionsStatuses object:statusArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+-(void)didgetPois:(NSArray *)poisArr
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotPois object:poisArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+//搜索某一话题下的微博
+-(void)didGetTopicSearchResult:(NSArray *)statusArr
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotTopicStatuses object:statusArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+//获取某人的话题列表
+-(void)didGetuserTopics:(NSArray *)trendsArr   
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaGotUserTopics object:trendsArr];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+//回复一条评论
+-(void)didReplyAComment:(BOOL)isOK
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaReplyAComment object:[NSNumber numberWithBool:isOK]];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
+}
+
+//对一条微博进行评论
+-(void)didCommentAStatus:(BOOL)isOK
+{
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaCommentAStatus object:[NSNumber numberWithBool:isOK]];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 

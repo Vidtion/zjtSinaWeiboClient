@@ -61,8 +61,10 @@ static CoreDataManager * instance;
     [fetch setEntity:entity];
     
     NSError *error = nil;
-	NSMutableArray *resultsArr = [[[_managedObjContext executeFetchRequest:fetch error:&error] mutableCopy] retain];
+	NSMutableArray *resultsArr = [[_managedObjContext executeFetchRequest:fetch error:&error] mutableCopy];
 	if (resultsArr == nil || [resultsArr count] == 0) {
+        [fetch release];
+        [resultsArr release];
 		return nil;
 	}
     
@@ -83,7 +85,7 @@ static CoreDataManager * instance;
         
         statusItem.retweetedStatus = [sts.retweetedStatus updateStatusCDItem:statusItem.retweetedStatus index:-1 isHomeLine:NO];
     }
-    statusItem = [sts updateStatusCDItem:statusItem index:theIndex isHomeLine:isHome];
+    [sts updateStatusCDItem:statusItem index:theIndex isHomeLine:isHome];
     
     NSError *error;
 	if (![_managedObjContext save:&error]) {
@@ -100,8 +102,10 @@ static CoreDataManager * instance;
     [fetch setEntity:entity];
     
     NSError *error = nil;
-	NSMutableArray *resultsArr = [[[_managedObjContext executeFetchRequest:fetch error:&error] mutableCopy] retain];
+	NSMutableArray *resultsArr = [[_managedObjContext executeFetchRequest:fetch error:&error] mutableCopy];
 	if (resultsArr == nil || [resultsArr count] == 0) {
+        [fetch release];
+        [resultsArr release];
 		return nil;
 	}
     
@@ -118,8 +122,10 @@ static CoreDataManager * instance;
     [fetch setEntity:entity];
     
     NSError *error = nil;
-	NSMutableArray *resultsArr = [[[_managedObjContext executeFetchRequest:fetch error:&error] mutableCopy] retain];
+	NSMutableArray *resultsArr = [[_managedObjContext executeFetchRequest:fetch error:&error] mutableCopy];
 	if (resultsArr == nil || [resultsArr count] == 0) {
+        [fetch release];
+        [resultsArr release];
 		return ;
 	}
     

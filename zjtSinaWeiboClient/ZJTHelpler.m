@@ -27,6 +27,19 @@ static ZJTHelpler *instance = nil;
     return instance;
 }
 
++ (NSString *) regularStringFromSearchString:(NSString *)string
+{
+	NSMutableString * stringRet = [[NSMutableString alloc] initWithCapacity:0];
+	for( int i = 0; i < [string length]; i++ )
+	{
+		[stringRet appendFormat:@".*(%@)", [string substringWithRange:NSMakeRange(i, 1)]];
+	}
+	
+	[stringRet appendString:@".*"];
+	
+	return [stringRet autorelease];
+}
+
 + (CAAnimation *)animationMoveFrom:(CGPoint) from To:(CGPoint) to Duration:(CGFloat) duration BeginTime:(CGFloat)beginTime //位置变化动画
 {
 	CAKeyframeAnimation *bounceAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];	

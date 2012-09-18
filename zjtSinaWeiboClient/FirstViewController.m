@@ -26,7 +26,7 @@
     
     [timer invalidate];
     self.timer = nil;
-    
+        
     [super dealloc];
 }
 
@@ -39,22 +39,38 @@
 
 -(void)getDataFromCD
 {
-    if (!statuesArr || statuesArr.count == 0) {
-        statuesArr = [[NSMutableArray alloc] initWithCapacity:70];
-        NSArray *arr = [[CoreDataManager getInstance] readStatusesFromCD];
-        if (arr && arr.count != 0) {
-            for (int i = 0; i < arr.count; i++) 
-            {
-                StatusCDItem *s = [arr objectAtIndex:i];
-                Status *sts = [[Status alloc]init];
-                sts = [sts updataStatusFromStatusCDItem:s];
-                
-                [statuesArr insertObject:sts atIndex:s.index.intValue];
+    NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:@"homePageMaxID"];
+    if (number) {
+        _maxID = number.longLongValue;
+    }
+    
+    dispatch_queue_t readQueue = dispatch_queue_create("read from db", NULL);
+    dispatch_async(readQueue, ^(void){
+        if (!statuesArr || statuesArr.count == 0) {
+            statuesArr = [[NSMutableArray alloc] initWithCapacity:70];
+            NSArray *arr = [[CoreDataManager getInstance] readStatusesFromCD];
+            if (arr && arr.count != 0) {
+                for (int i = 0; i < arr.count; i++) 
+                {
+                    StatusCDItem *s = [arr objectAtIndex:i];
+                    Status *sts = [[Status alloc]init];
+                    [sts updataStatusFromStatusCDItem:s];
+                    if (i == 0) {
+                        sts.isRefresh = @"YES";
+                    }
+                    [statuesArr insertObject:sts atIndex:s.index.intValue];
+                    [sts release];
+                }
             }
         }
-    }
-    [table reloadData];
-    [self getImages];
+        [[CoreDataManager getInstance] cleanEntityRecords:@"StatusCDItem"];
+        [[CoreDataManager getInstance] cleanEntityRecords:@"UserCDItem"];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+        dispatch_release(readQueue);
+    });
 }
 
 							
@@ -62,33 +78,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    refreshFooterView.hidden = NO;
+    _page = 1;
+    _maxID = -1;
+    _shouldAppendTheDataArr = NO;
     UIBarButtonItem *retwitterBtn = [[UIBarButtonItem alloc]initWithTitle:@"发微博" style:UIBarButtonItemStylePlain target:self action:@selector(twitter)];
     self.navigationItem.rightBarButtonItem = retwitterBtn;
     [retwitterBtn release];
         
-    //如果未授权，则调入授权页面。
-    NSString *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
-    NSLog([manager isNeedToRefreshTheToken] == YES ? @"need to login":@"will login");
-    if (authToken == nil || [manager isNeedToRefreshTheToken]) 
-    {
-        shouldLoad = YES;
-        OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
-        webV.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:webV animated:NO];
-        [webV release];
-    }
-    else
-    {
-        [self getDataFromCD];
-        
-        if (!statuesArr || statuesArr.count == 0) {
-            [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
-            [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
-        }
-        
-        [manager getUserID];
-    }
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserID:)      name:MMSinaGotUserID            object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetHomeLine:)    name:MMSinaGotHomeLine          object:nil];
     [defaultNotifCenter addObserver:self selector:@selector(didGetUserInfo:)    name:MMSinaGotUserInfo          object:nil];
@@ -129,9 +126,42 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    //如果未授权，则调入授权页面。
+    if (statuesArr != nil && statuesArr.count != 0) {
+        return;
+    }
+    NSString *authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSLog([manager isNeedToRefreshTheToken] == YES ? @"need to login":@"did login");
+    if (authToken == nil || [manager isNeedToRefreshTheToken]) 
+    {
+        shouldLoad = YES;
+        OAuthWebView *webV = [[OAuthWebView alloc]initWithNibName:@"OAuthWebView" bundle:nil];
+        webV.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:webV animated:NO];
+        [webV release];
+    }
+    else
+    {
+        [self getDataFromCD];
+        
+        if (!statuesArr || statuesArr.count == 0) {
+            [manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+            [[SHKActivityIndicator currentIndicator] displayActivity:@"正在载入..." inView:self.view];
+        }
+        
+        [manager getUserID];
+        [manager getHOtTrendsDaily];
+    }
 }
 
 #pragma mark - Methods
+
+//上拉
+-(void)refresh
+{
+    [manager getHomeLine:-1 maxID:_maxID count:-1 page:_page baseApp:-1 feature:-1];
+    _shouldAppendTheDataArr = YES;
+}
 
 -(void)appWillResign:(id)sender
 {
@@ -143,7 +173,7 @@
 
 -(void)timerOnActive
 {
-    [manager getUnreadCount:userID];
+//    [manager getUnreadCount:userID];
 }
 
 -(void)relogin
@@ -195,22 +225,32 @@
     [self stopLoading];
     [self doneLoadingTableViewData];
     
-    [statuesArr removeAllObjects];
-    self.statuesArr = sender.object;
-    [table reloadData];
+    if (statuesArr == nil || _shouldAppendTheDataArr == NO || _maxID < 0) {
+        self.statuesArr = sender.object;
+        Status *sts = [statuesArr objectAtIndex:0];
+        _maxID = sts.statusId;
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLongLong:_maxID] forKey:@"homePageMaxID"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        _page = 1;
+    }
+    else {
+        [statuesArr addObjectsFromArray:sender.object];
+    }
+    _page++;
+    refreshFooterView.hidden = NO;
     [self.tableView reloadData];
-    
     [[SHKActivityIndicator currentIndicator] hide];
-    [[ZJTStatusBarAlertWindow getInstance] hide];
-    
-    [headDictionary  removeAllObjects];
-    [imageDictionary removeAllObjects];
-    
-    [self getImages];
+    [self refreshVisibleCellsImages];
     
     if (timer == nil) {
         self.timer = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(timerOnActive) userInfo:nil repeats:YES];
     }
+}
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+    _reloading = YES;
+	[manager getHomeLine:-1 maxID:-1 count:-1 page:-1 baseApp:-1 feature:-1];
+    _shouldAppendTheDataArr = NO;
 }
 
 -(void)didGetUnreadCount:(NSNotification*)sender

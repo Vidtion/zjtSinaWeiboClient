@@ -131,4 +131,10 @@
 	return result;
 }
 
+- (NSString *)decodeFromURL
+{
+    NSString *decoded = [NSMakeCollectable(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault, (CFStringRef)self, CFSTR(""), kCFStringEncodingUTF8)) autorelease];
+    return [decoded stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+}
+
 @end

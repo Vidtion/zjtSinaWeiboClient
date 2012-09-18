@@ -18,6 +18,8 @@
 @synthesize delegate;
 
 @synthesize cellIndexPath;
+@synthesize avatarImage;
+@synthesize vipImageView;
 
 -(IBAction)replyBtnClicked:(id)sender
 {
@@ -35,6 +37,8 @@
     [timeLB release];
     [contentLB release];
     [replyBtn release];
+    [avatarImage release];
+    [vipImageView release];
     [super dealloc];
 }
 

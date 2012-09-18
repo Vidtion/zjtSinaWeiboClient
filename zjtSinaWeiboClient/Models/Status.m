@@ -17,6 +17,9 @@
 @synthesize hasRetwitter;
 @synthesize haveRetwitterImage;
 @synthesize hasImage;
+@synthesize statusImage;
+@synthesize cellIndexPath;
+@synthesize isRefresh;
 
 -(StatusCDItem*)updateStatusCDItem:(StatusCDItem*)sts index:(int)theIndex isHomeLine:(BOOL) isHome
 {
@@ -239,6 +242,9 @@
 
 
 - (void)dealloc {
+    [isRefresh release];
+    [cellIndexPath release];
+    [statusImage release];
 	[text release];
 	[source release];
 	[sourceUrl release];

@@ -9,6 +9,7 @@
 #import "HHNetDataCacheManager.h"
 #import "CoreDataManager.h"
 #import "Images.h"
+#import "SHKActivityIndicator.h"
 
 @interface HHNetDataCacheManager()
 @end
@@ -106,25 +107,25 @@ static HHNetDataCacheManager * instance;
     NSNumber *indexNumber = [request.userInfo objectForKey:@"index"];
     
     NSData * data=[request responseData];
-    [_CDManager insertImageToCD:data url:url];
-    [self sendNotificationWithKey:url Data:data index:indexNumber];
-    //add to cache
-    @synchronized(self) {
-        [cacheArray insertObject:url atIndex:0];
-        [cacheDic setValue:data forKey:url];
-        if ([cacheArray count]>MaxCacheBufferSize) {
-            //remove
-            NSString * str=[cacheArray lastObject];
-            [cacheDic removeObjectForKey:str];
-            [cacheArray removeLastObject];
-        }
+    if ([url rangeOfString:@"/180/"].location == NSNotFound) {
+        [_CDManager insertImageToCD:data url:url];
     }
+    [self sendNotificationWithKey:url Data:data index:indexNumber];
 }
 
 //下载进度
 - (void)setProgress:(ASIHTTPRequest *)request newProgress:(float)newProgress
 {
-//    NSLog(@"progress = %f",newProgress);
+    NSDictionary *dic = request.userInfo;
+    NSObject *obj = [dic objectForKey:@"index"];
+    if (obj == nil) 
+    {
+        NSString *progressStr = [NSString stringWithFormat:@"%.1f%%",newProgress*100];
+        NSLog(@"%@",progressStr);
+        if (newProgress > 0.0) {
+            [[SHKActivityIndicator currentIndicator]setSubMessage:progressStr];
+        }
+    }
 }
 
 

@@ -25,6 +25,7 @@
     
     UITableView         *table;
     NSString            *userID;
+    NSString            *screenName;
     UINib               *statusCellNib;
     NSMutableArray      *statuesArr;
     NSMutableDictionary *imageDictionary;
@@ -35,6 +36,9 @@
     BOOL                shouldLoad;
     BOOL                shouldLoadAvatar;
     BOOL                isFirstCell;
+    
+    int _page;
+    long long _maxID;
 }
 
 @property (retain, nonatomic)   IBOutlet UITableView    *table;
@@ -51,5 +55,5 @@
 @property (retain, nonatomic) IBOutlet UILabel *weiboCount;
 @property (retain, nonatomic) IBOutlet UILabel *followerCount;
 @property (retain, nonatomic) IBOutlet UILabel *followingCount;
-
+@property (retain, nonatomic) NSString *screenName;
 @end

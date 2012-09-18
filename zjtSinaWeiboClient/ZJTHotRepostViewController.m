@@ -17,7 +17,7 @@
 
 -(id)initWithType:(VCType)type
 {
-    self = [super init];
+    self = [super initWithNibName:@"FirstViewController" bundle:nil];
     if (self) {
         self.type = type;
     }
@@ -27,6 +27,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _refreshHeaderView.hidden = YES;
+    refreshArrow.image = nil;
+    refreshArrow.hidden = YES;
+    refreshLabel.hidden = YES;
+    refreshSpinner.hidden = YES;
+    
     if (_type == kHotRepostDaily) {
         self.title = @"今日热门转发";
         [defaultNotifCenter addObserver:self selector:@selector(didGetHotStatus:)    name:MMSinaGotHotRepostDaily   object:nil];
@@ -103,10 +110,44 @@
     [[SHKActivityIndicator currentIndicator] hide];
 //    [[ZJTStatusBarAlertWindow getInstance] hide];
     
-    [headDictionary  removeAllObjects];
-    [imageDictionary removeAllObjects];
+    [self refreshVisibleCellsImages];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{	
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self refreshVisibleCellsImages];
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    //    [self refreshVisibleCellsImages];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     
-    [self getImages];
+    if (!decelerate)
+	{
+        [self refreshVisibleCellsImages];
+    }
+}
+
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view{
+    
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view{
+	return NO;
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view{
+	return nil;
 }
 
 @end

@@ -122,17 +122,17 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
 	//这里是几个重定向，将每个重定向的网址遍历，如果遇到＃号，则重定向到自己申请时候填写的网址，后面会附上access_token的值
-    UIApplication *app = [UIApplication sharedApplication];
-    UIWindow *window = nil;
-    for (UIWindow *win in app.windows) {
-        if (win.tag == 1) {
-            window = win;
-            window.windowLevel = UIWindowLevelNormal;
-        }
-        if (win.tag == 0) {
-            [win makeKeyAndVisible];
-        }
-    }
+//    UIApplication *app = [UIApplication sharedApplication];
+//    UIWindow *window = nil;
+//    for (UIWindow *win in app.windows) {
+//        if (win.tag == 1) {
+//            window = win;
+//            window.windowLevel = UIWindowLevelNormal;
+//        }
+//        if (win.tag == 0) {
+//            [win makeKeyAndVisible];
+//        }
+//    }
     
 	NSURL *url = [request URL];
     NSLog(@"webview's url = %@",url);

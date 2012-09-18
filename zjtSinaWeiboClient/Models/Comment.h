@@ -37,6 +37,8 @@
 @property (nonatomic, retain) Status*			status; //评论的微博
 @property (nonatomic, retain) Comment*		replyComment; //评论来源
 
+@property (nonatomic, retain) NSIndexPath *cellIndexPath;
+
 
 - (Comment*)initWithJsonDictionary:(NSDictionary*)dic;
 

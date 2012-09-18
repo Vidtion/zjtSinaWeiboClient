@@ -79,5 +79,6 @@
 @property (nonatomic, readonly) NSString* md5Hash;
 
 - (NSString *)URLEncodedString;
+- (NSString *)decodeFromURL;
 
 @end

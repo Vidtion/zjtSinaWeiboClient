@@ -11,12 +11,15 @@
 #import "Status.h"
 #import "User.h"
 #import "ImageBrowser.h"
+#import "StatusCell.h"
+#import "JSTwitterCoreTextView.h"
 
-#define IMAGE_VIEW_HEIGHT 100.0f
+#define IMAGES_VIEW_HEIGHT 100.0f
 
 @class WeiBoMessageManager;
+@class Comment;
 
-@interface ZJTDetailStatusVC : PullRefreshTableViewController<UITableViewDelegate,UITableViewDataSource,ImageBrowserDelegate>
+@interface ZJTDetailStatusVC : PullRefreshTableViewController<UITableViewDelegate,UITableViewDataSource,JSCoreTextViewDelegate,ImageBrowserDelegate,UIActionSheetDelegate>
 {
     UIView      *headerView;
     UITableView *table;
@@ -31,6 +34,8 @@
     UILabel     *countLB;
     
     UINib       *commentCellNib;
+    JSTwitterCoreTextView *_JSContentTF;
+    JSTwitterCoreTextView *_JSRetitterContentTF;
     
     WeiBoMessageManager *manager;
     
@@ -46,6 +51,9 @@
     BOOL _haveRetwitterImage;
     BOOL _hasImage;
     BOOL shouldShowIndicator;
+    
+    int _page;
+    NSString *_maxID;
 }
 @property (retain, nonatomic) IBOutlet UIImageView  *headerBackgroundView;
 @property (retain, nonatomic) IBOutlet UIImageView  *mainViewBackView;
@@ -69,5 +77,13 @@
 @property (retain, nonatomic) NSMutableArray        *commentArr;
 @property (assign, nonatomic) BOOL                  isFromProfileVC;
 @property (retain, nonatomic) ImageBrowser          *browserView;
+@property (nonatomic,retain)JSTwitterCoreTextView *JSContentTF;
+@property (nonatomic,retain)JSTwitterCoreTextView *JSRetitterContentTF;
+@property (retain, nonatomic) IBOutlet UIImageView *contentImageBackgroundView;
+@property (retain, nonatomic) IBOutlet UIImageView *retwitterImageBackground;
+@property (retain, nonatomic) IBOutlet UIImageView *retwitterCountImageView;
+@property (retain, nonatomic) IBOutlet UIImageView *commentCountImageView;
+@property (retain, nonatomic) IBOutlet UIImageView *vipImageView;
+@property (retain, nonatomic) Comment *clickedComment;
 
 @end
