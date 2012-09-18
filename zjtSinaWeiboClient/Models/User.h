@@ -60,7 +60,11 @@ typedef enum {
 @property (nonatomic, assign) BOOL		verified;
 @property (nonatomic, assign) BOOL		allowAllActMsg;
 @property (nonatomic, assign) BOOL		geoEnabled;
-@property (nonatomic, retain) UIImage*    avatarImage;//NSData
+@property (nonatomic, retain) UIImage*    avatarImage;
+@property (nonatomic, retain) NSIndexPath *cellIndexPath;
+@property (nonatomic, assign) int topicCount;
+@property (nonatomic, copy) NSString *verifiedReason;
+@property (nonatomic, copy) NSString *pinyin;
 
 
 

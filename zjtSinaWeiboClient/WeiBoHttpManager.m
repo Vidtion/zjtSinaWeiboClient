@@ -169,7 +169,7 @@
 }
 
 //获取任意一个用户的信息
--(void)getUserInfoWithUserID:(long long)uid
+-(void)getUserInfoWithUserID:(long long)uid 
 {
     //https://api.weibo.com/2/users/show.json
     
@@ -190,7 +190,28 @@
     [request release];
 }
 
--(void)getCommentListWithID:(long long)weiboID
+-(void)getUserInfoWithScreenName:(NSString*)sn
+{
+    //https://api.weibo.com/2/users/show.json
+    sn = [sn URLEncodedString];
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    self.userId = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_USER_ID];
+    
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,   @"access_token",
+                                       sn,          @"screen_name",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/users/show.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetUserInfo];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
+-(void)getCommentListWithID:(long long)weiboID maxID:(NSString*)max_id page:(int)page
 {
     //https://api.weibo.com/2/comments/show.json
     self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
@@ -200,6 +221,10 @@
                                        authToken,                                       @"access_token",
                                        [NSString stringWithFormat:@"%lld",weiboID],     @"id",
                                        nil];
+    if (max_id) {
+        [params setObject:max_id forKey:@"max_id"];
+    }
+    [params setObject:[NSString stringWithFormat:@"%d",page] forKey:@"page"];
     NSString                *baseUrl =[NSString  stringWithFormat:@"%@/comments/show.json",SINA_V2_DOMAIN];
     NSURL                   *url = [self generateURL:baseUrl params:params];
     
@@ -353,7 +378,7 @@
 }
 
 //关注一个用户 by User ID
--(void)followByUserID:(long long)uid
+-(void)followByUserID:(long long)uid inTableView:(NSString*)tableName
 {
     //https://api.weibo.com/2/friendships/create.json
     NSURL *url = [NSURL URLWithString:@"https://api.weibo.com/2/friendships/create.json"];
@@ -366,6 +391,10 @@
     NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[NSNumber numberWithInt:SinaFollowByUserID] forKey:USER_INFO_KEY_TYPE];
     [dict setObject:[NSString stringWithFormat:@"%lld",uid] forKey:@"uid"];
+    if (tableName) {
+        [dict setObject:tableName forKey:@"tableName"];
+    }
+    NSLog(@"dic = %@",dict);
     [item setUserInfo:dict];
     [dict release];
     
@@ -390,7 +419,7 @@
 }
 
 //取消关注一个用户 by User ID
--(void)unfollowByUserID:(long long)uid
+-(void)unfollowByUserID:(long long)uid inTableView:(NSString*)tableName
 {
     //https://api.weibo.com/2/friendships/destroy.json
     NSURL *url = [NSURL URLWithString:@"https://api.weibo.com/2/friendships/destroy.json"];
@@ -403,6 +432,9 @@
     NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
     [dict setObject:[NSNumber numberWithInt:SinaUnfollowByUserID] forKey:USER_INFO_KEY_TYPE];
     [dict setObject:[NSString stringWithFormat:@"%lld",uid] forKey:@"uid"];
+    if (tableName) {
+        [dict setObject:tableName forKey:@"tableName"];
+    }
     [item setUserInfo:dict];
     [dict release];
     
@@ -549,7 +581,13 @@
     
     ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
     NSLog(@"url=%@",url);
-    [self setGetUserInfo:request withRequestType:SinaGetHomeLine];
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:[NSNumber numberWithInt:SinaGetHomeLine] forKey:USER_INFO_KEY_TYPE];
+    if (maxID>0) {
+        [dict setObject:@"YES" forKey:@"isRefresh"];
+    }
+    [request setUserInfo:dict];
+    [dict release];
     [requestQueue addOperation:request];
     [request release];
 }
@@ -659,6 +697,24 @@
     [request release];
 }
 
+//返回最近一天内的热门话题
+-(void)getHOtTrendsDaily
+{
+    //https://api.weibo.com/2/trends/daily.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,   @"access_token",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/trends/daily.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetHotTrendDaily];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
 //获取某个用户的各种消息未读数
 -(void)getUnreadCount:(NSString*)uid
 {
@@ -696,6 +752,110 @@
     [request release];
 }
 
+
+//获取附近地点
+-(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate queryStr:(NSString*)queryStr
+{
+    //https://api.weibo.com/2/place/nearby/pois.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,   @"access_token",
+                                       [NSString stringWithFormat:@"%f",coodinate.latitude],@"lat",
+                                       [NSString stringWithFormat:@"%f",coodinate.longitude],@"long",
+                                       @"50",@"count",
+                                       @"800",@"range",
+                                       nil];
+    if (queryStr) {
+        [params setObject:queryStr forKey:@"q"];
+    }
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/place/nearby/pois.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetPois];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
+//搜索某一话题下的微博
+-(void)searchTopic:(NSString *)queryStr count:(int)count page:(int)page
+{
+    //https://api.weibo.com/2/search/topics.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,   @"access_token",
+                                       [NSString stringWithFormat:@"%d",count],@"lat",
+                                       [NSString stringWithFormat:@"%d",page],@"page",
+                                       nil];
+    if (queryStr) {
+        [params setObject:[queryStr URLEncodedString] forKey:@"q"];
+    }
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/search/topics.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaSearchTopic];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
+//获取某人的话题列表
+-(void)getTopicsOfUser:(User*)user
+{
+    //https://api.weibo.com/2/trends.json
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    NSMutableDictionary     *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       authToken,                                       @"access_token",
+                                       [NSString stringWithFormat:@"%d",1000],          @"lat",
+                                       [NSString stringWithFormat:@"%d",1],             @"page",
+                                       [NSString stringWithFormat:@"%lld",user.userId], @"uid",
+                                       nil];
+    NSString                *baseUrl =[NSString  stringWithFormat:@"%@/trends.json",SINA_V2_DOMAIN];
+    NSURL                   *url = [self generateURL:baseUrl params:params];
+    
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+    NSLog(@"url=%@",url);
+    [self setGetUserInfo:request withRequestType:SinaGetUserTopics];
+    [requestQueue addOperation:request];
+    [request release];
+}
+
+//回复一条评论
+-(void)replyACommentWeiboId:(NSString *)weiboID commentID:(NSString*)commentID content:(NSString*)content
+{
+    NSURL *url = [NSURL URLWithString:@"https://api.weibo.com/2/comments/reply.json"];
+    ASIFormDataRequest *item = [[ASIFormDataRequest alloc] initWithURL:url];
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    
+    [item setPostValue:authToken    forKey:@"access_token"];
+    [item setPostValue:commentID    forKey:@"cid"];
+    [item setPostValue:weiboID      forKey:@"id"];
+    [item setPostValue:content      forKey:@"comment"];
+    
+    [self setPostUserInfo:item withRequestType:SinaReplyAComment];
+    [requestQueue addOperation:item];
+    [item release];
+}
+
+//对一条微博进行评论
+-(void)commentAStatus:(NSString*)weiboID content:(NSString*)content
+{
+    //https://api.weibo.com/2/statuses/repost.json
+    NSURL *url = [NSURL URLWithString:@"https://api.weibo.com/2/comments/create.json"];
+    ASIFormDataRequest *item = [[ASIFormDataRequest alloc] initWithURL:url];
+    self.authToken = [[NSUserDefaults standardUserDefaults] objectForKey:USER_STORE_ACCESS_TOKEN];
+    
+    [item setPostValue:authToken    forKey:@"access_token"];
+    [item setPostValue:content      forKey:@"comment"];
+    [item setPostValue:weiboID      forKey:@"id"];
+    
+    [self setPostUserInfo:item withRequestType:SinaCommentAStatus];
+    [requestQueue addOperation:item];
+    [item release];
+}
+
 #pragma mark - Operate queue
 - (BOOL)isRunning
 {
@@ -727,6 +887,9 @@
 //失败
 - (void)requestFailed:(ASIHTTPRequest *)request{
     NSLog(@"requestFailed:%@,%@,",request.responseString,[request.error localizedDescription]);
+    
+    NSNotification *notification = [NSNotification notificationWithName:MMSinaRequestFailed object:nil];
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 //成功
@@ -846,14 +1009,16 @@
     //获取用户的关注列表
     if (requestType == SinaGetFollowingUserList) {        
         NSArray *arr = [userInfo objectForKey:@"users"];
+        NSNumber *cursor = [userInfo objectForKey:@"next_cursor"];
         NSMutableArray *userArr = [[NSMutableArray alloc]initWithCapacity:0];
         for (id item in arr) {
             User *user = [[User alloc]initWithJsonDictionary:item];
             [userArr addObject:user];
             [user release];
         }
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:userArr, @"userArr",cursor,@"cursor", nil];
         if ([delegate respondsToSelector:@selector(didGetFollowingUsersList:)]) {
-            [delegate didGetFollowingUsersList:userArr];
+            [delegate didGetFollowingUsersList:dic];
         }
         [userArr release];
     }
@@ -861,14 +1026,16 @@
     //获取用户粉丝列表
     if (requestType == SinaGetFollowedUserList) {        
         NSArray *arr = [userInfo objectForKey:@"users"];
+        NSNumber *cursor = [userInfo objectForKey:@"next_cursor"];
         NSMutableArray *userArr = [[NSMutableArray alloc]initWithCapacity:0];
         for (id item in arr) {
             User *user = [[User alloc]initWithJsonDictionary:item];
             [userArr addObject:user];
             [user release];
         }
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:userArr, @"userArr",cursor,@"cursor", nil];
         if ([delegate respondsToSelector:@selector(didGetFollowedUsersList:)]) {
-            [delegate didGetFollowedUsersList:userArr];
+            [delegate didGetFollowedUsersList:dic];
         }
         [userArr release];
     }
@@ -887,10 +1054,12 @@
         }
         
         NSString *uid = [userInformation objectForKey:@"uid"];
+        NSString *tableName = [userInformation objectForKey:@"tableName"];
         NSMutableDictionary *dic = [[[NSMutableDictionary alloc]initWithCapacity:0] autorelease];    
         [dic setObject:[NSNumber numberWithInt:result] forKey:@"result"];
         if (uid != nil) {
             [dic setObject:uid forKey:@"uid"];
+            [dic setObject:tableName forKey:@"tableName"];
         }
         
         if ([delegate respondsToSelector:@selector(didFollowByUserIDWithResult:)]) {
@@ -912,10 +1081,12 @@
         }
         
         NSString *uid = [userInformation objectForKey:@"uid"];
+        NSString *tableName = [userInformation objectForKey:@"tableName"];
         NSMutableDictionary *dic = [[[NSMutableDictionary alloc]initWithCapacity:0] autorelease];    
         [dic setObject:[NSNumber numberWithInt:result] forKey:@"result"];
         if (uid != nil) {
             [dic setObject:uid forKey:@"uid"];
+            [dic setObject:tableName forKey:@"tableName"];
         }
         if ([delegate respondsToSelector:@selector(didUnfollowByUserIDWithResult:)]) {
             [delegate didUnfollowByUserIDWithResult:dic];
@@ -972,6 +1143,11 @@
         for (id item in arr) {
             Status* sts = [Status statusWithJsonDictionary:item];
             [statuesArr addObject:sts];
+        }
+        NSString *isRefresh = [userInformation objectForKey:@"isRefresh"];
+        if ([isRefresh isEqualToString:@"YES"]) {
+            Status* s = [statuesArr objectAtIndex:0];
+            s.isRefresh = @"YES";
         }
         if ([delegate respondsToSelector:@selector(didGetHomeLine:)]) {
             [delegate didGetHomeLine:statuesArr];
@@ -1033,6 +1209,18 @@
         [statuesArr release];
     }
     
+    if (requestType == SinaGetHotTrendDaily) {
+        NSArray *trendsArr = nil;
+        NSDictionary *dic = [userInfo objectForKey:@"trends"];
+        NSArray *arr = [dic allValues];
+        if (arr && arr.count != 0) {
+            trendsArr = [arr objectAtIndex:0];
+            if ([delegate respondsToSelector:@selector(didGetHotTrendDaily:)]) {
+                [delegate didGetHotTrendDaily:trendsArr];
+            }
+        }
+    }
+    
     //获取某个用户的各种消息未读数
     if (requestType == SinaGetUnreadCount) {
         if ([delegate respondsToSelector:@selector(didGetUnreadCount:)]) {
@@ -1057,14 +1245,99 @@
         if ([delegate respondsToSelector:@selector(didGetMetionsStatused:)]) {
             [delegate didGetMetionsStatused:statuesArr];
         }
+        [statuesArr release];
+    }
+    
+    if (requestType == SinaGetPois) {
+        NSArray *arr = [userInfo objectForKey:@"pois"];
+        if (arr == nil || [arr isEqual:[NSNull null]]) 
+        {
+            return;
+        }
+        
+        NSMutableArray *poisArr = [[NSMutableArray alloc] initWithCapacity:0];
+        for (id item in arr) {
+            POI *p = [POI poiWithJsonDictionary:item];
+            [poisArr addObject:p];
+        }
+        
+        if ([delegate respondsToSelector:@selector(didgetPois:)]) {
+            [delegate didgetPois:poisArr];
+        }
+        [poisArr release];
+    }
+    
+    if (requestType == SinaSearchTopic) {
+        NSArray *arr = [userInfo objectForKey:@"statuses"];
+        
+        if (arr == nil || [arr isEqual:[NSNull null]]) 
+        {
+            return;
+        }
+        
+        NSMutableArray  *statuesArr = [[NSMutableArray alloc]initWithCapacity:0];
+        for (id item in arr) {
+            Status* sts = [Status statusWithJsonDictionary:item];
+            [statuesArr addObject:sts];
+        }
+        if ([delegate respondsToSelector:@selector(didGetTopicSearchResult:)]) {
+            [delegate didGetTopicSearchResult:statuesArr];
+        }
+        [statuesArr release];
+    }
+    
+    //获取某人的话题列表
+    if (requestType == SinaGetUserTopics)
+    {
+        if (userArr == nil || [userArr isEqual:[NSNull null]]) 
+        {
+            return;
+        }
+        if ([delegate respondsToSelector:@selector(didGetuserTopics:)]) {
+            [delegate didGetuserTopics:userArr];
+        }
+    }
+    
+    //回复一条评论
+    if (requestType == SinaReplyAComment) {
+        NSDictionary *dic = [userInfo objectForKey:@"reply_comment"];
+        if (dic) 
+        {
+            if ([delegate respondsToSelector:@selector(didReplyAComment:)]) {
+                [delegate didReplyAComment:YES];
+            }
+        }
+        else 
+        {
+            if ([delegate respondsToSelector:@selector(didReplyAComment:)]) {
+                [delegate didReplyAComment:NO];
+            }
+        }
+    }
+    
+    //对一条微博进行评论
+    if (requestType == SinaCommentAStatus) 
+    {
+        
+        NSDictionary *dic = [userInfo objectForKey:@"reply_comment"];
+        if (dic) 
+        {
+            if ([delegate respondsToSelector:@selector(didCommentAStatus:)]) {
+                [delegate didCommentAStatus:YES];
+            }
+        }
+        else 
+        {
+            if ([delegate respondsToSelector:@selector(didCommentAStatus:)]) {
+                [delegate didCommentAStatus:NO];
+            }
+        }
     }
 }
 
 //跳转
 - (void)request:(ASIHTTPRequest *)request willRedirectToURL:(NSURL *)newURL {
     NSLog(@"request will redirect");
-    NSNotification *notification = [NSNotification notificationWithName:MMSinaRequestFailed object:nil];
-    [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 @end

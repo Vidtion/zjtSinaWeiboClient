@@ -10,6 +10,8 @@
 #import "ASIHTTPRequestDelegate.h"
 #import "StringUtil.h"
 #import "NSStringAdditions.h"
+#import "POI.h"
+#import <CoreLocation/CoreLocation.h>
 
 #define SINA_V2_DOMAIN              @"https://api.weibo.com/2"
 #define SINA_API_AUTHORIZE          @"https://api.weibo.com/oauth2/authorize"
@@ -57,8 +59,14 @@ typedef enum {
     SinaGetFollowedUserList,        //获取用户粉丝列表
     SinaGetHotRepostDaily,          //按天返回热门微博转发榜的微博列表
     SinaGetHotCommentDaily,         //按天返回热门微博评论榜的微博列表
+    SinaGetHotTrendDaily,
     SinaGetUnreadCount,             //获取某个用户的各种消息未读数
     SINAGetMetionsStatuses,         //获取最新的提到登录用户的微博列表，即@我的微博
+    SinaGetPois,                    //获取附近地点
+    SinaSearchTopic,                //搜索某一话题下的微博
+    SinaGetUserTopics,              //获取某人的话题列表
+    SinaReplyAComment,              //回复一条评论
+    SinaCommentAStatus,             //对一条微博进行评论
 }RequestType;
 
 @class ASINetworkQueue;
@@ -89,10 +97,10 @@ typedef enum {
 -(void)didGetBilateralUserList:(NSArray*)userArr;
 
 //获取用户的关注列表
--(void)didGetFollowingUsersList:(NSArray*)userArr;
+-(void)didGetFollowingUsersList:(NSDictionary*)dic;
 
 //获取用户粉丝列表
--(void)didGetFollowedUsersList:(NSArray*)userArr;
+-(void)didGetFollowedUsersList:(NSDictionary*)dic;
 
 //获取某话题下的微博消息
 -(void)didGetTrendStatues:(NSArray*)statusArr;
@@ -127,12 +135,29 @@ typedef enum {
 //按天返回热门微博评论榜的微博列表
 -(void)didGetHotCommentDaily:(NSArray*)statusArr;
 
+//返回最近一天内的热门话题
+-(void)didGetHotTrendDaily:(NSArray*)trendsArr;
+
 //获取某个用户的各种消息未读数
 -(void)didGetUnreadCount:(NSDictionary*)dic;
 
 //获取最新的提到登录用户的微博列表，即@我的微博
 -(void)didGetMetionsStatused:(NSArray*)statusArr;
 
+//获取附近地点
+-(void)didgetPois:(NSArray*)poisArr;
+
+//搜索某一话题下的微博
+-(void)didGetTopicSearchResult:(NSArray*)statusArr;
+
+//获取某人的话题列表
+-(void)didGetuserTopics:(NSArray*)trendsArr;
+
+//回复一条评论
+-(void)didReplyAComment:(BOOL)isOK;
+
+//对一条微博进行评论
+-(void)didCommentAStatus:(BOOL)isOK;
 @end
 
 @interface WeiBoHttpManager : NSObject
@@ -171,9 +196,10 @@ typedef enum {
 
 //获取任意一个用户的信息
 -(void)getUserInfoWithUserID:(long long)uid;
+-(void)getUserInfoWithScreenName:(NSString*)sn;
 
 //根据微博消息ID返回某条微博消息的评论列表
--(void)getCommentListWithID:(long long)weiboID;
+-(void)getCommentListWithID:(long long)weiboID maxID:(NSString*)max_id page:(int)page;
 
 //获取用户双向关注的用户ID列表，即互粉UID列表 
 -(void)getBilateralIdListAll:(long long)uid sort:(int)sort;
@@ -190,13 +216,13 @@ typedef enum {
 -(void)getBilateralUserListAll:(long long)uid sort:(int)sort;
 
 //关注一个用户 by User ID
--(void)followByUserID:(long long)uid;
+-(void)followByUserID:(long long)uid inTableView:(NSString*)tableName;
 
 //关注一个用户 by User Name
 -(void)followByUserName:(NSString*)userName;
 
 //取消关注一个用户 by User ID
--(void)unfollowByUserID:(long long)uid;
+-(void)unfollowByUserID:(long long)uid inTableView:(NSString*)tableName;
 
 //取消关注一个用户 by User Name
 -(void)unfollowByUserName:(NSString*)userName;
@@ -232,10 +258,28 @@ typedef enum {
 //按天返回热门微博评论榜的微博列表
 -(void)getHotCommnetDaily:(int)count;
 
+//返回最近一天内的热门话题
+-(void)getHOtTrendsDaily;
+
 //获取某个用户的各种消息未读数
 -(void)getUnreadCount:(NSString*)uid;
 
 //获取最新的提到登录用户的微博列表，即@我的微博
 -(void)getMetionsStatuses;
+
+//获取附近地点
+-(void)getPoisWithCoodinate:(CLLocationCoordinate2D)coodinate queryStr:(NSString*)queryStr;
+
+//搜索某一话题下的微博
+-(void)searchTopic:(NSString *)queryStr count:(int)count page:(int)page;
+
+//获取某人的话题列表
+-(void)getTopicsOfUser:(User*)user;
+
+//回复一条评论
+-(void)replyACommentWeiboId:(NSString *)weiboID commentID:(NSString*)commentID content:(NSString*)content;
+
+//对一条微博进行评论
+-(void)commentAStatus:(NSString*)weiboID content:(NSString*)content;
 
 @end

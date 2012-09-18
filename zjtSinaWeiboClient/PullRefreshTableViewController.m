@@ -75,9 +75,9 @@
 }
 
 - (void)setupStrings{
-  textPull    = [[NSString alloc] initWithString:@"上拉可以刷新..."];
-  textRelease = [[NSString alloc] initWithString:@"松开即可刷新..."];
-  textLoading = [[NSString alloc] initWithString:@"加载中..."];
+    textPull    = [[NSString alloc] initWithString:@"上拉加载更多..."];
+    textRelease = [[NSString alloc] initWithString:@"松开即可加载..."];
+    textLoading = [[NSString alloc] initWithString:@"加载中..."];
 }
 
 - (void)addPullToRefreshFooter {
@@ -94,6 +94,7 @@
     lastUpdatedLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
     lastUpdatedLabel.backgroundColor = [UIColor clearColor];
     lastUpdatedLabel.textAlignment = UITextAlignmentCenter;
+    lastUpdatedLabel.hidden = YES;
     
     refreshLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, REFRESH_FOOTER_HEIGHT - 55.0f, 320.0f, 20.0f)];
     refreshLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;

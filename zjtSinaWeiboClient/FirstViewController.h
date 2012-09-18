@@ -14,6 +14,9 @@
 @interface FirstViewController : StatusViewContrillerBase
 {
     NSString *userID;
+    int _page;
+    long long _maxID;
+    BOOL _shouldAppendTheDataArr;
 }
 
 @property (nonatomic, copy)     NSString *userID;

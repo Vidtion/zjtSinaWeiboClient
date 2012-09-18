@@ -1,5 +1,7 @@
 #import "User.h"
 #import "StringUtil.h"
+#import "ChineseToPinyin.h"
+
 @implementation User
 
 @synthesize userId;
@@ -25,6 +27,10 @@
 @synthesize geoEnabled;
 @synthesize userKey;
 @synthesize avatarImage;
+@synthesize cellIndexPath;
+@synthesize topicCount;
+@synthesize verifiedReason;
+@synthesize pinyin;
 
 - (UserCDItem*)updateUserCDItem:(UserCDItem*)us
 {
@@ -114,8 +120,9 @@
     userId          = [[dic objectForKey:@"id"] longLongValue];
     userKey			= [[NSNumber alloc] initWithLongLong:userId];
 	screenName      = [dic objectForKey:@"screen_name"];
+    self.pinyin          = [ChineseToPinyin pinyinFromChiniseString:screenName];
     name            = [dic objectForKey:@"name"];
-	
+	self.verifiedReason = [dic objectForKey:@"verified_reason"];
 	//int provinceId = [[dic objectForKey:@"province"] intValue];
 	//int cityId = [[dic objectForKey:@"city"] intValue];
 	province		= @"";
@@ -189,6 +196,9 @@
 
 - (void)dealloc
 {
+    [pinyin release];
+    [verifiedReason release];
+    [cellIndexPath release];
 	[userKey release];
     [screenName release];
     [name release];

@@ -10,7 +10,7 @@
 
 
 @implementation Comment
-@synthesize commentId, commentKey, text, createdAt, source, sourceUrl, favorited, truncated, user, status, replyComment;
+@synthesize commentId, commentKey, text, createdAt, source, sourceUrl, favorited, truncated, user, status, replyComment,cellIndexPath;
 
 - (Comment*)initWithJsonDictionary:(NSDictionary*)dic {
 
@@ -131,6 +131,7 @@
 }
 
 - (void)dealloc {
+    [cellIndexPath release];
 	[commentKey release];
 	[text release];
 	[source release];
